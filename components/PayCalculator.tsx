@@ -81,7 +81,7 @@ export default function PayCalculator({ seed }: { seed?: Partial<PayInputs> }) {
 
           {inp.state?.dailyOt && (
             <label className="flex items-center gap-2 text-sm text-slate-700">
-              <input type="checkbox" checked={daily} className="h-4 w-4 rounded border-slate-300 text-emerald-600"
+              <input type="checkbox" checked={daily} className="h-4 w-4 rounded border-slate-300 text-emerald-700"
                 onChange={(e) => {
                   setDaily(e.target.checked);
                   if (!e.target.checked) setInp((p) => ({ ...p, dailyHours: undefined }));

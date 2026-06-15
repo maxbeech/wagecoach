@@ -17,8 +17,8 @@ function Header() {
     <header className="border-b border-slate-200 bg-white/80 backdrop-blur print:hidden">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3">
         <Link href="/" className="flex items-center gap-2 font-bold text-slate-900">
-          <span className="grid h-7 w-7 place-items-center rounded-lg bg-emerald-600 text-sm text-white">$</span>
-          Wage<span className="text-emerald-600">Calc HQ</span>
+          <span className="grid h-7 w-7 place-items-center rounded-lg bg-emerald-700 text-sm text-white">$</span>
+          Wage<span className="text-emerald-700">Calc HQ</span>
         </Link>
         <nav className="flex items-center gap-4 text-sm text-slate-600 sm:gap-5">
           <Link href="/calculators" className="hover:text-slate-900">Calculators</Link>

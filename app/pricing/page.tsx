@@ -39,7 +39,7 @@ export default function Pricing() {
           <div className="mt-1 text-3xl font-bold text-slate-900">$0</div>
           <ul className="mt-4 space-y-2 text-sm text-slate-600">
             {FREE.map((f) => (
-              <li key={f} className="flex gap-2"><span className="text-emerald-600">✓</span>{f}</li>
+              <li key={f} className="flex gap-2"><span className="text-emerald-700">✓</span>{f}</li>
             ))}
           </ul>
         </div>
@@ -49,7 +49,7 @@ export default function Pricing() {
           <div className="mt-1 text-3xl font-bold text-slate-900">$19<span className="text-base font-medium text-slate-500"> one-time</span></div>
           <ul className="mt-4 space-y-2 text-sm text-slate-600">
             {PRO.map((f) => (
-              <li key={f} className="flex gap-2"><span className="text-emerald-600">✓</span>{f}</li>
+              <li key={f} className="flex gap-2"><span className="text-emerald-700">✓</span>{f}</li>
             ))}
           </ul>
           <div className="mt-5"><CheckoutButton /></div>

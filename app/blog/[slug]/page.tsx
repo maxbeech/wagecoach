@@ -57,7 +57,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           <div className="mt-2 flex flex-wrap gap-2">
             {related.map((c) => (
               <Link key={c!.slug} href={`/calculators/${c!.slug}`}
-                className="rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-700">
+                className="rounded-lg bg-emerald-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-800">
                 {c!.name} →
               </Link>
             ))}

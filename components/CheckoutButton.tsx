@@ -26,7 +26,7 @@ export default function CheckoutButton({ className }: { className?: string }) {
   return (
     <div>
       <button onClick={go} disabled={loading}
-        className={className ?? "rounded-lg bg-emerald-600 px-5 py-2.5 font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"}>
+        className={className ?? "rounded-lg bg-emerald-700 px-5 py-2.5 font-semibold text-white hover:bg-emerald-800 disabled:opacity-60"}>
         {loading ? "Starting…" : "Get the Pro report — $19"}
       </button>
       {error && <p className="mt-2 text-sm text-amber-700">{error}</p>}
