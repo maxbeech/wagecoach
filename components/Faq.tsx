@@ -7,9 +7,9 @@ export default function Faq({ items, title = "Frequently asked questions" }: { i
       <div className="mt-3 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white">
         {items.map((it, i) => (
           <details key={i} className="group px-4 py-3">
-            <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-medium text-slate-900">
+            <summary className="flex cursor-pointer list-none items-center justify-between rounded text-sm font-medium text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
               {it.q}
-              <span className="ml-2 text-slate-400 transition group-open:rotate-45">+</span>
+              <span aria-hidden="true" className="ml-2 text-slate-500 transition group-open:rotate-45">+</span>
             </summary>
             <p className="mt-2 text-sm text-slate-600">{it.a}</p>
           </details>

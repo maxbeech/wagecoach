@@ -2,12 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PayCalculator from "@/components/PayCalculator";
+import SalaryConverter from "@/components/SalaryConverter";
 import StateWageLookup from "@/components/StateWageLookup";
 import TippedWageCalculator from "@/components/TippedWageCalculator";
 import ExemptChecker from "@/components/ExemptChecker";
 import PtoPayoutCalculator from "@/components/PtoPayoutCalculator";
 import Faq from "@/components/Faq";
 import { CALCULATORS, getCalc, type CalcDef } from "@/lib/calculators";
+import { SITE } from "@/lib/site";
+
+export const revalidate = 604800; // weekly ISR
 
 export function generateStaticParams() {
   return CALCULATORS.map((c) => ({ slug: c.slug }));
@@ -23,6 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 function Tool({ c }: { c: CalcDef }) {
   switch (c.tool) {
     case "pay": return <PayCalculator seed={c.seed} />;
+    case "salary": return <SalaryConverter />;
     case "minwage": return <StateWageLookup focus="minwage" />;
     case "finalpay": return <StateWageLookup focus="finalpay" />;
     case "tipped": return <TippedWageCalculator />;
@@ -75,6 +80,20 @@ export default async function CalculatorPage({ params }: { params: Promise<{ slu
           ))}
         </div>
       </section>
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org", "@type": "SoftwareApplication",
+        name: c.h1, applicationCategory: "BusinessApplication", operatingSystem: "Web",
+        description: c.meta, url: `${SITE.url}/calculators/${c.slug}`,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Calculators", item: `${SITE.url}/calculators` },
+          { "@type": "ListItem", position: 2, name: c.name, item: `${SITE.url}/calculators/${c.slug}` },
+        ],
+      }) }} />
     </div>
   );
 }

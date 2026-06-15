@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import CheckoutButton from "@/components/CheckoutButton";
 
+export const revalidate = 604800; // weekly ISR
+
 export const metadata: Metadata = {
   title: "Pro — Multi-State Wage Compliance Report",
   description: "A printable multi-state wage & hour compliance report: minimum wage, overtime, tipped pay, final-paycheck deadlines and break rules for every state your team works in. $19 one-time.",
@@ -44,14 +46,14 @@ export default function Pricing() {
 
         <div className="rounded-2xl border-2 border-emerald-300 bg-white p-6 shadow-sm">
           <div className="text-sm font-semibold text-emerald-700">Pro report</div>
-          <div className="mt-1 text-3xl font-bold text-slate-900">$19<span className="text-base font-medium text-slate-400"> one-time</span></div>
+          <div className="mt-1 text-3xl font-bold text-slate-900">$19<span className="text-base font-medium text-slate-500"> one-time</span></div>
           <ul className="mt-4 space-y-2 text-sm text-slate-600">
             {PRO.map((f) => (
               <li key={f} className="flex gap-2"><span className="text-emerald-600">✓</span>{f}</li>
             ))}
           </ul>
           <div className="mt-5"><CheckoutButton /></div>
-          <p className="mt-3 text-xs text-slate-400">
+          <p className="mt-3 text-xs text-slate-500">
             WageCalc HQ is general information, not legal or tax advice. Wage law has local exceptions and
             changes often — confirm with your state labor department or counsel before payroll decisions.
           </p>

@@ -36,7 +36,7 @@ export default function ExemptChecker({ seedAbbr = "" }: { seedAbbr?: string }) 
 
         <p className="mt-3 rounded-lg bg-slate-50 p-3 text-xs text-slate-600">{r.basis}</p>
         {r.stateNote && <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">{r.stateNote}</p>}
-        <p className="mt-2 text-xs text-slate-400">
+        <p className="mt-2 text-xs text-slate-500">
           Salary is only one half of the exemption. The employee must ALSO perform exempt executive,
           administrative or professional duties. Salary alone never makes someone exempt.
         </p>

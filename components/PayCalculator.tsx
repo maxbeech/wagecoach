@@ -64,12 +64,14 @@ export default function PayCalculator({ seed }: { seed?: Partial<PayInputs> }) {
             </select>
           </Field>
 
-          <Field label="Overtime multiplier" hint="1.5× is standard. Use 2× for double time / holiday policies.">
-            <select className={inputCls} value={inp.otMultiplier} onChange={(e) => set("otMultiplier", Number(e.target.value))}>
-              <option value={1.5}>1.5× — time and a half (standard)</option>
-              <option value={2}>2× — double time / holiday</option>
-            </select>
-          </Field>
+          {!daily && (
+            <Field label="Overtime multiplier" hint="1.5× is standard. Use 2× for double time / holiday policies.">
+              <select className={inputCls} value={inp.otMultiplier} onChange={(e) => set("otMultiplier", Number(e.target.value))}>
+                <option value={1.5}>1.5× — time and a half (standard)</option>
+                <option value={2}>2× — double time / holiday</option>
+              </select>
+            </Field>
+          )}
 
           {!daily && (
             <Field label="Hours worked this week" hint="Total hours in the workweek.">
@@ -89,14 +91,23 @@ export default function PayCalculator({ seed }: { seed?: Partial<PayInputs> }) {
           )}
 
           {daily && (
-            <div className="grid grid-cols-7 gap-1.5">
-              {DAYS.map((d, i) => (
-                <label key={d} className="block text-center">
-                  <span className="block text-[11px] font-medium text-slate-500">{d}</span>
-                  <NumberField value={days[i] ?? 0} min={0} max={24} step={0.5} onChange={(n) => setDay(i, n)} ariaLabel={`Hours on ${d}`} />
-                </label>
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-7">
+                {DAYS.map((d, i) => (
+                  <label key={d} className="block text-center">
+                    <span className="block text-[11px] font-medium text-slate-500">{d}</span>
+                    <NumberField value={days[i] ?? 0} min={0} max={24} step={0.5} onChange={(n) => setDay(i, n)} ariaLabel={`Hours on ${d}`} />
+                  </label>
+                ))}
+              </div>
+              {!r.dailyApplied && (
+                <p className="rounded-lg border border-amber-200 bg-amber-50 p-2.5 text-xs text-amber-800">
+                  {inp.state?.abbr === "NV"
+                    ? `Nevada daily overtime only applies to employees earning under 1.5× the minimum wage. At ${"$"}${inp.hourlyRate}/hr it doesn't apply, so the weekly (over-40) calculation is shown.`
+                    : "Daily overtime doesn't apply here — showing the weekly (over-40) calculation."}
+                </p>
+              )}
+            </>
           )}
         </div>
       </div>

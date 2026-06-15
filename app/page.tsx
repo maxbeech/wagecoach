@@ -4,7 +4,10 @@ import Faq from "@/components/Faq";
 import { HOME_FAQS } from "@/lib/faq";
 import { CALCULATORS } from "@/lib/calculators";
 import { STATES } from "@/lib/states";
+import { CITIES } from "@/lib/cities";
 import { SITE } from "@/lib/site";
+
+export const revalidate = 604800; // weekly ISR
 
 export default function Home() {
   return (
@@ -60,6 +63,20 @@ export default function Home() {
           ))}
         </div>
         <Link href="/states" className="mt-3 inline-block text-sm font-medium text-emerald-700 hover:underline">See the full state table →</Link>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-lg font-bold text-slate-900">Major city minimum wages</h2>
+        <p className="mt-1 text-sm text-slate-600">Many cities set a higher local minimum than their state. See the 2026 rate for the biggest ones.</p>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {CITIES.slice(0, 12).map((c) => (
+            <Link key={c.slug} href={`/cities/${c.slug}`}
+              className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs text-slate-600 hover:border-emerald-300 hover:text-slate-900">
+              {c.city}
+            </Link>
+          ))}
+        </div>
+        <Link href="/cities" className="mt-3 inline-block text-sm font-medium text-emerald-700 hover:underline">All city minimum wages →</Link>
       </section>
 
       <Faq items={HOME_FAQS} />

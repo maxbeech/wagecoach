@@ -3,6 +3,8 @@ import Link from "next/link";
 import { STATES, effectiveMinWage } from "@/lib/states";
 import { dollars } from "@/lib/federal";
 
+export const revalidate = 604800; // weekly ISR
+
 export const metadata: Metadata = {
   title: "Minimum Wage & Labor Law by State (2026)",
   description: "2026 minimum wage, overtime rules and final-paycheck deadlines for all 50 states and DC. Pick your state for tipped wages, breaks and a pre-loaded pay calculator.",

@@ -112,14 +112,27 @@ function finish(reg: number, ot: number, dt: number, rate: number, otMult: numbe
   };
 }
 
+// Clamp to a sane range; non-finite (NaN/Infinity) collapses to the low bound.
+// Makes the engine bulletproof against bad input from any source (URL, API, fuzz).
+const clamp = (n: number, lo: number, hi: number) =>
+  Number.isFinite(n) ? Math.min(hi, Math.max(lo, n)) : lo;
+
 export function computePay(inp: PayInputs): PayBreakdown {
-  const rate = Math.max(0, inp.hourlyRate);
-  const clean: PayInputs = { ...inp, hourlyRate: rate };
+  const rate = clamp(inp.hourlyRate, 0, 100000);
+  const dailyHours = Array.isArray(inp.dailyHours)
+    ? inp.dailyHours.map((h) => clamp(h, 0, 24))
+    : undefined;
+  const clean: PayInputs = {
+    ...inp,
+    hourlyRate: rate,
+    hoursThisWeek: clamp(inp.hoursThisWeek, 0, 168),
+    dailyHours,
+  };
   const useDaily =
     clean.state &&
     clean.state.dailyOt &&
-    Array.isArray(clean.dailyHours) &&
-    clean.dailyHours.some((h) => h > 0) &&
+    dailyHours &&
+    dailyHours.some((h) => h > 0) &&
     dailyThresholds(clean.state, rate) !== null;
   return useDaily ? computeDaily(clean, clean.state!) : computeWeekly(clean, clean.state);
 }

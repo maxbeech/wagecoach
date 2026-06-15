@@ -3,7 +3,7 @@ import type { PayInputs } from "./overtime";
 
 // The calculator catalog. Each entry powers a /calculators/[slug] page and the
 // homepage tool grid. `tool` selects which interactive component renders.
-export type ToolKind = "pay" | "minwage" | "tipped" | "exempt" | "pto" | "finalpay";
+export type ToolKind = "pay" | "salary" | "minwage" | "tipped" | "exempt" | "pto" | "finalpay";
 
 export interface CalcDef {
   slug: string;
@@ -77,6 +77,26 @@ export const CALCULATORS: CalcDef[] = [
     ],
     faqs: [
       f("When is double time required?", "Only California requires it (over 12 hrs/day, or beyond 8 hrs on a 7th straight workday). Otherwise double time is an employer policy or union contract term."),
+    ],
+  },
+  {
+    slug: "salary-to-hourly-calculator",
+    name: "Salary ↔ hourly",
+    keyword: "salary to hourly calculator",
+    h1: "Salary to Hourly Calculator",
+    meta: "Convert an annual salary to an hourly rate (or hourly to salary), with weekly, biweekly, semi-monthly, monthly and annual pay shown. Free, instant.",
+    intro: "Convert between an annual salary and an hourly wage, and see your pay across every common pay period. Adjust hours per week and weeks per year for part-time or seasonal work.",
+    focus: "Salary ↔ hourly, plus every pay period",
+    tool: "salary",
+    notes: [
+      "Annual ÷ (hours per week × weeks per year) = hourly rate. The default 40 hrs × 52 weeks = 2,080 hours a year.",
+      "Biweekly pay = annual ÷ 26; semi-monthly = annual ÷ 24; monthly = annual ÷ 12.",
+      "These are gross figures before taxes — this is not a take-home/withholding calculator.",
+    ],
+    faqs: [
+      f("What is $60,000 a year per hour?", "At 40 hours a week for 52 weeks (2,080 hours), $60,000 a year is about $28.85 an hour."),
+      f("How do I convert hourly pay to salary?", "Multiply your hourly rate by the hours you work per week, then by the weeks you work per year. $25/hr × 40 × 52 = $52,000 a year."),
+      f("Is this my take-home pay?", "No — these are gross amounts before income tax, Social Security, Medicare and other deductions are withheld."),
     ],
   },
   {

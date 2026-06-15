@@ -157,6 +157,30 @@ export const POSTS: Post[] = [
       { h: "What employers should do", p: ["If you employ workers in any state that raised its minimum, update payroll, re-check tipped-employee cash wages, and confirm exempt salaries still clear the threshold. The state pages and calculators here are built for exactly that."] },
     ],
   },
+  {
+    slug: "how-to-convert-salary-to-hourly",
+    title: "How to Convert a Salary to an Hourly Rate (and Back)",
+    description: "The simple formula to convert an annual salary to an hourly wage, why 2,080 hours is the standard year, and how to handle part-time and seasonal work.",
+    date: D, readMins: 4, keyword: "convert salary to hourly", related: ["salary-to-hourly-calculator", "overtime-calculator"],
+    body: [
+      { p: ["Comparing a salaried offer to an hourly one — or budgeting from a salary — is easier once you can convert between the two. The math is straightforward."] },
+      { h: "The formula", p: ["Hourly rate = annual salary ÷ (hours per week × weeks per year). For a standard full-time job that's 40 × 52 = 2,080 hours. So a $60,000 salary is $60,000 ÷ 2,080 ≈ $28.85 per hour. To go the other way, multiply: $25/hr × 2,080 = $52,000 a year."] },
+      { h: "Why 2,080 hours", p: ["2,080 is the standard full-time work year (40 hours × 52 weeks) and is what most employers and the federal government use. If you take unpaid weeks off, use fewer weeks; if you work part-time, lower the hours per week. Our converter lets you change both."] },
+      { h: "Pay periods", p: ["From the annual figure: biweekly = ÷ 26, semi-monthly = ÷ 24, monthly = ÷ 12, weekly = ÷ 52. Remember these are gross amounts — taxes and deductions come out on top."] },
+    ],
+  },
+  {
+    slug: "city-vs-state-minimum-wage",
+    title: "City vs State Minimum Wage: Which One Applies?",
+    description: "When a city or county sets a minimum wage above the state's, the higher local rate wins. How local minimum wages work in Seattle, NYC, LA, Chicago and more.",
+    date: D, readMins: 4, keyword: "city minimum wage", related: ["minimum-wage-calculator"],
+    body: [
+      { p: ["Minimum wage isn't just a federal or state number. Many cities and counties set their own — and where they do, the highest applicable rate is the one you must be paid."] },
+      { h: "The highest rate wins", p: ["Federal, state, and local minimum wages stack: an employer must pay whichever is highest. Seattle ($21.30), Tukwila and several California and Colorado cities run well above their state minimum, which is already above the federal $7.25."] },
+      { h: "Local rates change often — and mid-year", p: ["Many local minimums re-index to inflation, some on January 1 and others on July 1. Los Angeles, San Francisco, Chicago, Portland and Montgomery County all step up on July 1. Always confirm the current local figure."] },
+      { p: ["See our city pages for the 2026 local rate, how far it sits above the state minimum, and a pay calculator pre-set to that state."] },
+    ],
+  },
 ];
 
 export function getPost(slug: string): Post | undefined {

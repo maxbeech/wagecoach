@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx test/overtime.test.mts && tsx test/wage.test.mts && tsx test/pay-url.test.mts"
+    "test": "tsx test/overtime.test.mts && tsx test/wage.test.mts && tsx test/pay-url.test.mts && tsx test/salary.test.mts && tsx test/fuzz.test.mts"
   },
   "dependencies": {
     "next": "16.2.9",

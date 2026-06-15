@@ -23,7 +23,7 @@ function Header() {
         <nav className="flex items-center gap-4 text-sm text-slate-600 sm:gap-5">
           <Link href="/calculators" className="hover:text-slate-900">Calculators</Link>
           <Link href="/states" className="hidden hover:text-slate-900 sm:inline">By state</Link>
-          <Link href="/calculators/minimum-wage-calculator" className="hidden hover:text-slate-900 sm:inline">Minimum wage</Link>
+          <Link href="/cities" className="hidden hover:text-slate-900 sm:inline">By city</Link>
           <Link href="/blog" className="hidden hover:text-slate-900 sm:inline">Guides</Link>
           <Link href="/pricing" className="rounded-lg bg-slate-900 px-3 py-1.5 font-medium text-white hover:bg-slate-700">Pro</Link>
         </nav>
@@ -43,12 +43,14 @@ function Footer() {
           <Link href="/calculators/minimum-wage-calculator" className="hover:text-slate-900">Minimum wage by state</Link>
           <Link href="/calculators/tipped-wage-calculator" className="hover:text-slate-900">Tipped wage</Link>
           <Link href="/calculators/final-paycheck-calculator" className="hover:text-slate-900">Final paycheck</Link>
+          <Link href="/calculators/salary-to-hourly-calculator" className="hover:text-slate-900">Salary to hourly</Link>
           <Link href="/states" className="hover:text-slate-900">By state</Link>
+          <Link href="/cities" className="hover:text-slate-900">By city</Link>
           <Link href="/blog" className="hover:text-slate-900">Guides</Link>
           <Link href="/methodology" className="hover:text-slate-900">Methodology</Link>
           <Link href="/pricing" className="hover:text-slate-900">Pro</Link>
         </div>
-        <p className="mt-4 max-w-2xl text-xs text-slate-400">
+        <p className="mt-4 max-w-2xl text-xs text-slate-500">
           {SITE.name} provides free U.S. wage & hour calculators using the federal FLSA and 2026 state
           rules. It is general information, not legal or tax advice — wage law changes often and has local
           exceptions, so confirm any figure with your state labor department before relying on it.

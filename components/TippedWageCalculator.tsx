@@ -56,7 +56,12 @@ export default function TippedWageCalculator({ seedAbbr = "" }: { seedAbbr?: str
             {state.name} does not allow a tip credit — you must be paid the full {dollars(r.minWage)}/hr minimum wage in cash, with tips on top.
           </p>
         )}
-        <p className="mt-2 text-xs text-slate-400">
+        {r.tipCreditAllowed && state && state.tippedCashWage === null && state.tippedNote && (
+          <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
+            {state.tippedNote} This tool checks against the full {dollars(r.minWage)}/hr minimum — enter your actual cash wage to see any shortfall.
+          </p>
+        )}
+        <p className="mt-2 text-xs text-slate-500">
           Federal law lets employers pay a $2.13 cash wage and take a tip credit, but cash + tips must reach the minimum wage every hour.
         </p>
       </div>

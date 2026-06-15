@@ -5,6 +5,8 @@ import { POSTS, getPost } from "@/lib/posts";
 import { getCalc } from "@/lib/calculators";
 import { SITE } from "@/lib/site";
 
+export const revalidate = 604800; // weekly ISR
+
 export function generateStaticParams() {
   return POSTS.map((p) => ({ slug: p.slug }));
 }
@@ -36,7 +38,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
       <h1 className="text-3xl font-bold tracking-tight text-slate-900">{p.title}</h1>
       <p className="mt-2 text-slate-600">{p.description}</p>
-      <div className="mt-1 text-xs text-slate-400">{p.readMins} min read</div>
+      <div className="mt-1 text-xs text-slate-500">{p.readMins} min read</div>
 
       <div className="mt-6 space-y-5">
         {p.body.map((sec, i) => (

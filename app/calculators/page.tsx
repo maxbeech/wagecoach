@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CALCULATORS } from "@/lib/calculators";
 
+export const revalidate = 604800; // weekly ISR
+
 export const metadata: Metadata = {
   title: "Wage & Hour Calculators",
   description: "Free U.S. wage and hour calculators: overtime, time and a half, double time, minimum wage by state, tipped wage, exempt-salary, PTO payout and final-paycheck deadlines.",

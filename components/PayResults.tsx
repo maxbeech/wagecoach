@@ -10,7 +10,7 @@ function Row({ label, hours, rate, pay, strong }: { label: string; hours: number
     <div className={`flex items-baseline justify-between py-1.5 text-sm ${strong ? "font-semibold text-slate-900" : "text-slate-600"}`}>
       <span>{label}</span>
       <span className="text-right tabular-nums">
-        <span className="text-slate-400">{hours} hrs × {rate}</span>
+        <span className="text-slate-500">{hours} hrs × {rate}</span>
         <span className="ml-3 text-slate-900">{pay}</span>
       </span>
     </div>
@@ -30,9 +30,11 @@ export default function PayResults({ inp, r }: { inp: PayInputs; r: PayBreakdown
     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-slate-900">Your pay this week</h2>
-        <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
-          OT rate {dollars(r.otRate)}/hr
-        </span>
+        {r.otHours > 0 && (
+          <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
+            OT rate {dollars(r.otRate)}/hr
+          </span>
+        )}
       </div>
 
       <div className="mt-3 rounded-xl bg-slate-900 px-5 py-4 text-white">
@@ -59,6 +61,7 @@ export default function PayResults({ inp, r }: { inp: PayInputs; r: PayBreakdown
       <div className="mt-4 flex flex-wrap gap-2 print:hidden">
         <button onClick={() => window.print()} className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">Print / Save PDF</button>
         <button onClick={share} className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">{copied ? "Link copied ✓" : "Share"}</button>
+        <span role="status" aria-live="polite" className="sr-only">{copied ? "Link copied to clipboard" : ""}</span>
       </div>
     </div>
   );

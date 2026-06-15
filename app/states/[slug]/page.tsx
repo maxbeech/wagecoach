@@ -3,8 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import PayCalculator from "@/components/PayCalculator";
 import { STATES, getState, effectiveMinWage } from "@/lib/states";
+import { citiesForState } from "@/lib/cities";
 import { dollars } from "@/lib/federal";
 import { SITE } from "@/lib/site";
+
+export const revalidate = 604800; // weekly ISR
 
 export function generateStaticParams() {
   return STATES.map((s) => ({ slug: s.slug }));
@@ -24,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 function Item({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-4">
-      <div className="text-xs uppercase tracking-wide text-slate-400">{label}</div>
+      <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
       <div className="mt-0.5 font-semibold text-slate-900">{value}</div>
       {sub && <div className="mt-0.5 text-xs text-slate-500">{sub}</div>}
     </div>
@@ -36,6 +39,7 @@ export default async function StatePage({ params }: { params: Promise<{ slug: st
   const s = getState(slug);
   if (!s) notFound();
   const min = effectiveMinWage(s);
+  const cities = citiesForState(s.abbr);
 
   return (
     <div>
@@ -87,11 +91,26 @@ export default async function StatePage({ params }: { params: Promise<{ slug: st
         </div>
       </section>
 
-      <p className="mt-4 text-xs text-slate-400">
+      <p className="mt-4 text-xs text-slate-500">
         {s.name} figures are current for 2026 and compiled from the U.S. Department of Labor and {s.name}&apos;s
         labor department. Cities and counties may set higher local minimums, and industry rules vary — confirm
         with your state labor department before relying on this for payroll or a legal decision.
       </p>
+
+      {cities.length > 0 && (
+        <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5">
+          <h2 className="text-lg font-bold text-slate-900">Cities in {s.name} with a higher minimum wage</h2>
+          <p className="mt-1 text-sm text-slate-600">These {s.name} localities set a local minimum above the state&apos;s {dollars(min)}/hr:</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {cities.map((c) => (
+              <Link key={c.slug} href={`/cities/${c.slug}`}
+                className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-800 hover:bg-emerald-100">
+                {c.city} · {dollars(c.minWage)}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="mt-8">
         <h2 className="text-sm font-semibold text-slate-900">Other states</h2>

@@ -8,7 +8,7 @@ import { Field, StateSelect } from "./ui";
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-4">
-      <div className="text-xs uppercase tracking-wide text-slate-400">{label}</div>
+      <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
       <div className="mt-0.5 text-xl font-bold text-slate-900 tabular-nums">{value}</div>
       {sub && <div className="mt-0.5 text-xs text-slate-500">{sub}</div>}
     </div>
@@ -68,7 +68,7 @@ export default function StateWageLookup({ seedAbbr = "CA", focus = "minwage" }: 
         </div>
       </div>
 
-      <p className="mt-3 text-xs text-slate-400">
+      <p className="mt-3 text-xs text-slate-500">
         General guidance for {s.name}, current for 2026. Local ordinances and industry rules vary —
         confirm with your state labor department before relying on this for payroll or a legal decision.
       </p>
