@@ -70,7 +70,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
       </div>
 
       <p className="mt-6 text-xs text-slate-500">
-        Source: <a href={c.source} target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline">official rate page</a>.
+        Source: <a href={c.source} target="_blank" rel="noopener noreferrer" className="text-emerald-700 underline hover:text-emerald-800">official rate page</a>.
         Local minimum wages change often and several re-index mid-year — confirm the current {c.city} rate before relying on it.
       </p>
 

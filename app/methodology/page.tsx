@@ -65,9 +65,9 @@ export default function Methodology() {
           state page links the figures back to these sources.
         </p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
-          <li><a className="text-emerald-700 hover:underline" href="https://www.dol.gov/agencies/whd/minimum-wage" target="_blank" rel="noopener noreferrer">U.S. DOL — Minimum Wage</a></li>
-          <li><a className="text-emerald-700 hover:underline" href="https://www.dol.gov/agencies/whd/overtime" target="_blank" rel="noopener noreferrer">U.S. DOL — Overtime Pay (FLSA)</a></li>
-          <li><a className="text-emerald-700 hover:underline" href="https://www.govdocs.com/state-minimum-wage-rates/" target="_blank" rel="noopener noreferrer">GovDocs — 2026 State Minimum Wage Rates</a></li>
+          <li><a className="text-emerald-700 underline hover:text-emerald-800" href="https://www.dol.gov/agencies/whd/minimum-wage" target="_blank" rel="noopener noreferrer">U.S. DOL — Minimum Wage</a></li>
+          <li><a className="text-emerald-700 underline hover:text-emerald-800" href="https://www.dol.gov/agencies/whd/overtime" target="_blank" rel="noopener noreferrer">U.S. DOL — Overtime Pay (FLSA)</a></li>
+          <li><a className="text-emerald-700 underline hover:text-emerald-800" href="https://www.govdocs.com/state-minimum-wage-rates/" target="_blank" rel="noopener noreferrer">GovDocs — 2026 State Minimum Wage Rates</a></li>
         </ul>
       </section>
 
