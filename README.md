@@ -27,6 +27,12 @@ The engines are real and cited, not rules of thumb:
 - **`lib/state-extras.ts`** — final-paycheck deadlines and meal/rest-break rules,
   compiled from state labor departments and reputable compliance references.
 - **`lib/wage.ts`** — tip-credit check, exempt salary test, PTO payout.
+- **`lib/salary.ts`** — salary↔hourly converter (annual / monthly / biweekly / hourly).
+- **`lib/cities.ts`** — 2026 minimum wage for 20 major cities (Seattle, NYC, LA, SF, Chicago…), each cited.
+
+The engines are covered by hand-written unit tests **plus a fuzz suite** that sweeps every
+state × rate × hours combination (33k+ cases / 150k+ assertions) to guarantee no NaN, no
+negative pay, and that totals always reconcile.
 
 Every figure is current for 2026 and surfaced with a "confirm with your state labor
 department" disclaimer. See `/methodology` for sources.
