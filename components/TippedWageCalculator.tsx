@@ -38,9 +38,9 @@ export default function TippedWageCalculator({ seedAbbr = "" }: { seedAbbr?: str
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <h2 className="text-sm font-semibold text-slate-900">Does it meet the minimum wage?</h2>
         <div className={`mt-3 rounded-xl px-5 py-4 ${r.meetsMinimum ? "bg-emerald-700" : "bg-rose-700"} text-white`}>
-          <div className="text-xs uppercase tracking-wide opacity-80">Effective hourly</div>
+          <div className="text-xs uppercase tracking-wide">Effective hourly</div>
           <div className="text-3xl font-bold tabular-nums">{dollars(r.effectiveHourly)}</div>
-          <div className="mt-0.5 text-sm opacity-90">{r.meetsMinimum ? "Meets" : "Below"} the {dollars(r.minWage)}/hr minimum wage</div>
+          <div className="mt-0.5 text-sm">{r.meetsMinimum ? "Meets" : "Below"} the {dollars(r.minWage)}/hr minimum wage</div>
         </div>
 
         <div className="mt-3 divide-y divide-slate-100 text-sm">

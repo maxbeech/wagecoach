@@ -29,9 +29,9 @@ export default function ExemptChecker({ seedAbbr = "" }: { seedAbbr?: string }) 
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <h2 className="text-sm font-semibold text-slate-900">Salary-threshold test</h2>
         <div className={`mt-3 rounded-xl px-5 py-4 ${r.meetsSalary ? "bg-emerald-700" : "bg-slate-900"} text-white`}>
-          <div className="text-xs uppercase tracking-wide opacity-80">{r.meetsSalary ? "Clears the salary threshold" : "Below the salary threshold"}</div>
+          <div className="text-xs uppercase tracking-wide">{r.meetsSalary ? "Clears the salary threshold" : "Below the salary threshold"}</div>
           <div className="text-2xl font-bold tabular-nums">{dollars(salary)} vs {dollars(r.threshold)}</div>
-          <div className="mt-0.5 text-sm opacity-90">{r.meetsSalary ? "Salary test met — but the duties test must also pass." : "Likely non-exempt — owed overtime over 40 hrs/week."}</div>
+          <div className="mt-0.5 text-sm">{r.meetsSalary ? "Salary test met — but the duties test must also pass." : "Likely non-exempt — owed overtime over 40 hrs/week."}</div>
         </div>
 
         <p className="mt-3 rounded-lg bg-slate-50 p-3 text-xs text-slate-600">{r.basis}</p>
