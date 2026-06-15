@@ -1,0 +1,74 @@
+// Final-paycheck deadlines and meal/rest-break rules by state.
+//
+// Compiled from state labor-department (.gov) pages and cross-checked against
+// Rippling, Patriot Software and the TimeClick break-law guide (June 2026).
+// These are general summaries for adult, non-exempt employees — many states have
+// industry- or shift-specific carve-outs, so each page tells the reader to confirm
+// with their state labor department. Notable recent change baked in: Minnesota's new
+// meal/rest-break law effective Jan 1, 2026.
+
+export interface StateExtra {
+  finalPayFired: string;
+  finalPayQuit: string;
+  mealBreak: string;
+  restBreak: string;
+  sources: string[];
+}
+
+const R = "https://www.rippling.com/blog/final-paycheck-for-terminated-employee";
+const P = "https://www.patriotsoftware.com/blog/payroll/final-paycheck-laws-by-state/";
+const T = "https://timeclick.com/break-laws-state-guide/";
+
+export const STATE_EXTRAS: Record<string, StateExtra> = {
+  AL: { finalPayFired: "No state law — next regular payday (federal)", finalPayQuit: "No state law — next regular payday (federal)", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P] },
+  AK: { finalPayFired: "Within 3 working days of termination", finalPayQuit: "Next payday at least 3 working days after quitting", mealBreak: "No state requirement for adults (follows federal)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  AZ: { finalPayFired: "Within 7 working days or next payday, whichever is first", finalPayQuit: "Next regular payday", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  AR: { finalPayFired: "Next payday (double wages if unpaid 7 days after payday)", finalPayQuit: "Next regular payday", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  CA: { finalPayFired: "Immediately, at the time of termination", finalPayQuit: "Within 72 hours; immediately if 72 hours' notice was given", mealBreak: "30-min unpaid meal for shifts over 5 hrs; 2nd meal over 10 hrs", restBreak: "10-min paid rest per 4 hrs worked", sources: [R, P, T] },
+  CO: { finalPayFired: "Immediately (within 6 hrs of next workday, or 24 hrs if payroll is off-site)", finalPayQuit: "Next regular payday", mealBreak: "30-min unpaid meal for shifts over 5 hrs", restBreak: "10-min paid rest per 4 hrs worked (COMPS Order)", sources: [R, "https://cdle.colorado.gov/dlss-home-page/wage-and-hour-law/breaks-rest-meal-periods", T] },
+  CT: { finalPayFired: "Next business day (fired); next payday (laid off)", finalPayQuit: "Next regular payday", mealBreak: "30-min unpaid meal for shifts of 7.5+ hrs", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  DE: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "30-min unpaid meal for shifts of 7.5+ hrs", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  DC: { finalPayFired: "Next business day", finalPayQuit: "Next payday or within 7 days, whichever is earlier", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  FL: { finalPayFired: "No state law — next regular payday (federal)", finalPayQuit: "No state law — next regular payday (federal)", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  GA: { finalPayFired: "No state law — next regular payday (federal)", finalPayQuit: "No state law — next regular payday (federal)", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  HI: { finalPayFired: "Immediately or the next working day", finalPayQuit: "Next payday; immediately if one pay period's notice was given", mealBreak: "No state requirement for adults (follows federal)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  ID: { finalPayFired: "Next payday or within 10 business days, whichever is earlier", finalPayQuit: "Next payday or within 10 business days, whichever is earlier", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  IL: { finalPayFired: "Immediately if possible; no later than the next payday", finalPayQuit: "Immediately if possible; no later than the next payday", mealBreak: "20-min unpaid meal for shifts of 7.5+ hrs (begun within first 5 hrs)", restBreak: "No state requirement (ODRISA is a day-off law, not a rest-break law)", sources: [R, "https://labor.illinois.gov/faqs/odrisa-faq.html", T] },
+  IN: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  IA: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  KS: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  KY: { finalPayFired: "Next payday or 14 days after the last day, whichever is later", finalPayQuit: "Next payday or 14 days after the last day, whichever is later", mealBreak: "Reasonable meal period between the 3rd and 5th hour of a shift", restBreak: "10-min paid rest per 4 hrs worked", sources: [R, P, T] },
+  LA: { finalPayFired: "Next payday or within 15 days, whichever is earlier", finalPayQuit: "Next payday or within 15 days, whichever is earlier", mealBreak: "No state requirement for adults (follows federal)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  ME: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "30-min unpaid meal after 6 consecutive hrs (employers with 3+ on duty)", restBreak: "No separate paid rest requirement (none mandated)", sources: [R, P, T] },
+  MD: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "30-min unpaid meal in retail / certain shifts (Healthy Retail Employee Act)", restBreak: "15-min paid for 4–6 hr shifts (retail only)", sources: [R, P, T] },
+  MA: { finalPayFired: "Immediately, on the day of discharge", finalPayQuit: "Next regular payday", mealBreak: "30-min unpaid meal for shifts over 6 hrs", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  MI: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "No state requirement for adults (follows federal)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  MN: { finalPayFired: "Within 24 hours of a written demand", finalPayQuit: "Next payday (up to 20 days if payday is within 5 days of the last day)", mealBreak: "30-min unpaid meal for 6+ consecutive hrs (effective Jan 1, 2026)", restBreak: "15-min paid rest (or restroom time, whichever is longer) per 4 hrs (effective Jan 1, 2026)", sources: [R, "https://www.dli.mn.gov/breaks", "https://winthrop.com/bold-perspectives/minnesotas-new-meal-and-rest-break-law-went-into-effect-on-january-1-2026/"] },
+  MS: { finalPayFired: "No state law — next regular payday (federal)", finalPayQuit: "No state law — next regular payday (federal)", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  MO: { finalPayFired: "Immediately on demand (penalty wages up to 60 days if unpaid)", finalPayQuit: "No state law — next regular payday (federal)", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  MT: { finalPayFired: "Immediately (within 4 hrs or end of business day, whichever is first)", finalPayQuit: "Next payday or within 15 days, whichever is earlier", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  NE: { finalPayFired: "Next payday or within 2 weeks, whichever is earlier", finalPayQuit: "Next payday or within 2 weeks, whichever is earlier", mealBreak: "30-min off-premises lunch for certain shifts (assembly / mechanical / manufacturing)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  NV: { finalPayFired: "Within 3 days of termination", finalPayQuit: "Next payday or within 7 days, whichever is earlier", mealBreak: "30-min unpaid meal for continuous shifts of 8+ hrs", restBreak: "10-min paid rest per 4 hrs worked", sources: [R, P, T] },
+  NH: { finalPayFired: "Within 72 hours of termination", finalPayQuit: "Next regular payday (72 hrs if one pay period's notice was given)", mealBreak: "30-min unpaid meal after 5 consecutive hrs", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  NJ: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "No state requirement for adults (follows federal)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  NM: { finalPayFired: "Within 5 days (fixed wages); 10 days (commission/task)", finalPayQuit: "Next regular payday", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  NY: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "30–60 min unpaid meal (varies by shift timing and industry)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  NC: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "No state requirement for adults (follows federal)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  ND: { finalPayFired: "Next payday or within 15 days, whichever is earlier", finalPayQuit: "Next payday or within 15 days, whichever is earlier", mealBreak: "30-min unpaid meal for shifts over 5 hrs (if 2+ employees on duty)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  OH: { finalPayFired: "Next payday or within 15 days, whichever is earlier", finalPayQuit: "Next payday or within 15 days, whichever is earlier", mealBreak: "No state requirement for adults (follows federal)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  OK: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  OR: { finalPayFired: "By the end of the next business day", finalPayQuit: "Last day if 48+ hrs' notice; otherwise within 5 business days or next payday", mealBreak: "30-min unpaid meal per 6-hr work period", restBreak: "10-min paid rest per 4 hrs worked", sources: [R, P, T] },
+  PA: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "No state requirement for adults (follows federal)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  RI: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "20-min unpaid meal for a 6-hr shift; 30-min for an 8-hr shift", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  SC: { finalPayFired: "Within 48 hours or next payday, whichever is first (max 30 days)", finalPayQuit: "Within 48 hours or next payday, whichever is first (max 30 days)", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  SD: { finalPayFired: "Next regular payday (may withhold until employer property is returned)", finalPayQuit: "Next regular payday (may withhold until employer property is returned)", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  TN: { finalPayFired: "Next payday or within 21 days, whichever is later", finalPayQuit: "Next payday or within 21 days, whichever is later", mealBreak: "30-min unpaid meal for 6+ consecutive hrs", restBreak: "No separate paid rest requirement (none mandated)", sources: [R, P, T] },
+  TX: { finalPayFired: "Within 6 calendar days of termination", finalPayQuit: "Next regular payday", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  UT: { finalPayFired: "Within 24 hours of termination", finalPayQuit: "Next regular payday", mealBreak: "No state requirement for adults (follows federal)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  VT: { finalPayFired: "Within 72 hours of termination", finalPayQuit: "Next regular payday (or next Friday if there is no regular payday)", mealBreak: "Reasonable opportunity to eat and use the toilet (no fixed time)", restBreak: "No separate paid rest requirement (none mandated)", sources: [R, P, "https://www.minimum-wage.org/vermont/required-breaks-and-meal-periods"] },
+  VA: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "No state requirement for adults (follows federal)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  WA: { finalPayFired: "End of the established pay period (next regular payday)", finalPayQuit: "End of the established pay period (next regular payday)", mealBreak: "30-min unpaid meal for shifts over 5 hrs", restBreak: "10-min paid rest per 4 hrs worked", sources: [R, P, T] },
+  WV: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "20-min meal for 6+ consecutive hrs (if on-the-job eating isn't allowed)", restBreak: "No state requirement (none mandated)", sources: [P, "https://code.wvlegislature.gov/21-5-4/", T] },
+  WI: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "No state requirement for adults (recommended, not mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+  WY: { finalPayFired: "Next regular payday", finalPayQuit: "Next regular payday", mealBreak: "No state requirement (follows federal — none mandated)", restBreak: "No state requirement (none mandated)", sources: [R, P, T] },
+};

@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* This product ships a single, intentional LIGHT theme — every surface uses
+   explicit Tailwind colors (bg-slate-50, white cards, text-slate-900). We do
+   NOT honour prefers-color-scheme: a dark body background would sit behind the
+   light-theme text and make the hero unreadable. Leaving background/color to the
+   layout's Tailwind classes (an unlayered `body{background}` rule would otherwise
+   override the bg-slate-50 utility under Tailwind v4 cascade layers). */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Print / Save-as-PDF: drop chrome and form, keep a clean results sheet.
+   Elements tagged `print:hidden` (Tailwind) are hidden; we also strip the
+   site header/footer and force light colours so the PDF is legible. */
+@media print {
+  header,
+  footer {
+    display: none !important;
+  }
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+  * {
+    box-shadow: none !important;
+  }
+}
