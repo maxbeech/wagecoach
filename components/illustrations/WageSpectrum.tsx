@@ -109,10 +109,12 @@ export default function WageSpectrum() {
 
 function SheetRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline gap-3 border-b border-white/10 pb-2.5">
+    <div className="flex items-baseline border-b border-white/10 pb-2.5">
       <dt className="shrink-0 text-white/70">{label}</dt>
-      <span className="leader !border-white/15" />
-      <dd className="shrink-0 text-right font-medium text-white">{value}</dd>
+      <dd className="flex min-w-0 flex-1 items-baseline">
+        <span className="leader !border-white/15" />
+        <span className="shrink-0 text-right font-medium text-white">{value}</span>
+      </dd>
     </div>
   );
 }

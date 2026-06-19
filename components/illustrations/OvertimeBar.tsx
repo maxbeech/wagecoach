@@ -81,7 +81,7 @@ export default function OvertimeBar() {
           max={MAX}
           step={1}
           value={hours}
-          aria-label="Hours worked this week"
+          aria-label="Weekly hours, overtime demonstration"
           onChange={(e) => setHours(Number(e.target.value))}
           className="range-brass mt-3 w-full"
         />
@@ -100,9 +100,11 @@ export default function OvertimeBar() {
 function Cell({ label, value, sub, accent, strong }: { label: string; value: string; sub?: string; accent?: boolean; strong?: boolean }) {
   return (
     <div className="bg-card px-3 py-3">
-      <div className="text-[0.62rem] font-medium uppercase tracking-wider text-faint">{label}</div>
-      <div className={`mt-0.5 font-mono tabular-nums ${strong ? "text-lg font-semibold text-ink" : accent ? "text-base font-semibold text-brand-700" : "text-base text-ink"}`}>{value}</div>
-      {sub && <div className="mt-0.5 text-[0.62rem] text-faint">{sub}</div>}
+      <dt className="text-[0.62rem] font-medium uppercase tracking-wider text-faint">{label}</dt>
+      <dd className={`mt-0.5 font-mono tabular-nums ${strong ? "text-lg font-semibold text-ink" : accent ? "text-base font-semibold text-brand-700" : "text-base text-ink"}`}>
+        {value}
+        {sub && <span className="mt-0.5 block text-[0.62rem] font-normal text-faint">{sub}</span>}
+      </dd>
     </div>
   );
 }
