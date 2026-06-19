@@ -15,7 +15,7 @@ export default function CheckoutButton({ className }: { className?: string }) {
       const res = await fetch("/api/checkout", { method: "POST" });
       const data = await res.json();
       if (data.url) { window.location.href = data.url; return; }
-      setError(data.message ?? "Checkout isn't available yet — check back soon.");
+      setError(data.message ?? "Checkout is not available yet. Please check back soon.");
     } catch {
       setError("Something went wrong starting checkout. Please try again.");
     } finally {
@@ -26,10 +26,10 @@ export default function CheckoutButton({ className }: { className?: string }) {
   return (
     <div>
       <button onClick={go} disabled={loading}
-        className={className ?? "rounded-lg bg-emerald-700 px-5 py-2.5 font-semibold text-white hover:bg-emerald-800 disabled:opacity-60"}>
-        {loading ? "Starting…" : "Get the Pro report — $19"}
+        className={className ?? "rounded-full bg-forest px-6 py-3 font-semibold text-white shadow-card transition hover:bg-brand-800 disabled:opacity-60"}>
+        {loading ? "Starting…" : "Get the Pro report, $19"}
       </button>
-      {error && <p className="mt-2 text-sm text-amber-700">{error}</p>}
+      {error && <p className="mt-2 text-sm text-amber-800">{error}</p>}
     </div>
   );
 }

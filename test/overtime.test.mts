@@ -69,6 +69,24 @@ r = computePay({ hourlyRate: 20, hoursThisWeek: 13, otMultiplier: 1.5, state: CO
 approx(r.regularPay, 240, "CO 13h day: regular 12×$20");
 approx(r.otPay, 30, "CO 13h day: OT 1×$30 (>12)");
 
+// --- Regression: NV high earner in daily mode must use the SUM of per-day
+// hours, not a stale weekly field. Previously the fallback to the weekly rule
+// read hoursThisWeek (45) and invented phantom OT. ---
+r = computePay({ hourlyRate: 25, hoursThisWeek: 45, otMultiplier: 1.5, state: NV, dailyHours: [10, 10, 10, 10, 0, 0, 0] });
+eq(r.dailyApplied, false, "NV high earner daily entry: daily OT does not apply");
+approx(r.otPay, 0, "NV high earner 4×10h=40: no phantom OT from stale weekly hours");
+approx(r.gross, 1000, "NV high earner 4×10h: gross 40×$25 (daily sum, not 45)");
+
+// Federal (no daily-OT state) with per-day hours also reconciles to the daily sum.
+r = computePay({ hourlyRate: 20, hoursThisWeek: 99, otMultiplier: 1.5, state: null, dailyHours: [8, 8, 8, 8, 8, 0, 0] });
+approx(r.gross, 800, "federal daily entry 5×8=40: uses daily sum (40), ignores stale 99");
+
+// --- otMultiplier clamp: a hand-edited URL can send anything. ---
+r = computePay({ ...base, otMultiplier: 0 });
+approx(r.otRate, 20, "otMultiplier 0 clamps to 1× (OT at the regular rate)");
+r = computePay({ ...base, otMultiplier: 5 });
+approx(r.otPay, 200, "otMultiplier 5 clamps to 2× (5h × $40)");
+
 // --- Robustness: negative rate clamps to 0, garbage stays finite ---
 r = computePay({ ...base, hourlyRate: -5 });
 approx(r.gross, 0, "negative rate clamps to $0");

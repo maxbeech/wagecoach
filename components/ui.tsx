@@ -3,17 +3,17 @@
 import { useState } from "react";
 import { STATES } from "@/lib/states";
 
-// Shared form primitives — single source for input styling and the editable
-// number field used by every calculator on the site.
+// Shared form primitives — single source for input styling, the editable number
+// field and the segmented toggle used across every calculator on the site.
 export const inputCls =
-  "mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:border-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-200 focus:outline-none";
+  "mt-1 w-full rounded-lg border border-line bg-card px-3 py-2.5 text-sm text-ink shadow-sm transition focus:border-brand-500 focus:outline-none";
 
 export function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="block text-sm font-medium text-slate-700">{label}</span>
+      <span className="block text-sm font-medium text-ink">{label}</span>
       {children}
-      {hint && <span className="mt-0.5 block text-xs text-slate-500">{hint}</span>}
+      {hint && <span className="mt-1 block text-xs text-faint">{hint}</span>}
     </label>
   );
 }
@@ -26,7 +26,7 @@ export function NumberField({ value, min, max, step = 1, onChange, ariaLabel }:
   const [last, setLast] = useState(value);
   if (value !== last) { setLast(value); setRaw(String(value)); }
   return (
-    <input type="number" inputMode="decimal" min={min} max={max} step={step} className={inputCls} value={raw}
+    <input type="number" inputMode="decimal" min={min} max={max} step={step} className={`${inputCls} font-mono tabular-nums`} value={raw}
       aria-label={ariaLabel}
       onChange={(e) => {
         setRaw(e.target.value);
@@ -50,5 +50,23 @@ export function StateSelect({ value, onChange, includeFederal = false, ariaLabel
         <option key={s.abbr} value={s.abbr}>{s.name}</option>
       ))}
     </select>
+  );
+}
+
+// Segmented toggle — a premium replacement for a two-or-three option select.
+export function Segmented<T extends string | number>({ options, value, onChange, ariaLabel }:
+  { options: { value: T; label: string }[]; value: T; onChange: (v: T) => void; ariaLabel: string }) {
+  return (
+    <div role="group" aria-label={ariaLabel} className="flex gap-1 rounded-xl border border-line bg-brand-50/50 p-1">
+      {options.map((o) => {
+        const active = o.value === value;
+        return (
+          <button key={String(o.value)} type="button" aria-pressed={active} onClick={() => onChange(o.value)}
+            className={`flex-1 rounded-lg px-3 py-1.5 text-sm font-medium transition ${active ? "bg-card text-ink shadow-sm" : "text-muted hover:text-ink"}`}>
+            {o.label}
+          </button>
+        );
+      })}
+    </div>
   );
 }

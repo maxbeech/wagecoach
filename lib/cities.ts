@@ -2,7 +2,7 @@ import { getStateByAbbr } from "./states";
 
 // Major U.S. cities/counties that set their OWN minimum wage above their state's.
 // 2026 figures verified against city/county .gov ordinance pages and reputable
-// trackers (WA L&I, CA Employers Assn, GovDocs, Ogletree, Paycor) — June 2026.
+// trackers (WA L&I, CA Employers Assn, GovDocs, Ogletree, Paycor), June 2026.
 // Where a locality re-indexes on July 1, the headline is the rate in effect now
 // (mid-2026) and the note states the upcoming change. Local rates change often,
 // so each page links sources and tells the reader to confirm the current figure.

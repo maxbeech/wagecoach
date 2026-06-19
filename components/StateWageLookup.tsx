@@ -7,10 +7,10 @@ import { Field, StateSelect } from "./ui";
 
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
-      <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
-      <div className="mt-0.5 text-xl font-bold text-slate-900 tabular-nums">{value}</div>
-      {sub && <div className="mt-0.5 text-xs text-slate-500">{sub}</div>}
+    <div className="rounded-xl border border-line bg-card p-4">
+      <div className="text-[0.7rem] font-medium uppercase tracking-wider text-faint">{label}</div>
+      <div className="mt-1 font-semibold tabular-nums text-ink">{value}</div>
+      {sub && <div className="mt-0.5 text-xs leading-snug text-faint">{sub}</div>}
     </div>
   );
 }
@@ -34,42 +34,42 @@ export default function StateWageLookup({ seedAbbr = "CA", focus = "minwage" }: 
   const min = effectiveMinWage(s);
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-line bg-card p-5 shadow-card sm:p-6">
       <Field label="State">
         <StateSelect value={s.abbr} onChange={onChange} />
       </Field>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
         {focus === "finalpay" ? (
           <>
-            <Stat label="Final pay — if fired" value={s.finalPayFired} />
-            <Stat label="Final pay — if you quit" value={s.finalPayQuit} />
+            <Stat label="Final pay if fired" value={s.finalPayFired} />
+            <Stat label="Final pay if you quit" value={s.finalPayQuit} />
             <Stat label="2026 minimum wage" value={`${dollars(min)}/hr`} sub={s.minWageNote} />
             <Stat label="Daily overtime" value={s.dailyOt ? `Over ${s.dailyOt.afterHours} hrs/day` : "None (weekly only)"} />
           </>
         ) : (
           <>
             <Stat label="2026 minimum wage" value={`${dollars(min)}/hr`} sub={s.minWageNote} />
-            <Stat label="Tipped cash wage" value={s.tipCreditAllowed ? (s.tippedCashWage !== null ? `${dollars(s.tippedCashWage)}/hr` : "Varies") : "No tip credit"} sub={s.tipCreditAllowed ? (s.tippedNote ?? "Cash wage + tips must reach the minimum wage.") : "Full minimum wage paid in cash before tips."} />
+            <Stat label="Tipped cash wage" value={s.tipCreditAllowed ? (s.tippedCashWage !== null ? `${dollars(s.tippedCashWage)}/hr` : "Varies") : "No tip credit"} sub={s.tipCreditAllowed ? (s.tippedNote ?? "Cash wage plus tips must reach the minimum wage.") : "Full minimum wage paid in cash before tips."} />
             <Stat label="Overtime" value={s.dailyOt ? `Daily over ${s.dailyOt.afterHours} hrs + 40/wk` : "Over 40 hrs/week"} sub={s.dailyOt?.note} />
             <Stat label="Final paycheck (fired)" value={s.finalPayFired} />
           </>
         )}
       </div>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 text-sm">
-        <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-          <div className="font-semibold text-slate-900">Meal break</div>
-          <p className="mt-1 text-slate-600">{s.mealBreak}</p>
+      <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+        <div className="rounded-xl border border-line bg-brand-50/30 p-3.5">
+          <div className="font-semibold text-ink">Meal break</div>
+          <p className="mt-1 leading-relaxed text-muted">{s.mealBreak}</p>
         </div>
-        <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-          <div className="font-semibold text-slate-900">Rest break</div>
-          <p className="mt-1 text-slate-600">{s.restBreak}</p>
+        <div className="rounded-xl border border-line bg-brand-50/30 p-3.5">
+          <div className="font-semibold text-ink">Rest break</div>
+          <p className="mt-1 leading-relaxed text-muted">{s.restBreak}</p>
         </div>
       </div>
 
-      <p className="mt-3 text-xs text-slate-500">
-        General guidance for {s.name}, current for 2026. Local ordinances and industry rules vary —
+      <p className="mt-4 text-xs leading-relaxed text-faint">
+        General guidance for {s.name}, current for 2026. Local ordinances and industry rules vary, so
         confirm with your state labor department before relying on this for payroll or a legal decision.
       </p>
     </div>

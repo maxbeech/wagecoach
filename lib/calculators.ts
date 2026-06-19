@@ -27,14 +27,14 @@ export const CALCULATORS: CalcDef[] = [
     name: "Overtime calculator",
     keyword: "overtime calculator",
     h1: "Overtime Pay Calculator",
-    meta: "Free overtime calculator. Enter your hourly rate and hours worked to see your regular pay, time-and-a-half overtime and total gross — with federal FLSA and state daily-overtime rules applied.",
+    meta: "Free overtime calculator. Enter your hourly rate and hours worked to see your regular pay, time-and-a-half overtime and total gross, with federal FLSA and state daily-overtime rules applied.",
     intro: "Work out your overtime pay from your hourly rate and hours worked this week. Overtime is 1.5× your regular rate over 40 hours under federal law; pick your state for daily-overtime and double-time rules.",
     focus: "Federal 40-hour rule plus state daily overtime",
     tool: "pay",
     seed: { hourlyRate: 20, hoursThisWeek: 48, otMultiplier: 1.5 },
     notes: [
       "Federal overtime is 1.5× the regular rate for hours over 40 in a single workweek (29 USC 207).",
-      "California, Alaska, Nevada and Colorado also require daily overtime — switch on \"hours per day\" after choosing the state.",
+      "California, Alaska, Nevada and Colorado also require daily overtime. Switch on \"hours per day\" after choosing the state.",
       "Overtime is based on the regular rate, which can be higher than the base hourly rate if you earn nondiscretionary bonuses or shift differentials.",
     ],
     faqs: [
@@ -47,7 +47,7 @@ export const CALCULATORS: CalcDef[] = [
     name: "Time and a half",
     keyword: "time and a half calculator",
     h1: "Time and a Half Calculator",
-    meta: "Time and a half calculator — multiply your hourly rate by 1.5 and see your overtime and total pay for the hours you worked. Free, with state rules.",
+    meta: "Time and a half calculator: multiply your hourly rate by 1.5 and see your overtime and total pay for the hours you worked. Free, with state rules.",
     intro: "Time and a half is 1.5× your hourly rate. Enter your wage and hours to see your overtime rate and what you should be paid for the week.",
     focus: "The 1.5× overtime premium, shown per hour and per week",
     tool: "pay",
@@ -58,7 +58,7 @@ export const CALCULATORS: CalcDef[] = [
     ],
     faqs: [
       f("What is time and a half for $15 an hour?", "$15 × 1.5 = $22.50 per overtime hour."),
-      f("Is time and a half required for weekends or holidays?", "Not under federal law — there is no federal requirement for extra pay on weekends or holidays unless those hours push you over 40 for the week. Holiday premium pay is set by your employer's policy or contract."),
+      f("Is time and a half required for weekends or holidays?", "Not under federal law. There is no federal requirement for extra pay on weekends or holidays unless those hours push you over 40 for the week. Holiday premium pay is set by your employer's policy or contract."),
     ],
   },
   {
@@ -66,13 +66,13 @@ export const CALCULATORS: CalcDef[] = [
     name: "Double time",
     keyword: "double time calculator",
     h1: "Double Time Pay Calculator",
-    meta: "Double time calculator — work out pay at 2× your hourly rate for overtime, holidays or California's over-12-hours rule.",
+    meta: "Double time calculator: work out pay at 2× your hourly rate for overtime, holidays or California's over-12-hours rule.",
     intro: "Double time is 2× your regular rate. Use this for employer holiday/double-time policies, or California's daily double-time rule (over 12 hours in a day, or over 8 on the 7th straight day).",
     focus: "Pay at 2× the regular rate",
     tool: "pay",
     seed: { hourlyRate: 25, hoursThisWeek: 45, otMultiplier: 2 },
     notes: [
-      "Double time = hourly rate × 2. Federal law does not require it — California is the only state that mandates daily double time.",
+      "Double time = hourly rate × 2. Federal law does not require it; California is the only state that mandates daily double time.",
       "In California, hours over 12 in a workday are 2×, and on the 7th consecutive workday, hours beyond 8 are 2×. Pick California and use hours-per-day to apply it.",
     ],
     faqs: [
@@ -91,12 +91,12 @@ export const CALCULATORS: CalcDef[] = [
     notes: [
       "Annual ÷ (hours per week × weeks per year) = hourly rate. The default 40 hrs × 52 weeks = 2,080 hours a year.",
       "Biweekly pay = annual ÷ 26; semi-monthly = annual ÷ 24; monthly = annual ÷ 12.",
-      "These are gross figures before taxes — this is not a take-home/withholding calculator.",
+      "These are gross figures before taxes. This is not a take-home/withholding calculator.",
     ],
     faqs: [
       f("What is $60,000 a year per hour?", "At 40 hours a week for 52 weeks (2,080 hours), $60,000 a year is about $28.85 an hour."),
       f("How do I convert hourly pay to salary?", "Multiply your hourly rate by the hours you work per week, then by the weeks you work per year. $25/hr × 40 × 52 = $52,000 a year."),
-      f("Is this my take-home pay?", "No — these are gross amounts before income tax, Social Security, Medicare and other deductions are withheld."),
+      f("Is this my take-home pay?", "No. These are gross amounts before income tax, Social Security, Medicare and other deductions are withheld."),
     ],
   },
   {
@@ -104,13 +104,13 @@ export const CALCULATORS: CalcDef[] = [
     name: "Minimum wage by state",
     keyword: "minimum wage by state",
     h1: "2026 Minimum Wage by State",
-    meta: "2026 minimum wage by state — look up your state's minimum wage, tipped-employee cash wage and overtime rules. Updated for January 2026.",
+    meta: "2026 minimum wage by state. Look up your state's minimum wage, tipped-employee cash wage and overtime rules. Updated for January 2026.",
     intro: "Pick your state to see the 2026 minimum wage, the tipped cash wage, and the overtime, final-paycheck and break rules that go with it.",
     focus: "2026 state minimum and tipped wages",
     tool: "minwage",
     notes: [
       "The federal minimum wage is $7.25/hour. Thirty states plus DC are higher.",
-      "Many cities and counties set a higher local minimum than their state — confirm your locality.",
+      "Many cities and counties set a higher local minimum than their state, so confirm your locality.",
     ],
     faqs: [
       f("Which state has the highest minimum wage in 2026?", "Washington, D.C. at $17.95/hour, followed by Washington State ($17.13) and Connecticut ($16.94)."),
@@ -128,7 +128,7 @@ export const CALCULATORS: CalcDef[] = [
     tool: "tipped",
     notes: [
       "Federally, the tipped cash wage can be as low as $2.13/hr, but cash wage + tips must reach $7.25. If not, the employer makes up the difference.",
-      "Seven states — California, Oregon, Washington, Nevada, Montana, Minnesota and Alaska — do not allow a tip credit: the full minimum wage must be paid in cash before tips.",
+      "Seven states do not allow a tip credit: California, Oregon, Washington, Nevada, Montana, Minnesota and Alaska. In those states the full minimum wage must be paid in cash before tips.",
     ],
     faqs: [
       f("What happens if my tips don't bring me to minimum wage?", "Your employer must make up the difference so your total reaches at least the applicable minimum wage for every hour worked."),
@@ -145,7 +145,7 @@ export const CALCULATORS: CalcDef[] = [
     tool: "exempt",
     notes: [
       "The federal salary threshold is $684/week = $35,568/year. The 2024 increase was struck down in court in November 2024, reverting to this level.",
-      "Salary is only half the test — the employee must also perform exempt executive, administrative or professional duties.",
+      "Salary is only half the test. The employee must also perform exempt executive, administrative or professional duties.",
       "California, New York, Washington, Colorado, Alaska and Maine set higher salary thresholds.",
     ],
     faqs: [
@@ -183,7 +183,7 @@ export const CALCULATORS: CalcDef[] = [
       "Many states default to the next regular payday for both fired and quit.",
     ],
     faqs: [
-      f("When do I get my last paycheck if I'm fired?", "It varies by state — from immediately (California) to the next regular payday. Select your state to see the exact deadline."),
+      f("When do I get my last paycheck if I'm fired?", "It varies by state, from immediately (California) to the next regular payday. Select your state to see the exact deadline."),
     ],
   },
 ];

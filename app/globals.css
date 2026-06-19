@@ -1,30 +1,117 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─────────────────────────────────────────────────────────────────────────
+   WageCalc HQ design system
+
+   The identity is a working payroll ledger: warm paper, ink-green, a brass
+   accent, hairline rules and tabular figures. Headings are set in Fraunces
+   (an editorial serif that reads like a trusted reference); body and figures
+   use Geist and Geist Mono. We ship a single intentional LIGHT theme and do
+   NOT honour prefers-color-scheme (a dark body behind light-theme text would
+   make the hero unreadable).
+   ───────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Surfaces */
+  --color-paper: #f6f3ec;        /* warm page background  */
+  --color-card: #ffffff;
+  --color-ink: #16201b;          /* primary text, deep ink-green (~15:1 on paper) */
+  --color-muted: #4d554f;        /* secondary body text (~7:1 on paper, AA) */
+  --color-faint: #636b64;        /* captions / labels (~4.9:1 on paper, AA) */
+  --color-line: #e7e1d4;         /* hairline / ledger rule */
+  --color-forest: #0f241b;       /* dark "receipt total" surface */
+
+  /* Brand green (a deeper, more bespoke emerald than the stock scale) */
+  --color-brand-50: #ecf5f0;
+  --color-brand-100: #d2e9df;
+  --color-brand-200: #a6d4c3;
+  --color-brand-300: #71b8a0;
+  --color-brand-400: #3f9879;
+  --color-brand-500: #1f7d60;
+  --color-brand-600: #136a51;    /* primary fill */
+  --color-brand-700: #0d543f;    /* text / hover (AA on white) */
+  --color-brand-800: #0c4233;
+  --color-brand-900: #0a3429;
+
+  /* Brass accent — used sparingly for premium marks, never body text */
+  --color-gold-100: #f3e9cf;
+  --color-gold-500: #b08a35;
+  --color-gold-700: #8a6a22;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces);
 }
 
-/* This product ships a single, intentional LIGHT theme — every surface uses
-   explicit Tailwind colors (bg-slate-50, white cards, text-slate-900). We do
-   NOT honour prefers-color-scheme: a dark body background would sit behind the
-   light-theme text and make the hero unreadable. Leaving background/color to the
-   layout's Tailwind classes (an unlayered `body{background}` rule would otherwise
-   override the bg-slate-50 utility under Tailwind v4 cascade layers). */
-body {
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: #cdeadd;
+    color: var(--color-brand-900);
+  }
+
+  /* One consistent focus ring across every interactive element. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
 }
 
-/* Print / Save-as-PDF: drop chrome and form, keep a clean results sheet.
-   Elements tagged `print:hidden` (Tailwind) are hidden; we also strip the
-   site header/footer and force light colours so the PDF is legible. */
+@layer utilities {
+  /* Faint ruled-paper texture for hero / feature backdrops. */
+  .ledger-grid {
+    background-image:
+      linear-gradient(to right, rgba(15, 36, 27, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(15, 36, 27, 0.035) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* A standalone growing dotted leader between a label and its amount, like a
+     receipt. Drop an empty <span className="leader" /> between the two. */
+  .leader {
+    flex: 1 1 auto;
+    min-width: 0.75rem;
+    margin: 0 0.5rem;
+    border-bottom: 1px dotted var(--color-line);
+    transform: translateY(-0.25em);
+  }
+
+  /* Premium card depth: soft, low, warm — not the default harsh box-shadow. */
+  .shadow-card {
+    box-shadow:
+      0 1px 2px rgba(16, 32, 24, 0.04),
+      0 8px 24px -12px rgba(16, 32, 24, 0.18);
+  }
+  .shadow-float {
+    box-shadow:
+      0 2px 6px rgba(16, 32, 24, 0.06),
+      0 24px 56px -20px rgba(16, 32, 24, 0.28);
+  }
+}
+
+/* Respect users who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print / Save-as-PDF: drop chrome and form, keep a clean results sheet. */
 @media print {
   header,
   footer {
@@ -39,5 +126,8 @@ body {
   }
   * {
     box-shadow: none !important;
+  }
+  body {
+    background: #ffffff !important;
   }
 }

@@ -97,7 +97,7 @@ export function ptoPayout(accruedHours: number, hourlyRate: number, state: State
   const payout = cents(Math.max(0, accruedHours) * Math.max(0, hourlyRate));
   const required = state ? PAYOUT_REQUIRED.has(state.abbr) : false;
   const note = required
-    ? `${state!.name} treats earned vacation as wages — unused, accrued PTO generally must be paid out on separation.`
-    : "Whether unused PTO must be paid out depends on your state and your employer's written policy. California, Colorado, Montana and Nebraska require payout of earned vacation; many states leave it to company policy. Confirm with your state labor department.";
+    ? `${state!.name} treats earned vacation as wages. Unused, accrued PTO generally must be paid out on separation.`
+    : "Payout of unused PTO depends on your state and your employer's written policy. California, Colorado, Montana and Nebraska require payout of earned vacation; many states leave it to company policy. Confirm with your state labor department.";
   return { payout, payoutRequired: required, note };
 }

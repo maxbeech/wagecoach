@@ -14,6 +14,18 @@ Live: https://wagecalchq.vercel.app
 - 100% client-side calculation engines (no DB needed for the free tools)
 - tsx unit tests
 
+## Design
+
+The identity is a working payroll ledger: warm paper, ink-green, a brass accent,
+hairline rules and tabular figures. Headings use **Fraunces** (an editorial
+serif), with **Geist** for UI and **Geist Mono** for every dollar figure (loaded
+via `next/font`). Design tokens live in `app/globals.css` (`paper`, `ink`,
+`muted`, `faint`, the `brand-*` green scale, `forest`, `gold-*`, plus the
+`ledger-grid`, `leader` and `shadow-card` utilities). Shared presentational
+atoms are in `components/primitives.tsx`; the homepage hero is a live,
+draggable paystub (`components/HeroPaystub.tsx`) that runs the real overtime
+engine, so even the illustration shows genuine numbers.
+
 ## What's real
 
 The engines are real and cited, not rules of thumb:
@@ -51,5 +63,12 @@ npm run lint
 A one-time **$19 multi-state compliance report** PDF. The Stripe checkout route
 (`app/api/checkout/route.ts`) degrades gracefully when `STRIPE_SECRET_KEY` /
 `STRIPE_PRICE_ID` env vars are absent.
+
+## Canonical host
+
+`lib/site.ts` sets `SITE.url`. The apex `wagecalchq.com` is not connected yet,
+so it currently points at the live Vercel host (`wagecalchq.vercel.app`) which
+drives every canonical tag, the sitemap, robots and all JSON-LD URLs. When the
+custom domain is wired in Vercel, flip `domain` and `url` back to `wagecalchq.com`.
 
 > General information, not legal or tax advice.

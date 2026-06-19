@@ -13,10 +13,10 @@ export default function ExemptChecker({ seedAbbr = "" }: { seedAbbr?: string }) 
   const r = useMemo(() => exemptCheck(salary, state), [salary, state]);
 
   return (
-    <div className="grid gap-6 md:grid-cols-2">
-      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-sm font-semibold text-slate-900">Salary details</h2>
-        <div className="mt-3 space-y-3">
+    <div className="grid gap-5 md:grid-cols-2">
+      <div className="rounded-2xl border border-line bg-card p-5 shadow-card sm:p-6">
+        <h2 className="font-display text-base font-semibold text-ink">Salary details</h2>
+        <div className="mt-4 space-y-4">
           <Field label="Annual salary ($)" hint="Gross annual salary, before bonuses.">
             <NumberField value={salary} min={0} max={1000000} step={500} onChange={setSalary} ariaLabel="Annual salary" />
           </Field>
@@ -26,18 +26,21 @@ export default function ExemptChecker({ seedAbbr = "" }: { seedAbbr?: string }) 
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-sm font-semibold text-slate-900">Salary-threshold test</h2>
-        <div className={`mt-3 rounded-xl px-5 py-4 ${r.meetsSalary ? "bg-emerald-700" : "bg-slate-900"} text-white`}>
-          <div className="text-xs uppercase tracking-wide">{r.meetsSalary ? "Clears the salary threshold" : "Below the salary threshold"}</div>
-          <div className="text-2xl font-bold tabular-nums">{dollars(salary)} vs {dollars(r.threshold)}</div>
-          <div className="mt-0.5 text-sm">{r.meetsSalary ? "Salary test met — but the duties test must also pass." : "Likely non-exempt — owed overtime over 40 hrs/week."}</div>
+      <div className="rounded-2xl border border-line bg-card p-5 shadow-card sm:p-6">
+        <h2 className="font-display text-base font-semibold text-ink">Salary-threshold test</h2>
+        <div className={`mt-4 overflow-hidden rounded-xl ${r.meetsSalary ? "bg-brand-600" : "bg-forest"} text-white`}>
+          <div className="h-0.5 w-full bg-gold-500/70" />
+          <div className="px-5 py-4">
+            <div className="text-xs uppercase tracking-wider text-white/90">{r.meetsSalary ? "Clears the salary threshold" : "Below the salary threshold"}</div>
+            <div className="mt-0.5 font-mono text-2xl font-semibold tabular-nums">{dollars(salary)} <span className="text-white/75">vs</span> {dollars(r.threshold)}</div>
+            <div className="mt-1 text-sm text-white/90">{r.meetsSalary ? "Salary test met, but the duties test must also pass." : "Likely non-exempt, and owed overtime over 40 hrs/week."}</div>
+          </div>
         </div>
 
-        <p className="mt-3 rounded-lg bg-slate-50 p-3 text-xs text-slate-600">{r.basis}</p>
-        {r.stateNote && <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">{r.stateNote}</p>}
-        <p className="mt-2 text-xs text-slate-500">
-          Salary is only one half of the exemption. The employee must ALSO perform exempt executive,
+        <p className="mt-4 rounded-lg border border-line bg-brand-50/40 p-3 text-xs leading-relaxed text-muted">{r.basis}</p>
+        {r.stateNote && <p className="mt-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs leading-relaxed text-amber-900">{r.stateNote}</p>}
+        <p className="mt-3 text-xs leading-relaxed text-faint">
+          Salary is only one half of the exemption. The employee must also perform exempt executive,
           administrative or professional duties. Salary alone never makes someone exempt.
         </p>
       </div>

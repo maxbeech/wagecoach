@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { POSTS } from "@/lib/posts";
+import { Eyebrow, SectionHeading } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
 
@@ -13,18 +14,21 @@ export const metadata: Metadata = {
 export default function BlogIndex() {
   return (
     <div>
-      <h1 className="text-3xl font-bold tracking-tight text-slate-900">Wage & Hour Guides</h1>
-      <p className="mt-2 max-w-2xl text-slate-600">
-        Practical, accurate guides to U.S. wage and hour law — overtime, minimum wage, exemptions, tipped
-        pay and final paychecks — for workers, managers and HR teams.
-      </p>
+      <Eyebrow>Guides</Eyebrow>
+      <div className="mt-3">
+        <SectionHeading
+          as="h1"
+          title="Wage & Hour Guides"
+          sub="Practical, accurate guides to U.S. wage and hour law covering overtime, minimum wage, exemptions, tipped pay and final paychecks, for workers, managers and HR teams."
+        />
+      </div>
       <div className="mt-6 space-y-3">
         {POSTS.map((p) => (
           <Link key={p.slug} href={`/blog/${p.slug}`}
-            className="block rounded-2xl border border-slate-200 bg-white p-4 hover:border-emerald-300 hover:bg-emerald-50">
-            <div className="font-semibold text-slate-900">{p.title}</div>
-            <p className="mt-1 text-sm text-slate-600">{p.description}</p>
-            <div className="mt-1 text-xs text-slate-500">{p.readMins} min read</div>
+            className="block rounded-2xl border border-line bg-card p-4 shadow-card transition-colors hover:border-brand-300 hover:bg-brand-50">
+            <div className="font-semibold text-ink">{p.title}</div>
+            <p className="mt-1 text-sm text-muted">{p.description}</p>
+            <div className="mt-1 text-xs text-faint">{p.readMins} min read</div>
           </Link>
         ))}
       </div>

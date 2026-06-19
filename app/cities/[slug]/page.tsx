@@ -6,6 +6,7 @@ import { CITIES, getCity, cityState } from "@/lib/cities";
 import { effectiveMinWage } from "@/lib/states";
 import { FEDERAL, dollars } from "@/lib/federal";
 import { SITE } from "@/lib/site";
+import { Eyebrow, SectionHeading, Stat, Chip } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
 
@@ -18,20 +19,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const c = getCity(slug);
   if (!c) return {};
   return {
-    title: `${c.city} Minimum Wage 2026 — ${dollars(c.minWage)}/hour`,
-    description: `The ${c.city} minimum wage is ${dollars(c.minWage)}/hour in 2026 — higher than the state and federal rate. ${c.note}`,
+    title: `${c.city} Minimum Wage 2026: ${dollars(c.minWage)}/hour`,
+    description: `The ${c.city} minimum wage is ${dollars(c.minWage)}/hour in 2026, higher than the state and federal rate. ${c.note}`,
     alternates: { canonical: `/cities/${c.slug}` },
   };
-}
-
-function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
-  return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
-      <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
-      <div className="mt-0.5 text-xl font-bold text-slate-900 tabular-nums">{value}</div>
-      {sub && <div className="mt-0.5 text-xs text-slate-500">{sub}</div>}
-    </div>
-  );
 }
 
 export default async function CityPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -44,18 +35,26 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
 
   return (
     <div>
-      <nav className="mb-4 text-sm text-slate-500">
-        <Link href="/cities" className="hover:text-slate-900">City minimum wages</Link>
-        <span className="mx-1.5">/</span><span className="text-slate-700">{c.city}</span>
+      <nav className="mb-4 text-sm text-faint">
+        <Link href="/cities" className="hover:text-ink">City minimum wages</Link>
+        <span className="mx-1.5">/</span><span className="text-muted">{c.city}</span>
       </nav>
 
-      <h1 className="text-3xl font-bold tracking-tight text-slate-900">{c.city} Minimum Wage (2026)</h1>
-      <p className="mt-2 max-w-2xl text-slate-600">
-        The {c.city} minimum wage is <strong>{dollars(c.minWage)}/hour</strong> in 2026 — that&apos;s{" "}
-        <strong>${overState} above</strong> the {st ? st.name : "state"} minimum of {dollars(stateMin)} and{" "}
-        {dollars(c.minWage - FEDERAL.minWage)} above the federal {dollars(FEDERAL.minWage)}.
-      </p>
-      <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">{c.note}</div>
+      <Eyebrow>City minimum wages</Eyebrow>
+      <div className="mt-3">
+        <SectionHeading
+          as="h1"
+          title={`${c.city} Minimum Wage (2026)`}
+          sub={
+            <>
+              The {c.city} minimum wage is <strong>{dollars(c.minWage)}/hour</strong> in 2026. That is{" "}
+              <strong>${overState} above</strong> the {st ? st.name : "state"} minimum of {dollars(stateMin)} and{" "}
+              {dollars(c.minWage - FEDERAL.minWage)} above the federal {dollars(FEDERAL.minWage)}.
+            </>
+          }
+        />
+      </div>
+      <div className="mt-3 rounded-xl border border-brand-200 bg-brand-50 p-3 text-sm text-brand-800">{c.note}</div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-3">
         <Stat label={`${c.city} (2026)`} value={`${dollars(c.minWage)}/hr`} />
@@ -64,27 +63,24 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
       </div>
 
       <div className="mt-8">
-        <h2 className="text-lg font-bold text-slate-900">Overtime & pay calculator</h2>
-        <p className="mt-1 mb-3 text-sm text-slate-600">Pre-set to {st ? st.name : "your state"}. Enter your hourly rate (at least {dollars(c.minWage)} in {c.city}) and hours.</p>
+        <h2 className="font-display text-lg font-semibold text-ink">Overtime & pay calculator</h2>
+        <p className="mt-1 mb-3 text-sm text-muted">Pre-set to {st ? st.name : "your state"}. Enter your hourly rate (at least {dollars(c.minWage)} in {c.city}) and hours.</p>
         <PayCalculator seed={st ? { state: st, hourlyRate: c.minWage } : { hourlyRate: c.minWage }} />
       </div>
 
-      <p className="mt-6 text-xs text-slate-500">
-        Source: <a href={c.source} target="_blank" rel="noopener noreferrer" className="text-emerald-700 underline hover:text-emerald-800">official rate page</a>.
-        Local minimum wages change often and several re-index mid-year — confirm the current {c.city} rate before relying on it.
+      <p className="mt-6 text-xs text-faint">
+        Source: <a href={c.source} target="_blank" rel="noopener noreferrer" className="text-brand-700 underline hover:text-brand-800">official rate page</a>.
+        Local minimum wages change often and several re-index mid-year, so confirm the current {c.city} rate before relying on it.
       </p>
 
       <section className="mt-8">
-        <h2 className="text-sm font-semibold text-slate-900">Other cities</h2>
+        <h2 className="font-display text-sm font-semibold text-ink">Other cities</h2>
         <div className="mt-2 flex flex-wrap gap-2">
           {CITIES.filter((x) => x.slug !== c.slug).slice(0, 12).map((x) => (
-            <Link key={x.slug} href={`/cities/${x.slug}`}
-              className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600 hover:border-emerald-300 hover:text-slate-900">
-              {x.city}
-            </Link>
+            <Chip key={x.slug} href={`/cities/${x.slug}`}>{x.city}</Chip>
           ))}
         </div>
-        {st && <Link href={`/states/${st.slug}`} className="mt-3 inline-block text-sm font-medium text-emerald-700 hover:underline">{st.name} state labor laws →</Link>}
+        {st && <Link href={`/states/${st.slug}`} className="mt-3 inline-block text-sm font-medium text-brand-700 hover:text-brand-800 hover:underline">{st.name} state labor laws →</Link>}
       </section>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({

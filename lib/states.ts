@@ -21,8 +21,8 @@ function merge(c: StateCore): StateLaw {
   const x = STATE_EXTRAS[c.abbr] ?? {
     finalPayFired: "Next regular payday",
     finalPayQuit: "Next regular payday",
-    mealBreak: "No state requirement (follows federal — none mandated for adults)",
-    restBreak: "No state requirement (follows federal — none mandated for adults)",
+    mealBreak: "No state requirement (follows federal, none mandated for adults)",
+    restBreak: "No state requirement (follows federal, none mandated for adults)",
     sources: [],
   };
   return { ...c, ...x, extraSources: x.sources };

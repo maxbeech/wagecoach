@@ -1,15 +1,15 @@
-// 2026 state minimum-wage, tipped-wage and daily-overtime data — the single
+// 2026 state minimum-wage, tipped-wage and daily-overtime data. The single
 // source of truth for the per-state pages and the calculators.
 //
 // Minimum wages are the 2026 statewide standard rate (effective Jan 1, 2026
 // unless a different effective date is noted), cross-checked across GovDocs,
 // Paycom, Paycor and Ogletree (June 2026). Many cities/counties set HIGHER local
-// minimums — those are noted but not enumerated.
+// minimums; those are noted but not enumerated.
 //
 //  - `noStateLaw`: the state has no minimum-wage statute (or one below $7.25), so
 //    the federal $7.25 applies to FLSA-covered employers.
 //  - `tipCreditAllowed=false` (AK, CA, MN, MT, NV, OR, WA): the employer must pay
-//    the FULL minimum wage in cash before tips — no tip credit.
+//    the FULL minimum wage in cash before tips (no tip credit).
 //  - `tippedCashWage`: the required minimum CASH wage for tipped employees. For
 //    no-tip-credit states this equals the minimum wage; null = the state sets its
 //    own figure that varies/should be confirmed (the tip calculator still works
@@ -39,10 +39,10 @@ export const STATE_CORE: StateCore[] = [
   { slug: "arizona", name: "Arizona", abbr: "AZ", minWage: 15.15, minWageNote: "Indexed to inflation. Flagstaff and Tucson set higher local minimums.", tipCreditAllowed: true, tippedCashWage: 12.15, tippedNote: "Tip credit up to $3.00.", dailyOt: null },
   { slug: "arkansas", name: "Arkansas", abbr: "AR", minWage: 11.00, minWageNote: "Applies to employers with 4+ employees.", tipCreditAllowed: true, tippedCashWage: 2.63, dailyOt: null },
   { slug: "california", name: "California", abbr: "CA", minWage: 16.90, minWageNote: "Many CA cities are higher (e.g. West Hollywood, Emeryville); fast-food chains are $20.00 and some healthcare employers higher.", tipCreditAllowed: false, tippedCashWage: 16.90, dailyOt: { afterHours: 8, note: "California requires 1.5× over 8 hours/day and over 40/week." }, doubleTime: CA_DT },
-  { slug: "colorado", name: "Colorado", abbr: "CO", minWage: 15.16, minWageNote: "Denver and some counties set higher local minimums; indexed annually.", tipCreditAllowed: true, tippedCashWage: 12.14, tippedNote: "Tip credit up to $3.02.", dailyOt: { afterHours: 12, note: "Colorado requires 1.5× over 12 hours/day and over 40/week (COMPS Order). Colorado also has a separate 'over 12 consecutive hours' rule that this calculator does not model — confirm if a single shift runs 12+ continuous hours." } },
+  { slug: "colorado", name: "Colorado", abbr: "CO", minWage: 15.16, minWageNote: "Denver and some counties set higher local minimums; indexed annually.", tipCreditAllowed: true, tippedCashWage: 12.14, tippedNote: "Tip credit up to $3.02.", dailyOt: { afterHours: 12, note: "Colorado requires 1.5× over 12 hours/day and over 40/week (COMPS Order). Colorado also has a separate 'over 12 consecutive hours' rule that this calculator does not model, so confirm if a single shift runs 12+ continuous hours." } },
   { slug: "connecticut", name: "Connecticut", abbr: "CT", minWage: 16.94, minWageNote: "Indexed to the employment-cost index each January.", tipCreditAllowed: true, tippedCashWage: 6.38, tippedNote: "$6.38 for most tipped staff; $8.23 for hotel/restaurant service employees.", dailyOt: null },
   { slug: "delaware", name: "Delaware", abbr: "DE", minWage: 15.00, tipCreditAllowed: true, tippedCashWage: 2.23, dailyOt: null },
-  { slug: "district-of-columbia", name: "District of Columbia", abbr: "DC", minWage: 17.95, minWageNote: "Highest in the nation; DC re-indexes again on July 1, 2026.", tipCreditAllowed: true, tippedCashWage: null, tippedNote: "DC is phasing its tip credit under Initiative 82 — the tipped cash wage changes mid-year; confirm the current figure with the DC labor department.", dailyOt: null },
+  { slug: "district-of-columbia", name: "District of Columbia", abbr: "DC", minWage: 17.95, minWageNote: "Highest in the nation; DC re-indexes again on July 1, 2026.", tipCreditAllowed: true, tippedCashWage: null, tippedNote: "DC is phasing its tip credit under Initiative 82, so the tipped cash wage changes mid-year. Confirm the current figure with the DC labor department.", dailyOt: null },
   { slug: "florida", name: "Florida", abbr: "FL", minWage: 14.00, minWageNote: "Rises to $15.00 on September 30, 2026 under the Amendment 2 schedule.", tipCreditAllowed: true, tippedCashWage: 10.98, tippedNote: "Tip credit fixed at $3.02 below the state minimum.", dailyOt: null },
   { slug: "georgia", name: "Georgia", abbr: "GA", minWage: 7.25, minWageNote: "Georgia's own rate is $5.15, but the federal $7.25 applies to FLSA-covered employers.", tipCreditAllowed: true, tippedCashWage: 2.13, dailyOt: null },
   { slug: "hawaii", name: "Hawaii", abbr: "HI", minWage: 16.00, minWageNote: "Scheduled to reach $18.00 in 2028.", tipCreditAllowed: true, tippedCashWage: 14.75, tippedNote: "Tip credit up to $1.25, and only if cash wage + tips is at least $7.00 above the minimum.", dailyOt: null },
@@ -62,7 +62,7 @@ export const STATE_CORE: StateCore[] = [
   { slug: "missouri", name: "Missouri", abbr: "MO", minWage: 15.00, minWageNote: "Raised to $15.00 on Jan 1, 2026 under Proposition A.", tipCreditAllowed: true, tippedCashWage: 7.50, tippedNote: "Tipped cash wage is half the state minimum.", dailyOt: null },
   { slug: "montana", name: "Montana", abbr: "MT", minWage: 10.85, minWageNote: "Businesses not covered by the FLSA with ≤ $110,000 in gross sales may pay $4.00.", tipCreditAllowed: false, tippedCashWage: 10.85, dailyOt: null },
   { slug: "nebraska", name: "Nebraska", abbr: "NE", minWage: 15.00, minWageNote: "Indexed to inflation starting in 2027.", tipCreditAllowed: true, tippedCashWage: 2.13, dailyOt: null },
-  { slug: "nevada", name: "Nevada", abbr: "NV", minWage: 12.00, minWageNote: "Single statewide rate; Nevada re-indexes on July 1. No tip credit allowed.", tipCreditAllowed: false, tippedCashWage: 12.00, dailyOt: { afterHours: 8, note: "Nevada requires 1.5× over 8 hours in a 24-hour period — but only for employees earning less than 1.5× the minimum wage — and over 40/week." } },
+  { slug: "nevada", name: "Nevada", abbr: "NV", minWage: 12.00, minWageNote: "Single statewide rate; Nevada re-indexes on July 1. No tip credit allowed.", tipCreditAllowed: false, tippedCashWage: 12.00, dailyOt: { afterHours: 8, note: "Nevada requires 1.5× over 8 hours in a 24-hour period (but only for employees earning less than 1.5× the minimum wage) and over 40/week." } },
   { slug: "new-hampshire", name: "New Hampshire", abbr: "NH", minWage: 7.25, minWageNote: "New Hampshire adopts the federal $7.25.", tipCreditAllowed: true, tippedCashWage: 3.27, tippedNote: "Tipped cash wage is 45% of the minimum.", dailyOt: null },
   { slug: "new-jersey", name: "New Jersey", abbr: "NJ", minWage: 15.92, minWageNote: "Seasonal and small (≤5) employers: $14.93. Indexed annually.", tipCreditAllowed: true, tippedCashWage: 6.05, dailyOt: null },
   { slug: "new-mexico", name: "New Mexico", abbr: "NM", minWage: 12.00, minWageNote: "Santa Fe, Las Cruces and Albuquerque set higher local minimums.", tipCreditAllowed: true, tippedCashWage: 3.00, dailyOt: null },

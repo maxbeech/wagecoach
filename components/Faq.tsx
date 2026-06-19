@@ -2,16 +2,16 @@ import { type FaqItem } from "@/lib/faq";
 
 export default function Faq({ items, title = "Frequently asked questions" }: { items: FaqItem[]; title?: string }) {
   return (
-    <section className="mt-10">
-      <h2 className="text-lg font-bold text-slate-900">{title}</h2>
-      <div className="mt-3 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white">
+    <section>
+      <h2 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">{title}</h2>
+      <div className="mt-6 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-card shadow-card">
         {items.map((it, i) => (
-          <details key={i} className="group px-4 py-3">
-            <summary className="flex cursor-pointer list-none items-center justify-between rounded text-sm font-medium text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
+          <details key={i} className="group px-5 py-4">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded text-sm font-medium text-ink">
               {it.q}
-              <span aria-hidden="true" className="ml-2 text-slate-500 transition group-open:rotate-45">+</span>
+              <span aria-hidden="true" className="grid h-6 w-6 shrink-0 place-items-center rounded-full border border-line text-faint transition group-open:rotate-45 group-open:border-brand-300 group-open:text-brand-700">+</span>
             </summary>
-            <p className="mt-2 text-sm text-slate-600">{it.a}</p>
+            <p className="mt-3 text-sm leading-relaxed text-muted">{it.a}</p>
           </details>
         ))}
       </div>

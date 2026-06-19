@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { POSTS, getPost } from "@/lib/posts";
 import { getCalc } from "@/lib/calculators";
 import { SITE } from "@/lib/site";
+import { Eyebrow, SectionHeading } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
 
@@ -31,33 +32,35 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   return (
     <article className="mx-auto max-w-2xl">
-      <nav className="mb-4 text-sm text-slate-500">
-        <Link href="/blog" className="hover:text-slate-900">Guides</Link>
-        <span className="mx-1.5">/</span><span className="text-slate-700">{p.title}</span>
+      <nav className="mb-4 text-sm text-faint">
+        <Link href="/blog" className="hover:text-ink">Guides</Link>
+        <span className="mx-1.5">/</span><span className="text-muted">{p.title}</span>
       </nav>
 
-      <h1 className="text-3xl font-bold tracking-tight text-slate-900">{p.title}</h1>
-      <p className="mt-2 text-slate-600">{p.description}</p>
-      <div className="mt-1 text-xs text-slate-500">{p.readMins} min read</div>
+      <Eyebrow>Guides</Eyebrow>
+      <div className="mt-3">
+        <SectionHeading as="h1" title={p.title} sub={p.description} />
+      </div>
+      <div className="mt-2 text-xs text-faint">{p.readMins} min read</div>
 
       <div className="mt-6 space-y-5">
         {p.body.map((sec, i) => (
           <section key={i}>
-            {sec.h && <h2 className="text-lg font-bold text-slate-900">{sec.h}</h2>}
+            {sec.h && <h2 className="font-display text-lg font-semibold text-ink">{sec.h}</h2>}
             {sec.p.map((para, j) => (
-              <p key={j} className="mt-2 text-[15px] leading-relaxed text-slate-700">{para}</p>
+              <p key={j} className="mt-2 text-[15px] leading-relaxed text-muted">{para}</p>
             ))}
           </section>
         ))}
       </div>
 
       {related.length > 0 && (
-        <div className="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-          <div className="text-sm font-semibold text-slate-900">Try the calculator</div>
+        <div className="mt-8 rounded-2xl border border-brand-200 bg-brand-50 p-4">
+          <div className="text-sm font-semibold text-ink">Try the calculator</div>
           <div className="mt-2 flex flex-wrap gap-2">
             {related.map((c) => (
               <Link key={c!.slug} href={`/calculators/${c!.slug}`}
-                className="rounded-lg bg-emerald-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-800">
+                className="rounded-full bg-forest px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800">
                 {c!.name} →
               </Link>
             ))}

@@ -122,17 +122,25 @@ export function computePay(inp: PayInputs): PayBreakdown {
   const dailyHours = Array.isArray(inp.dailyHours)
     ? inp.dailyHours.map((h) => clamp(h, 0, 24))
     : undefined;
+  const hasDaily = Boolean(dailyHours && dailyHours.some((h) => h > 0));
+  const dailySum = dailyHours ? dailyHours.reduce((a, b) => a + b, 0) : 0;
   const clean: PayInputs = {
     ...inp,
     hourlyRate: rate,
-    hoursThisWeek: clamp(inp.hoursThisWeek, 0, 168),
+    // 1.5× standard, 2× double time. The dropdown only offers those, but a
+    // hand-edited URL could send anything, so keep the engine bulletproof.
+    otMultiplier: clamp(inp.otMultiplier, 1, 2),
+    // When per-day hours are entered, they are the source of truth for the
+    // weekly total too. Otherwise a daily-mode fallback to the weekly rule
+    // (e.g. a Nevada high earner, whose daily OT doesn't apply) would use a
+    // stale weekly field instead of the hours the user actually typed.
+    hoursThisWeek: hasDaily ? clamp(dailySum, 0, 168) : clamp(inp.hoursThisWeek, 0, 168),
     dailyHours,
   };
   const useDaily =
     clean.state &&
     clean.state.dailyOt &&
-    dailyHours &&
-    dailyHours.some((h) => h > 0) &&
+    hasDaily &&
     dailyThresholds(clean.state, rate) !== null;
   return useDaily ? computeDaily(clean, clean.state!) : computeWeekly(clean, clean.state);
 }
