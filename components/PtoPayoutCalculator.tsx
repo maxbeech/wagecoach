@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { dollars } from "@/lib/federal";
+import { dollars, qty } from "@/lib/federal";
 import { getStateByAbbr } from "@/lib/states";
 import { ptoPayout } from "@/lib/wage";
 import { Field, NumberField, StateSelect } from "./ui";
@@ -37,7 +37,7 @@ export default function PtoPayoutCalculator({ seedAbbr = "" }: { seedAbbr?: stri
           <div className="px-5 py-4">
             <div className="text-xs uppercase tracking-wider text-white/55">Gross payout</div>
             <div className="font-mono text-[2.1rem] font-semibold leading-tight tabular-nums">{dollars(r.payout)}</div>
-            <div className="mt-0.5 text-xs text-white/55">{hours} hrs × {dollars(rate)}/hr, before taxes</div>
+            <div className="mt-0.5 text-xs text-white/55">{qty(hours)} hrs × {dollars(rate)}/hr, before taxes</div>
           </div>
         </div>
         <p className={`mt-4 rounded-lg p-3 text-xs leading-relaxed ${r.payoutRequired ? "border border-brand-200 bg-brand-50 text-brand-800" : "border border-line bg-brand-50/40 text-muted"}`}>

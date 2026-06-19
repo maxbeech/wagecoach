@@ -19,15 +19,23 @@ export function Field({ label, hint, children }: { label: string; hint?: string;
 }
 
 // Editable number field: keeps a raw string while typing, clamps on blur (so you
-// can clear and retype). Resync uses the React "adjust state during render" pattern.
+// can clear and retype). It re-syncs from props (URL hydration, a swap, a preset)
+// using the React "adjust state during render" pattern — but NOT while the field
+// is focused, otherwise a clamped keystroke would reformat the value out from
+// under the user mid-entry. `last` always tracks props so we never loop.
 export function NumberField({ value, min, max, step = 1, onChange, ariaLabel }:
   { value: number; min: number; max: number; step?: number; onChange: (n: number) => void; ariaLabel?: string }) {
   const [raw, setRaw] = useState(String(value));
   const [last, setLast] = useState(value);
-  if (value !== last) { setLast(value); setRaw(String(value)); }
+  const [focused, setFocused] = useState(false);
+  if (value !== last) {
+    setLast(value);
+    if (!focused) setRaw(String(value));
+  }
   return (
     <input type="number" inputMode="decimal" min={min} max={max} step={step} className={`${inputCls} font-mono tabular-nums`} value={raw}
       aria-label={ariaLabel}
+      onFocus={() => setFocused(true)}
       onChange={(e) => {
         setRaw(e.target.value);
         if (e.target.value === "") return;
@@ -35,6 +43,7 @@ export function NumberField({ value, min, max, step = 1, onChange, ariaLabel }:
         if (Number.isFinite(n)) onChange(Math.min(max, Math.max(min, n)));
       }}
       onBlur={() => {
+        setFocused(false);
         const n = raw === "" ? min : Math.min(max, Math.max(min, Number(raw) || min));
         setRaw(String(n)); onChange(n);
       }} />

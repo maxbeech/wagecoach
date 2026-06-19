@@ -29,3 +29,8 @@ export const dollars = (n: number) =>
 
 // Round to cents for money math (avoids 0.1+0.2 float drift in displayed totals).
 export const cents = (n: number) => Math.round(n * 100) / 100;
+
+// Format an hour/quantity count for display: whole numbers stay clean (40, not
+// 40.0), fractions show without float noise (4.5, not 4.50000001). Single source
+// of truth for every "X hrs" label so they never disagree.
+export const qty = (n: number) => String(Math.round(n * 100) / 100);

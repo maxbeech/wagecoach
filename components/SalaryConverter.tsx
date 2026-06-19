@@ -25,8 +25,11 @@ export default function SalaryConverter() {
   const isSalary = mode === "salaryToHourly";
   const swap = (m: SalaryMode) => {
     if (m === mode) return;
-    // Carry the headline figure across so the result doesn't jump nonsensically.
-    setAmount(m === "salaryToHourly" ? r.annual : r.hourly);
+    // Carry the headline across at full precision so a round-trip is stable. The
+    // displayed hourly is rounded to cents, but feeding that rounded figure back
+    // would drift the salary by several dollars (28.85 x 2080 != 60,000), so we
+    // carry the exact hourly = annual / (hours per year) instead.
+    setAmount(m === "salaryToHourly" ? r.annual : r.annual / (hpw * wpy));
     setMode(m);
   };
 

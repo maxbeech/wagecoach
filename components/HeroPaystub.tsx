@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { computePay } from "@/lib/overtime";
 import { dollars } from "@/lib/federal";
 import { useCountUp } from "./use-count-up";
+import { MoreLink } from "./primitives";
 
 // The hero illustration: a live, draggable paystub. It is an abstract take on
 // the real result panel and uses the actual overtime engine, so every figure a
@@ -63,10 +63,7 @@ export default function HeroPaystub() {
         <div className="space-y-4 border-t border-line bg-brand-50/30 px-6 py-5">
           <Slider label="Hourly rate" value={rate} min={12} max={60} step={1} display={`${dollars(rate)}/hr`} onChange={setRate} />
           <Slider label="Hours this week" value={hours} min={35} max={60} step={0.5} display={`${trim(hours)} hrs`} onChange={setHours} />
-          <Link href="/calculators/overtime-calculator" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:gap-2 transition-all">
-            Open the full calculator
-            <span aria-hidden>→</span>
-          </Link>
+          <MoreLink href="/calculators/overtime-calculator">Open the full calculator</MoreLink>
         </div>
       </div>
     </div>
@@ -94,7 +91,7 @@ function Slider({ label, value, min, max, step, display, onChange }:
       </span>
       <input type="range" min={min} max={max} step={step} value={value} aria-label={label}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="mt-2 w-full cursor-pointer accent-brand-600" />
+        className="range-brass mt-2.5 w-full" />
     </label>
   );
 }

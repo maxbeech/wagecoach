@@ -61,7 +61,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             {related.map((c) => (
               <Link key={c!.slug} href={`/calculators/${c!.slug}`}
                 className="rounded-full bg-forest px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800">
-                {c!.name} →
+                {c!.name}
               </Link>
             ))}
           </div>

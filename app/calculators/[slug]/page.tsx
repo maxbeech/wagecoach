@@ -10,7 +10,7 @@ import PtoPayoutCalculator from "@/components/PtoPayoutCalculator";
 import Faq from "@/components/Faq";
 import { CALCULATORS, getCalc, type CalcDef } from "@/lib/calculators";
 import { SITE } from "@/lib/site";
-import { Eyebrow, SectionHeading, Chip } from "@/components/primitives";
+import { Eyebrow, SectionHeading, Chip, LedgerTick } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
 
@@ -63,8 +63,8 @@ export default async function CalculatorPage({ params }: { params: Promise<{ slu
         <h2 className="font-display text-lg font-semibold text-ink">Notes</h2>
         <ul className="mt-2 space-y-1.5">
           {c.notes.map((n, i) => (
-            <li key={i} className="flex gap-2 text-sm text-muted">
-              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />{n}
+            <li key={i} className="flex gap-2.5 text-sm leading-relaxed text-muted">
+              <LedgerTick />{n}
             </li>
           ))}
         </ul>

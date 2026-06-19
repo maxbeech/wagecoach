@@ -92,8 +92,13 @@ export default function PayCalculator({ seed }: { seed?: Partial<PayInputs> }) {
             </label>
           )}
 
-          {daily && (
+          {daily && inp.state && (
             <>
+              <p className="rounded-lg border border-line bg-brand-50/40 p-3 text-xs leading-relaxed text-muted">
+                In daily mode, {inp.state.name}&apos;s statutory rates are applied automatically: 1.5x past{" "}
+                {inp.state.dailyOt?.afterHours} hours a day{inp.state.doubleTime ? " and 2x past 12 hours, or on a 7th straight workday" : ""}.
+                The single 1.5x/2x multiplier does not apply here.
+              </p>
               <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-7">
                 {DAYS.map((d, i) => (
                   <label key={d} className="block text-center">

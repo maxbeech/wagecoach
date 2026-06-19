@@ -26,6 +26,17 @@ atoms are in `components/primitives.tsx`; the homepage hero is a live,
 draggable paystub (`components/HeroPaystub.tsx`) that runs the real overtime
 engine, so even the illustration shows genuine numbers.
 
+The page is composed to break the "metronome" of equal-weight sections: an
+annotated **interactive overtime bar** (`components/illustrations/OvertimeBar.tsx`,
+drag the week past 40 and the premium lights up), a ledger-style index of the
+calculators, and a full-bleed dark **wage spectrum**
+(`components/illustrations/WageSpectrum.tsx`, every state plotted by its real 2026
+minimum wage with a live rate sheet). Both illustrations are driven by the actual
+engines, never mock data. Motion is opt-out aware: `components/Reveal.tsx` adds
+scroll-entrance fades and `useCountUp` tallies dollar figures, both disabled under
+`prefers-reduced-motion`. The single "read more" affordance is `MoreLink` (a
+chevron + underline reveal) — there are no decorative `→` arrows anywhere.
+
 ## What's real
 
 The engines are real and cited, not rules of thumb:
@@ -38,7 +49,11 @@ The engines are real and cited, not rules of thumb:
   cross-checked across the U.S. DOL, GovDocs, Paycom and Paycor.
 - **`lib/state-extras.ts`** — final-paycheck deadlines and meal/rest-break rules,
   compiled from state labor departments and reputable compliance references.
-- **`lib/wage.ts`** — tip-credit check, exempt salary test, PTO payout.
+- **`lib/wage.ts`** — tip-credit check, exempt salary test, PTO payout. The
+  exempt test applies the **higher state thresholds** (CA/AK/ME by formula; NY,
+  WA and CO by their verified 2026 figures) and returns a neutral "confirm"
+  verdict where the answer is location-dependent (e.g. NY between the
+  rest-of-state and downstate figures) rather than a false "exempt".
 - **`lib/salary.ts`** — salary↔hourly converter (annual / monthly / biweekly / hourly).
 - **`lib/cities.ts`** — 2026 minimum wage for 20 major cities (Seattle, NYC, LA, SF, Chicago…), each cited.
 

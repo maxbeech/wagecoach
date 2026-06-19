@@ -6,7 +6,7 @@ import { CITIES, getCity, cityState } from "@/lib/cities";
 import { effectiveMinWage } from "@/lib/states";
 import { FEDERAL, dollars } from "@/lib/federal";
 import { SITE } from "@/lib/site";
-import { Eyebrow, SectionHeading, Stat, Chip } from "@/components/primitives";
+import { Eyebrow, SectionHeading, Stat, Chip, MoreLink } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
 
@@ -80,7 +80,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             <Chip key={x.slug} href={`/cities/${x.slug}`}>{x.city}</Chip>
           ))}
         </div>
-        {st && <Link href={`/states/${st.slug}`} className="mt-3 inline-block text-sm font-medium text-brand-700 hover:text-brand-800 hover:underline">{st.name} state labor laws →</Link>}
+        {st && <div className="mt-4"><MoreLink href={`/states/${st.slug}`}>{st.name} state labor laws</MoreLink></div>}
       </section>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({

@@ -2,8 +2,11 @@ import Link from "next/link";
 import PayCalculator from "@/components/PayCalculator";
 import HeroPaystub from "@/components/HeroPaystub";
 import Faq from "@/components/Faq";
-import { Eyebrow, SectionHeading, Card, Stat } from "@/components/primitives";
-import { MockPaystub, MockStateTable, MockTipped } from "@/components/mockups";
+import Reveal from "@/components/Reveal";
+import OvertimeBar from "@/components/illustrations/OvertimeBar";
+import WageSpectrum from "@/components/illustrations/WageSpectrum";
+import { Eyebrow, SectionHeading, MoreLink } from "@/components/primitives";
+import { MockReport } from "@/components/mockups";
 import { HOME_FAQS } from "@/lib/faq";
 import { CALCULATORS } from "@/lib/calculators";
 import { STATES, effectiveMinWage } from "@/lib/states";
@@ -17,17 +20,18 @@ export const revalidate = 604800; // weekly ISR
 const highest = [...STATES].sort((a, b) => effectiveMinWage(b) - effectiveMinWage(a))[0];
 const aboveFederal = STATES.filter((s) => s.abbr !== "DC" && effectiveMinWage(s) > FEDERAL.minWage).length;
 
-const INSIDE = [
-  { mock: <MockPaystub />, title: "Overtime, broken out line by line", body: "Regular, time-and-a-half and double-time hours and rates, each shown separately so you can check the math and defend the total.", href: "/calculators/overtime-calculator", cta: "Open the calculator" },
-  { mock: <MockStateTable />, title: "Every state's 2026 rules", body: "Minimum and tipped wages, daily-overtime rules, final-paycheck deadlines and break laws for all 50 states and DC, each cited to its source.", href: "/states", cta: "Browse by state" },
-  { mock: <MockTipped />, title: "Tip-credit and exempt checks", body: "See whether your cash wage plus tips clears the minimum wage, and whether a salary really meets the overtime-exemption threshold.", href: "/calculators/tipped-wage-calculator", cta: "Check tipped pay" },
+// The three things the overtime diagram is annotating, in the margin.
+const READING = [
+  { n: "1", title: "Your regular hours", body: "Every hour up to 40 is paid at your base rate, flat." },
+  { n: "2", title: "The 40-hour line", body: "Federal law (29 USC 207) draws overtime at this mark, not at the end of a long day." },
+  { n: "3", title: "Overtime lights up", body: "Hours past 40 are paid at 1.5x. Drag the week longer and watch the premium grow." },
 ];
 
 export default function Home() {
   const guides = POSTS.slice(0, 3);
 
   return (
-    <div className="space-y-20">
+    <div className="space-y-24 sm:space-y-28">
       {/* Hero */}
       <section className="relative -mx-5 -mt-10 overflow-hidden px-5 pt-10 sm:-mt-12 sm:pt-14">
         <div aria-hidden className="ledger-grid pointer-events-none absolute inset-0 -z-10 opacity-70" />
@@ -35,8 +39,8 @@ export default function Home() {
         <div className="mx-auto grid max-w-6xl items-center gap-12 pb-10 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
             <Eyebrow>Free · Sourced to the U.S. DOL · 2026 rules</Eyebrow>
-            <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl">
-              Overtime and time-and-a-half pay, itemized to the cent.
+            <h1 className="mt-4 font-display text-[2.6rem] font-semibold leading-[1.03] tracking-tight text-ink sm:text-[3.4rem]">
+              Overtime and time-and-a-half pay, <span className="italic text-brand-700">itemized to the cent.</span>
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
               Enter your rate and hours. You get your regular pay, your time-and-a-half overtime and your gross
@@ -64,70 +68,95 @@ export default function Home() {
               ))}
             </dl>
           </div>
-          <HeroPaystub />
+          {/* The paystub sits on the desk at a slight angle, straightening when you reach for it. */}
+          <div className="group transition-transform duration-500 ease-out [transform:rotate(1.1deg)] hover:[transform:rotate(0deg)] lg:-mr-6">
+            <HeroPaystub />
+          </div>
         </div>
       </section>
 
       {/* Full calculator */}
       <section id="calculator" className="scroll-mt-24">
-        <SectionHeading title="The overtime calculator" sub="The complete tool: pick your state to apply daily overtime and double time, switch the multiplier, or enter hours per day for California's 7th-day rule." />
-        <div className="mt-6"><PayCalculator /></div>
+        <SectionHeading rule title="The overtime calculator" sub="The complete tool: pick your state to apply daily overtime and double time, switch the multiplier, or enter hours per day for California's 7th-day rule." />
+        <Reveal className="mt-6"><PayCalculator /></Reveal>
       </section>
 
-      {/* What's inside */}
+      {/* Signature annotated diagram — replaces the old 3-tile grid */}
       <section>
-        <SectionHeading title="Built to show its work" sub="No black boxes. Each tool lays out the rule it applied and the numbers behind your result." />
-        <div className="mt-7 grid gap-5 md:grid-cols-3">
-          {INSIDE.map((f) => (
-            <Card key={f.title} className="flex flex-col p-5">
-              {f.mock}
-              <h3 className="mt-4 font-display text-lg font-semibold text-ink">{f.title}</h3>
-              <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted">{f.body}</p>
-              <Link href={f.href} className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-brand-700 transition-all hover:gap-2">
-                {f.cta} <span aria-hidden>→</span>
+        <SectionHeading rule title="Where overtime begins" sub="The whole site turns on one line. Here it is, live: drag the week past 40 hours and watch the premium switch on." />
+        <Reveal className="mt-7 overflow-hidden rounded-3xl border border-line bg-card shadow-card">
+          <div className="grid lg:grid-cols-[1.35fr_1fr]">
+            <div className="border-b border-line p-6 sm:p-8 lg:border-b-0 lg:border-r">
+              <OvertimeBar />
+            </div>
+            <div className="bg-paper/40 p-6 sm:p-8">
+              <ol className="space-y-6">
+                {READING.map((r) => (
+                  <li key={r.n} className="flex gap-4">
+                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-forest font-mono text-xs font-semibold text-white">{r.n}</span>
+                    <div>
+                      <div className="font-display font-semibold text-ink">{r.title}</div>
+                      <p className="mt-1 text-sm leading-relaxed text-muted">{r.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <div className="mt-7 border-t border-line pt-5">
+                <MoreLink href="/calculators/overtime-calculator">Open the full overtime calculator</MoreLink>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* Ledger index — the calculators as statement line-items */}
+      <section>
+        <SectionHeading rule title="Every wage question, one place" sub="Eight focused calculators, each sourced and built to show its work. Pick a line." />
+        <Reveal className="mt-6 overflow-hidden rounded-2xl border border-line bg-card shadow-card">
+          <div className="grid sm:grid-cols-2">
+            {CALCULATORS.map((c, i) => (
+              <Link key={c.slug} href={`/calculators/${c.slug}`}
+                className={`group flex items-baseline gap-3 px-5 py-4 transition hover:bg-brand-50/50 ${i % 2 === 0 ? "sm:border-r sm:border-line" : ""} ${i < CALCULATORS.length - (CALCULATORS.length % 2 === 0 ? 2 : 1) ? "border-b border-line" : ""}`}>
+                <span className="font-mono text-xs text-faint">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-medium text-ink group-hover:text-brand-700">{c.name}</span>
+                <span className="leader" />
+                <span className="hidden shrink-0 text-xs text-faint sm:block">{c.focus}</span>
               </Link>
-            </Card>
-          ))}
-        </div>
+            ))}
+          </div>
+        </Reveal>
       </section>
 
-      {/* All calculators */}
-      <section>
-        <SectionHeading title="Every wage question, one place" sub="Eight focused calculators for the moments you actually need them." />
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {CALCULATORS.map((c) => (
-            <Link key={c.slug} href={`/calculators/${c.slug}`}
-              className="group rounded-2xl border border-line bg-card p-4 transition hover:border-brand-300 hover:shadow-card">
-              <span className="block h-1.5 w-1.5 rounded-full bg-gold-500 transition group-hover:bg-brand-600" />
-              <div className="mt-3 font-medium text-ink">{c.name}</div>
-              <div className="mt-1 text-xs leading-snug text-faint">{c.focus}</div>
+      {/* Full-bleed dark "wage map" — the signature data moment */}
+      <section className="relative -mx-5 overflow-hidden bg-forest px-5 py-16 text-white sm:rounded-[2rem] sm:px-10 lg:px-14">
+        <div aria-hidden className="ledger-grid pointer-events-none absolute inset-0 opacity-[0.08]" />
+        <div className="relative mx-auto max-w-6xl">
+          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-gold-500">
+                <span className="h-1.5 w-1.5 rounded-full bg-gold-500" /> 2026 minimum wage
+              </span>
+              <h2 className="mt-4 max-w-xl font-display text-3xl font-semibold leading-tight sm:text-[2.6rem]">
+                <span className="font-mono tabular-nums text-gold-500">{aboveFederal}</span> states pay above the federal floor.
+              </h2>
+              <p className="mt-3 max-w-md text-white/70">
+                The federal minimum has been {dollars(FEDERAL.minWage)} since 2009. Find where any state sits, and the
+                overtime and tipped rules that travel with it.
+              </p>
+            </div>
+            <Link href="/states" className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-forest transition hover:bg-brand-50">
+              The full 2026 state table
             </Link>
-          ))}
+          </div>
+          <div className="mt-12">
+            <WageSpectrum />
+          </div>
         </div>
-      </section>
-
-      {/* By state */}
-      <section>
-        <SectionHeading title="Minimum wage and labor law by state" sub="The 2026 minimum wage, overtime rule, tipped wage and final-paycheck deadline for wherever you work." />
-        <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <Stat label="Highest minimum" value={`${dollars(highest.minWage)}/hr`} sub={highest.name} />
-          <Stat label="Above the federal floor" value={`${aboveFederal} states`} sub="plus the District of Columbia" />
-          <Stat label="Federal minimum" value={`${dollars(FEDERAL.minWage)}/hr`} sub="unchanged since 2009" />
-        </div>
-        <div className="mt-5 flex flex-wrap gap-1.5">
-          {STATES.map((s) => (
-            <Link key={s.slug} href={`/states/${s.slug}`}
-              className="rounded-lg border border-line bg-card px-2.5 py-1 text-xs font-medium text-muted transition hover:border-brand-300 hover:text-ink">
-              {s.abbr}
-            </Link>
-          ))}
-        </div>
-        <Link href="/states" className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:gap-2 transition-all">See the full state table <span aria-hidden>→</span></Link>
       </section>
 
       {/* By city */}
       <section>
-        <SectionHeading title="Major city minimum wages" sub="Many cities set a higher local minimum than their state. The highest applicable rate is the one you must be paid." />
+        <SectionHeading rule title="Major city minimum wages" sub="Many cities set a higher local minimum than their state. The highest applicable rate is the one you must be paid." />
         <div className="mt-6 flex flex-wrap gap-1.5">
           {CITIES.slice(0, 14).map((c) => (
             <Link key={c.slug} href={`/cities/${c.slug}`}
@@ -136,38 +165,45 @@ export default function Home() {
             </Link>
           ))}
         </div>
-        <Link href="/cities" className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:gap-2 transition-all">All city minimum wages <span aria-hidden>→</span></Link>
+        <div className="mt-5"><MoreLink href="/cities">All city minimum wages</MoreLink></div>
       </section>
 
       {/* Guides */}
       <section>
-        <SectionHeading title="Guides that explain the rules" sub="Plain-English walkthroughs of the law behind the numbers." />
+        <SectionHeading rule title="Guides that explain the rules" sub="Plain-English walkthroughs of the law behind the numbers." />
         <div className="mt-6 grid gap-4 md:grid-cols-3">
-          {guides.map((p) => (
-            <Link key={p.slug} href={`/blog/${p.slug}`} className="group rounded-2xl border border-line bg-card p-5 transition hover:border-brand-300 hover:shadow-card">
-              <div className="text-xs font-medium uppercase tracking-wider text-faint">{p.readMins} min read</div>
-              <h3 className="mt-2 font-display text-lg font-semibold leading-snug text-ink group-hover:text-brand-700">{p.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{p.description}</p>
-            </Link>
+          {guides.map((p, i) => (
+            <Reveal key={p.slug} delay={i * 70}>
+              <Link href={`/blog/${p.slug}`} className="lift flex h-full flex-col rounded-2xl border border-line bg-card p-5">
+                <div className="text-xs font-medium uppercase tracking-wider text-faint">{p.readMins} min read</div>
+                <h3 className="mt-2 font-display text-lg font-semibold leading-snug text-ink">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{p.description}</p>
+              </Link>
+            </Reveal>
           ))}
         </div>
-        <Link href="/blog" className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:gap-2 transition-all">All guides <span aria-hidden>→</span></Link>
+        <div className="mt-5"><MoreLink href="/blog">All guides</MoreLink></div>
       </section>
 
       <Faq items={HOME_FAQS} />
 
-      {/* Closing CTA */}
-      <section className="relative overflow-hidden rounded-3xl bg-forest px-8 py-12 text-white sm:px-12">
-        <div aria-hidden className="ledger-grid pointer-events-none absolute inset-0 opacity-[0.12]" />
-        <div className="relative max-w-2xl">
-          <h2 className="font-display text-2xl font-semibold sm:text-3xl">Running payroll across several states?</h2>
-          <p className="mt-3 text-white/75">
-            The Pro report compiles minimum wage, overtime, tipped pay, final-paycheck deadlines and break rules
-            for every state your team works in, sourced and dated, into one printable PDF.
-          </p>
-          <Link href="/pricing" className="mt-6 inline-block rounded-full bg-white px-6 py-3 text-sm font-semibold text-forest transition hover:bg-brand-50">
-            See the Pro report
-          </Link>
+      {/* Closing CTA — sell the artifact */}
+      <section className="relative overflow-hidden rounded-3xl border border-line bg-card shadow-card">
+        <div className="grid items-center gap-8 p-8 sm:p-12 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <Eyebrow>For teams across states</Eyebrow>
+            <h2 className="mt-3 font-display text-2xl font-semibold text-ink sm:text-3xl">One sourced wage sheet for every state your team works in</h2>
+            <p className="mt-3 max-w-md leading-relaxed text-muted">
+              The Pro report compiles minimum wage, overtime, tipped pay, final-paycheck deadlines and break rules
+              for every state you choose, dated and cited, into one printable PDF.
+            </p>
+            <Link href="/pricing" className="mt-6 inline-block rounded-full bg-forest px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-800">
+              See the Pro report
+            </Link>
+          </div>
+          <div className="lg:rotate-[-1.4deg]">
+            <MockReport />
+          </div>
         </div>
       </section>
 

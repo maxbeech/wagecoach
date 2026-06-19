@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { dollars } from "@/lib/federal";
+import { dollars, qty } from "@/lib/federal";
 import { effectiveMinWage } from "@/lib/states";
 import type { PayBreakdown, PayInputs } from "@/lib/overtime";
+import { useCountUp } from "./use-count-up";
 
 function Row({ label, hours, rate, pay, strong }: { label: string; hours: number; rate: string; pay: string; strong?: boolean }) {
   return (
     <div className={`flex items-baseline py-2 text-sm ${strong ? "font-semibold text-ink" : "text-muted"}`}>
       <span className="shrink-0">{label}</span>
-      {rate !== "" && <span className="ml-2 shrink-0 font-mono text-xs text-faint">{hours} hrs × {rate}</span>}
+      {rate !== "" && <span className="ml-2 shrink-0 font-mono text-xs text-faint">{qty(hours)} hrs × {rate}</span>}
       <span className="leader" />
       <span className="shrink-0 font-mono tabular-nums text-ink">{pay}</span>
     </div>
@@ -18,6 +19,7 @@ function Row({ label, hours, rate, pay, strong }: { label: string; hours: number
 
 export default function PayResults({ inp, r }: { inp: PayInputs; r: PayBreakdown }) {
   const [copied, setCopied] = useState(false);
+  const gross = useCountUp(r.gross);
   const minWage = inp.state ? effectiveMinWage(inp.state) : 7.25;
   const belowMin = inp.hourlyRate > 0 && inp.hourlyRate < minWage;
 
@@ -40,7 +42,7 @@ export default function PayResults({ inp, r }: { inp: PayInputs; r: PayBreakdown
         <div className="h-0.5 w-full bg-gold-500/70" />
         <div className="px-5 py-4 text-white">
           <div className="text-xs uppercase tracking-wider text-white/55">Gross pay</div>
-          <div className="font-mono text-[2.1rem] font-semibold leading-tight tabular-nums">{dollars(r.gross)}</div>
+          <div className="font-mono text-[2.1rem] font-semibold leading-tight tabular-nums">{dollars(gross)}</div>
           <div className="mt-0.5 text-xs text-white/55">before taxes and deductions</div>
         </div>
       </div>
