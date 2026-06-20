@@ -183,6 +183,207 @@ export const POSTS: Post[] = [
   },
 ];
 
+const WEEK2_POSTS: Post[] = [
+  {
+    slug: "gross-pay-vs-net-pay",
+    title: "Gross Pay vs Net Pay: What's the Difference?",
+    description:
+      "Gross pay is what you earn; net pay is what you take home. The deductions that bridge the gap — FICA, withholding, and benefits — explained in plain terms.",
+    date: "2026-06-20",
+    readMins: 4,
+    keyword: "gross pay vs net pay",
+    related: ["overtime-calculator", "salary-to-hourly-calculator"],
+    body: [
+      { p: ["Every paycheck shows two totals. Gross pay is the full amount earned before anything is taken out. Net pay — the amount deposited or printed on the check — is what remains after all deductions. The gap can be 20–35% for a typical W-2 employee."] },
+      { h: "What comes out of gross pay", p: ["Deductions fall into two buckets: mandatory and voluntary. Mandatory deductions include federal income tax (based on your W-4), Social Security (6.2% on wages up to the annual cap), Medicare (1.45%, plus an additional 0.9% above $200,000), and any state or local income tax. Voluntary deductions include health insurance premiums, 401(k) contributions, FSA/HSA contributions, and union dues."] },
+      { h: "Calculating it yourself", p: ["To estimate net pay: start with gross, subtract pre-tax deductions (401k, health premiums), apply the federal and state tax withholding rates from your W-4, and subtract FICA (7.65% total). A net pay that is dramatically lower than expected is usually explained by a high W-4 withholding election or a large voluntary deduction."] },
+      { h: "Why it matters for overtime", p: ["Overtime under the FLSA is calculated on your regular rate, which is a gross figure. If you work extra hours your gross pay rises but so do your FICA taxes and income tax withholding. Use the overtime calculator to see both gross and approximate net for any number of overtime hours."] },
+    ],
+  },
+  {
+    slug: "how-to-read-a-pay-stub",
+    title: "How to Read a Pay Stub: A Field-by-Field Guide",
+    description:
+      "Every line on a pay stub has a meaning. Here's what gross pay, net pay, FICA, federal and state withholding, YTD, and deduction codes all mean.",
+    date: "2026-06-20",
+    readMins: 4,
+    keyword: "how to read a pay stub",
+    related: ["overtime-calculator"],
+    body: [
+      { p: ["Pay stubs vary by employer and payroll system, but they all contain the same core information. Once you know the categories, any stub becomes readable."] },
+      { h: "Earnings section", p: ["Look for 'Regular' (straight-time hours × base rate), 'OT' or 'Overtime' (hours over 40 × 1.5× rate), and any supplemental pay like bonuses, commissions, or shift differentials. The sum of these lines is your gross pay for the period. Year-to-date (YTD) next to each line shows the running total since January 1."] },
+      { h: "Tax withholding lines", p: ["'Federal Income Tax' or 'FIT' is withheld based on your W-4 elections and the IRS tables. 'State Income Tax' or 'SIT' applies if your state has income tax. 'OASDI' or 'Social Security' is 6.2% of gross wages up to the taxable wage base (which re-sets each January). 'Med' or 'Medicare' is 1.45%. These four together make up most of the gap between gross and net."] },
+      { h: "Deduction codes", p: ["Pre-tax deductions (health insurance, dental, 401k, FSA) reduce your taxable gross before income tax is calculated, which is why they appear above the tax lines. Post-tax deductions (Roth 401k, life insurance, wage garnishments) are taken from after-tax income. A code you don't recognize is usually explained in your employee handbook or HR portal."] },
+      { h: "Checking for errors", p: ["Compare your regular hours to what you actually worked. Check that overtime hours match. Verify the correct state appears on the stub, especially if you worked remotely from a different state than usual — that can trigger an incorrect state withholding. If something looks wrong, ask payroll within the same pay period if possible."] },
+    ],
+  },
+  {
+    slug: "independent-contractor-vs-employee",
+    title: "Independent Contractor vs Employee: Key Differences",
+    description:
+      "Key differences between independent contractors and employees: who controls the work, who pays taxes, and how to spot worker misclassification.",
+    date: "2026-06-20",
+    readMins: 5,
+    keyword: "independent contractor vs employee",
+    related: ["exempt-salary-calculator"],
+    body: [
+      { p: ["Whether you are an employee or an independent contractor affects your taxes, benefits, and legal protections — including your right to overtime. The label a company puts on you does not control the outcome; the actual facts of the working relationship do."] },
+      { h: "The IRS common law test", p: ["The IRS evaluates three categories: behavioral control (does the company control how the work is done?), financial control (is the worker free to work for others, invest in their own tools, profit or lose money?), and type of relationship (written contracts, benefits, permanency). A worker who is told when, where, and how to work — even if paid as a 1099 — looks like an employee under this test."] },
+      { h: "The FLSA economic reality test", p: ["For wage and hour purposes, the Department of Labor applies the 'economic reality' test. It asks whether the worker is economically dependent on the company or truly in business for themselves. Courts look at factors like opportunity for profit or loss, permanency of the relationship, and whether the work is integral to the employer's business."] },
+      { h: "Why misclassification matters", p: ["An employee misclassified as a contractor loses FLSA overtime protections, minimum wage protections, employer FICA contributions, unemployment insurance, and workers' compensation. For employers, misclassification can result in back wages, back taxes with penalties, and liquidated damages equal to the unpaid overtime."] },
+      { h: "What to do if you think you're misclassified", p: ["File a complaint with the Wage and Hour Division (WHD) at dol.gov. The WHD investigates and can order back pay for up to 2 years of unpaid overtime (3 years if the violation was willful). Many states have stricter tests — California's ABC test, for example — that make it even harder to classify workers as independent contractors."] },
+    ],
+  },
+  {
+    slug: "break-laws-by-state",
+    title: "Break Laws by State: Meal & Rest Breaks Explained",
+    description:
+      "Federal law does not require rest or meal breaks for adults, but many states do. A state-by-state summary of meal periods and paid rest-break rules.",
+    date: "2026-06-20",
+    readMins: 5,
+    keyword: "break laws by state",
+    related: ["overtime-calculator"],
+    body: [
+      { p: ["The FLSA does not require employers to give adult workers any breaks. But it does say that short breaks of 20 minutes or less must be paid, while a bona fide meal period of 30 minutes or more need not be paid — as long as the employee is fully relieved of duty. Many states go further and actually require breaks."] },
+      { h: "States that require meal breaks", p: ["California, New York, Oregon, Washington, Illinois, Colorado, and many other states require a meal period (usually 30 minutes, unpaid) for shifts over a certain length — commonly 5 or 6 hours. California also requires a second meal period for shifts over 10 hours. Missing the break can trigger premium pay obligations equal to one hour of additional wages per missed break."] },
+      { h: "States that require paid rest breaks", p: ["California, Washington, Colorado, and a handful of other states require paid rest breaks of at least 10 minutes for every 4 hours worked. These breaks must be uninterrupted and cannot be combined with the meal period. Federal law has no equivalent requirement."] },
+      { h: "What happens if breaks are missed", p: ["In states that mandate breaks, failing to provide them creates a wage claim. In California, the penalty is one additional hour of pay at the employee's regular rate for each missed rest break and each missed meal break, per day. In Washington and Colorado similar penalty structures exist."] },
+    ],
+  },
+  {
+    slug: "wage-garnishment-rules",
+    title: "Wage Garnishment: How Much Can Be Taken?",
+    description:
+      "Wage garnishment lets a creditor collect a debt directly from your paycheck. Federal law caps the amount; some states cap it lower. Here's how it works.",
+    date: "2026-06-20",
+    readMins: 4,
+    keyword: "wage garnishment rules",
+    related: ["final-paycheck-calculator"],
+    body: [
+      { p: ["Wage garnishment is a court-ordered deduction from your paycheck that goes directly to a creditor. Common sources include unpaid debts, child support, back taxes, and student loan defaults. Federal law sets a ceiling; some states set lower caps."] },
+      { h: "Federal limits under the CCPA", p: ["The Consumer Credit Protection Act (CCPA) limits garnishment for ordinary debts (credit cards, medical bills, most civil judgments) to the lesser of: (1) 25% of disposable earnings, or (2) the amount by which disposable earnings exceed 30 times the federal minimum wage ($7.25 × 30 = $217.50/week). Disposable earnings means gross pay minus legally required deductions like FICA and state taxes."] },
+      { h: "Child support and spousal maintenance", p: ["Garnishments for child support or alimony have higher limits: up to 50% of disposable earnings if you are supporting another spouse or child, and up to 60% if you are not. An additional 5% may be withheld if payments are more than 12 weeks in arrears."] },
+      { h: "State rules can be stricter", p: ["Many states set caps lower than federal law. Texas, for example, exempts wages from most garnishments entirely (other than child support, student loans, and taxes). Pennsylvania, South Carolina, and North Carolina similarly restrict wage garnishment. In these states, creditors typically pursue garnishment of bank accounts instead."] },
+    ],
+  },
+  {
+    slug: "travel-time-pay-rules",
+    title: "Travel Time Pay: When Are You Owed for Commuting?",
+    description:
+      "Travel time pay depends on whether travel is before or during your workday. FLSA rules for commuting, day travel, overnight travel, and emergency call-outs.",
+    date: "2026-06-20",
+    readMins: 4,
+    keyword: "travel time pay",
+    related: ["overtime-calculator"],
+    body: [
+      { p: ["Not all time spent traveling for work is compensable under the FLSA. The type of travel and when it occurs determines whether it counts as hours worked toward overtime."] },
+      { h: "Ordinary commuting is not paid time", p: ["Travel from home to your regular workplace and back is not compensable, even if you drive a long distance. This holds even if you travel to a different job site each day, as long as you start and end at home — with one exception: if your employer requires you to report to a central location first and then travel to a job site, the travel from the central location to the site is paid time."] },
+      { h: "Day travel to another city", p: ["If you travel away from home during your regular working hours — on the day of travel — that time is compensable. If you travel outside your regular hours (e.g., on a Saturday when you do not normally work, or late at night), only the portion that falls within your regular hours must be paid."] },
+      { h: "Overnight travel", p: ["For overnight trips, compensable time includes travel that takes place during your regular working hours, on any day of the week including weekends. Time spent sleeping or in personal activities (dining, recreation) is not counted. Time spent driving or on duty during off-hours is generally not compensable unless your employer's policy says otherwise."] },
+      { h: "Emergency call-outs", p: ["If you are called back to work after hours, the travel time is compensable if you are traveling a substantial distance or the call-back is unforeseeable and outside regular hours. Travel from home to the worksite in a company-provided vehicle is compensable if it is part of an irregular, out-of-the-ordinary commute."] },
+    ],
+  },
+  {
+    slug: "payroll-taxes-explained",
+    title: "Payroll Taxes: FICA, Social Security & Medicare",
+    description:
+      "FICA taxes fund Social Security and Medicare. Employers and employees each pay 7.65% — 6.2% Social Security and 1.45% Medicare — on every paycheck.",
+    date: "2026-06-20",
+    readMins: 4,
+    keyword: "payroll tax calculator",
+    related: ["salary-to-hourly-calculator", "overtime-calculator"],
+    body: [
+      { p: ["FICA stands for the Federal Insurance Contributions Act. Every paycheck from a W-2 job includes two FICA taxes: Social Security (officially OASDI) and Medicare. Both the employee and the employer pay half, so the combined rate on each dollar of wages is 15.3%."] },
+      { h: "Employee Social Security tax", p: ["Employees pay 6.2% of gross wages into Social Security, up to the annual taxable wage base (which adjusts annually — in 2026 it is $176,100). Once your wages exceed that cap, no more Social Security tax is owed for the year. High earners effectively pay a lower effective Social Security rate because of the cap."] },
+      { h: "Employee Medicare tax", p: ["Employees pay 1.45% of gross wages for Medicare, with no cap. High earners pay an additional 0.9% on wages above $200,000 ($250,000 for married filing jointly) — this Additional Medicare Tax is withheld by the employer on the employee side only; the employer does not match it."] },
+      { h: "Self-employed workers pay both sides", p: ["If you are self-employed, you pay the full 15.3% (12.4% Social Security + 2.9% Medicare) on net self-employment income as the SE tax. You can deduct half of SE tax from your federal income tax."] },
+      { h: "Employer FICA obligations", p: ["Employers match the employee 6.2% Social Security and 1.45% Medicare contributions, depositing the combined 15.3% (on the employee's wages) to the IRS. Failing to withhold or remit these taxes triggers Trust Fund Recovery Penalties, one of the more serious small-business liabilities."] },
+    ],
+  },
+  {
+    slug: "on-call-pay-rules",
+    title: "On-Call Pay: Do You Get Paid While on Standby?",
+    description:
+      "On-call pay depends on whether you are restricted or unrestricted while waiting. The FLSA tests that determine when standby time counts as compensable hours.",
+    date: "2026-06-20",
+    readMins: 4,
+    keyword: "on call pay rules",
+    related: ["overtime-calculator"],
+    body: [
+      { p: ["Whether on-call time is compensable under the FLSA comes down to whether you are 'engaged to wait' (paid) or 'waiting to be engaged' (not paid). The distinction is how restricted you are during the standby period."] },
+      { h: "When on-call time is paid", p: ["If you must stay on or near the premises, respond within a very short time window (minutes), cannot use the time effectively for personal activities, and are frequently called back, courts have generally found the on-call time to be hours worked. A nurse required to stay in the break room between calls, for example, is likely compensated for the full standby period."] },
+      { h: "When on-call time is not paid", p: ["If you are simply required to carry a phone and respond within a reasonable time (typically 30 minutes or more), can use the time freely, and are rarely actually called in, on-call time is generally not compensable. The actual time spent responding to and performing the call-out is always paid, however."] },
+      { h: "Policies can be more generous", p: ["Many employers pay a flat standby stipend per on-call shift even if the time would not be legally required to be paid. This is lawful and common in healthcare, utilities, and IT. An employer cannot, however, pay less than minimum wage for all hours actually worked during a callback, even if the standby time itself is unpaid."] },
+    ],
+  },
+  {
+    slug: "tip-pooling-rules",
+    title: "Tip Pooling Rules: Who Can Share in the Tip Pool?",
+    description:
+      "Tip pooling lets employers distribute tips among employees. Under the FLSA, back-of-house staff can join a valid tip pool — but only under certain conditions.",
+    date: "2026-06-20",
+    readMins: 4,
+    keyword: "tip pooling rules",
+    related: ["tipped-wage-calculator", "minimum-wage-calculator"],
+    body: [
+      { p: ["A tip pool is an arrangement in which employees contribute a portion of their tips to a shared pot that is redistributed among a group of workers. The FLSA's tip pooling rules changed in 2018 and again in 2021; the current rules depend on whether the employer takes a tip credit."] },
+      { h: "When the employer takes a tip credit", p: ["If the employer pays tipped employees a cash wage below the full minimum (the federal tip credit allows a $2.13 cash wage), only employees who 'customarily and regularly receive tips' may participate in the pool — typically servers, bartenders, bussers, and food runners. Back-of-house employees (cooks, dishwashers) cannot participate in a tip credit pool."] },
+      { h: "When the employer pays the full minimum wage", p: ["If the employer does not take a tip credit and pays at least the full minimum wage in cash, the 2021 rule allows back-of-house workers to participate in the tip pool. The employer may also keep tips in this scenario only if no tip credit is used. Supervisors and managers cannot participate in any tip pool regardless of the structure."] },
+      { h: "State rules vary", p: ["Seven states ban the tip credit entirely (California, Oregon, Washington, Nevada, Montana, Minnesota, Alaska), which means all tipped workers receive the full state minimum wage in cash plus tips. In those states, back-of-house staff can participate in a tip pool under the 2021 rule. Several states have even stricter tip-pooling rules; always check your state law."] },
+    ],
+  },
+  {
+    slug: "regular-rate-of-pay",
+    title: "Regular Rate of Pay: The Overtime Calculation Base",
+    description:
+      "The regular rate of pay is the base for overtime calculations, not just your hourly wage. How bonuses, commissions, and shift differentials raise the rate.",
+    date: "2026-06-20",
+    readMins: 4,
+    keyword: "regular rate of pay overtime",
+    related: ["overtime-calculator", "time-and-a-half-calculator"],
+    body: [
+      { p: ["Overtime under the FLSA is paid at 1.5 times the 'regular rate of pay' — not simply 1.5 times the base hourly wage. The regular rate includes almost all compensation paid to an employee for hours worked in a workweek, and it can be higher than the stated wage."] },
+      { h: "What's included in the regular rate", p: ["The regular rate includes: base hourly wages, nondiscretionary bonuses (bonuses employees can reasonably expect to receive based on a formula or performance metric), shift differentials, piece-rate pay, commissions, and most other forms of compensation tied to hours worked or production."] },
+      { h: "What's excluded from the regular rate", p: ["The FLSA explicitly excludes from the regular rate: gifts (including discretionary bonuses given with no prior commitment), vacation pay, holiday pay, overtime premiums already paid, travel expense reimbursements, and benefit plan contributions. Pure discretionary bonuses — those where the employer has full discretion over the amount and timing and announces them after the fact — do not need to be included."] },
+      { h: "How to calculate it", p: ["Divide total compensation for the workweek (excluding exclusions) by total hours worked. The result is the regular rate for that week. If that week included overtime, the half-time premium owed on overtime hours is 0.5 × regular rate × OT hours (since the straight-time portion was already included in total compensation). The overtime calculator does this automatically for blended-rate scenarios."] },
+    ],
+  },
+  {
+    slug: "biweekly-vs-semimonthly-pay",
+    title: "Biweekly vs Semi-Monthly Pay: What's the Difference?",
+    description:
+      "Biweekly pay means 26 paychecks a year; semi-monthly means 24. The difference affects benefit deductions, overtime calculations, and paycheck size.",
+    date: "2026-06-20",
+    readMins: 4,
+    keyword: "biweekly vs semimonthly payroll",
+    related: ["salary-to-hourly-calculator", "overtime-calculator"],
+    body: [
+      { p: ["Biweekly and semi-monthly pay schedules are often confused. They look similar — you receive a paycheck roughly every two weeks — but they are structurally different in ways that affect overtime calculation, benefit deductions, and monthly cash flow."] },
+      { h: "Biweekly: 26 paychecks per year", p: ["Biweekly means you are paid every two weeks on the same day (usually Friday). There are exactly 26 pay periods per year. This aligns naturally with the FLSA workweek (a fixed 7-day period), making overtime calculation straightforward — each pay period covers exactly two workweeks. Two months per year contain three paychecks."] },
+      { h: "Semi-monthly: 24 paychecks per year", p: ["Semi-monthly means you are paid twice a month — typically on the 1st and 15th, or the 15th and last day. There are exactly 24 pay periods per year. Semi-monthly schedules don't align cleanly with the 7-day workweek, which can complicate overtime calculation: a pay period may straddle two workweeks, requiring employers to split hours across weeks when determining OT liability."] },
+      { h: "Impact on benefits and budgeting", p: ["Health insurance and 401(k) deductions are typically split across all pay periods. With biweekly pay, monthly benefit costs are spread across 2.167 periods on average (26 ÷ 12); with semi-monthly pay, it's always exactly 2. Semi-monthly is therefore simpler for monthly benefit accounting. But for employees, biweekly creates predictable two-payday months with occasional three-payday months — good for saving."] },
+    ],
+  },
+  {
+    slug: "overtime-for-tipped-employees",
+    title: "Overtime for Tipped Employees: How It Works",
+    description:
+      "Tipped employees are owed overtime on the full minimum wage, not the cash wage. How to calculate overtime correctly for tipped workers under the FLSA.",
+    date: "2026-06-20",
+    readMins: 4,
+    keyword: "overtime for tipped employees",
+    related: ["overtime-calculator", "tipped-wage-calculator"],
+    body: [
+      { p: ["Tipped employees are entitled to overtime just like any other non-exempt worker. But the tip credit creates a common source of wage violations: employers who calculate overtime on the cash wage ($2.13/hour) instead of the full minimum wage. That is illegal."] },
+      { h: "The correct overtime calculation", p: ["When an employer uses the federal tip credit, the overtime rate for a tipped employee is 1.5 × the full federal minimum wage ($7.25), minus the tip credit ($5.12). The result is $10.88 - $5.12 = $5.76 per hour for the overtime hours — not $2.13 × 1.5 = $3.20."] },
+      { h: "Why the full minimum wage is the base", p: ["The tip credit is a mechanism that lets tips satisfy part of the minimum wage obligation. Overtime is computed on the employee's actual regular rate, and for a tipped employee the full minimum wage is the floor, not the cash wage. The DOL has consistently enforced this interpretation and courts have upheld it."] },
+      { h: "State rules can raise the floor further", p: ["Seven states do not allow the tip credit — workers receive the full state minimum wage in cash. In those states, the overtime regular rate is the state minimum or the employee's actual cash wage (whichever is higher), and there is no tip credit to subtract. In California, which has daily overtime, tipped employees can earn daily overtime even in weeks under 40 hours."] },
+      { h: "Watch for dual jobs", p: ["If a tipped employee spends more than 20% of their time in a workweek doing non-tipped work (cleaning, prep, stocking), the tip credit cannot apply to those hours. The DOL's '80/20' rule means the employer owes the full minimum wage for the non-tipped portion. Use the tipped-wage calculator to check compliance for split-duty employees."] },
+    ],
+  },
+];
+POSTS.push(...WEEK2_POSTS);
+
 export function getPost(slug: string): Post | undefined {
   return POSTS.find((p) => p.slug === slug);
 }
