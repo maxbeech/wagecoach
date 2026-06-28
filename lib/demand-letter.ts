@@ -9,6 +9,37 @@ import type { StateLaw } from "./states";
 // dates, employer), so the worker completes and sends it. This is self-help
 // information, not legal advice.
 
+export interface LetterFields {
+  yourName: string;
+  yourAddress: string;
+  yourPhone: string;
+  yourEmail: string;
+  employerName: string;
+  employerAddress: string;
+  startDate: string;
+  endDate: string;
+  letterDate: string;
+}
+
+// Replace [bracketed placeholders] in the generated letter with user-supplied
+// values. Any field left blank keeps its placeholder so the user sees what
+// still needs filling when they print.
+export function personaliseLetter(template: string, f: Partial<LetterFields>): string {
+  const contact = [f.yourPhone, f.yourEmail].filter(Boolean).join(" · ") || "[Your phone] · [Your email]";
+  return template
+    .replace("[Date]", f.letterDate || "[Date]")
+    .replace("[Your full name]", f.yourName || "[Your full name]")
+    .replace("[Your address]", f.yourAddress || "[Your address]")
+    .replace("[Your phone] · [Your email]", contact)
+    .replace("[Employer / company name]", f.employerName || "[Employer / company name]")
+    .replace("[Employer address]", f.employerAddress || "[Employer address]")
+    .replace("[employer name]", f.employerName || "[employer name]")
+    .replace("[start date]", f.startDate || "[start date]")
+    .replace("[end date]", f.endDate || "[end date]")
+    .replace("[Your signature]", f.yourName || "[Your signature]")
+    .replace(/\[Your name\]\s*$/, f.yourName || "[Your name]");
+}
+
 export function buildDemandLetter(inp: BackPayInputs, r: BackPayResult, state: StateLaw | null): string {
   const wc = state ? wageClaim(state.abbr) : { agency: "the U.S. Department of Labor, Wage and Hour Division", statePlus: undefined as string | undefined };
   const claim = CLAIM_LABELS[inp.claimType].toLowerCase();

@@ -10,6 +10,8 @@
     "test": "tsx test/overtime.test.mts && tsx test/wage.test.mts && tsx test/pay-url.test.mts && tsx test/salary.test.mts && tsx test/backpay.test.mts && tsx test/fuzz.test.mts"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4"

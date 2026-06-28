@@ -5,7 +5,7 @@ import { estimateBackPay } from "@/lib/backpay";
 import { buildDemandLetter, buildFilingGuide } from "@/lib/demand-letter";
 import { dollars } from "@/lib/federal";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
-import ClaimKitActions from "@/components/ClaimKitActions";
+import ClaimKitPersonaliser from "@/components/ClaimKitPersonaliser";
 
 // Post-purchase deliverable. Dynamic + noindex: it depends on the live Stripe
 // session and must never be cached or crawled.
@@ -93,11 +93,7 @@ export default async function ClaimKitPage({ searchParams }: { searchParams: Pro
       </div>
 
       <section className="mt-8">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="font-display text-lg font-semibold text-ink">1 · Your demand letter</h2>
-          <ClaimKitActions letter={letter} />
-        </div>
-        <pre className="mt-3 overflow-x-auto whitespace-pre-wrap rounded-2xl border border-line bg-card p-6 font-mono text-[0.8rem] leading-relaxed text-ink shadow-card">{letter}</pre>
+        <ClaimKitPersonaliser letter={letter} />
       </section>
 
       <section className="mt-8">

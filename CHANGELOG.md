@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased — Rebrand to WageCoach + offering live
+## Unreleased — Production readiness + Claim Kit improvements
 
 - **Rebrand:** WageCalc HQ → **WageCoach** across all public copy, code, wordmark
   (`Logo`, favicon, OG image), `package.json`, emails (`hello@wagecoach.com`) and
@@ -14,6 +14,15 @@
   from `lib/demand-letter.ts`. Checkout carries the case into the success URL.
 - Env documented: `STRIPE_SECRET_KEY`, `STRIPE_KIT_PRICE_ID`, `STRIPE_PRICE_ID`,
   `NEXT_PUBLIC_SITE_URL`, `LEAD_WEBHOOK_URL`. Test keys in gitignored `.env.local`.
+- **Demand-letter personalisation** (`components/ClaimKitPersonaliser.tsx`) — an
+  interactive form on the Claim Kit success page lets the buyer fill in their name,
+  address, phone, email, employer details and dates. The letter updates live in the
+  browser; `personaliseLetter()` in `lib/demand-letter.ts` handles substitution.
+  Zero-bracket counter shows how many placeholders remain before printing.
+- **Analytics + Speed Insights** wired into `app/layout.tsx` — `@vercel/analytics`
+  and `@vercel/speed-insights` were already in `package.json` but unused.
+- **Vercel production env vars** set via CLI: `NEXT_PUBLIC_SITE_URL`,
+  `STRIPE_KIT_PRICE_ID`, `STRIPE_PRICE_ID` (production environment).
 
 ## Earlier — Wage-claim / back-pay offering
 
