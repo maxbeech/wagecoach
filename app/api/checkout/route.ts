@@ -19,7 +19,7 @@ export async function POST(req: Request) {
   // its scheme would otherwise produce a relative success_url that Stripe rejects
   // ("Not a valid URL"). `??` doesn't catch an empty string, so normalise here.
   const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  let base = raw || "https://wagecoach.vercel.app";
+  let base = raw || "https://www.wagecoach.com";
   if (!/^https?:\/\//i.test(base)) base = `https://${base}`;
   base = base.replace(/\/+$/, "");
 

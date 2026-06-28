@@ -2,6 +2,17 @@
 
 ## Unreleased — Production readiness + Claim Kit improvements
 
+- **Canonical host live:** `lib/site.ts` now points at `www.wagecoach.com` (the
+  wired custom domain) instead of the Vercel host, so canonical tags, sitemap,
+  robots and JSON-LD all reference the public domain. Checkout fallback host
+  updated to match.
+- **Lead delivery via Resend:** `app/api/lead/route.ts` now emails each
+  free-case-review lead through Resend (`RESEND_API_KEY`, no SDK — raw `fetch`),
+  with `reply_to` set to the worker. The `LEAD_WEBHOOK_URL` path is preserved, so
+  both can run. New optional env: `RESEND_API_KEY`, `LEAD_TO` (default
+  `hello@wagecoach.com`), `LEAD_FROM` (default `leads@wagecoach.com`). If a
+  configured channel fails the user gets a clear fallback instead of a silent drop.
+
 - **Blog imagery:** `components/BlogImage.tsx` — a dependency-free, ledger-styled
   SVG hero/thumbnail generated per post from its category (`lib/blog-images.ts`
   maps slug → `BlogCategory`). The blog index is now a two-column card grid with
