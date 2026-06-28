@@ -11,8 +11,11 @@ export default function ClaimKitPersonaliser({ letter }: { letter: string }) {
   const [copied, setCopied] = useState(false);
   const [open, setOpen] = useState(true);
 
-  // Default letter date to today on mount (avoids hydration mismatch).
+  // Default letter date to today on mount. The date is deliberately client-only:
+  // computing `new Date()` during render would differ between server and client
+  // and cause a hydration mismatch, so we set it in an effect after mount.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydration-safe client-only date
     setFields((f) => ({
       letterDate: new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
       ...f,

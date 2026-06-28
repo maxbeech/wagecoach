@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { POSTS, getPost } from "@/lib/posts";
+import { getPostCategory } from "@/lib/blog-images";
+import { BlogImage } from "@/components/BlogImage";
 import { getCalc } from "@/lib/calculators";
 import { SITE } from "@/lib/site";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
@@ -36,6 +38,11 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         <Link href="/blog" className="hover:text-ink">Guides</Link>
         <span className="mx-1.5">/</span><span className="text-muted">{p.title}</span>
       </nav>
+
+      <BlogImage
+        category={getPostCategory(p.slug)}
+        className="w-full rounded-2xl mb-6"
+      />
 
       <Eyebrow>Guides</Eyebrow>
       <div className="mt-3">

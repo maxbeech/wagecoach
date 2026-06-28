@@ -2,6 +2,19 @@
 
 ## Unreleased — Production readiness + Claim Kit improvements
 
+- **Blog imagery:** `components/BlogImage.tsx` — a dependency-free, ledger-styled
+  SVG hero/thumbnail generated per post from its category (`lib/blog-images.ts`
+  maps slug → `BlogCategory`). The blog index is now a two-column card grid with
+  cropped thumbnails; each post renders a full-width hero. No external image
+  fetches, so it adds zero runtime/network cost.
+- **8 wage-recovery blog posts** added (`lib/posts.ts`, "WEEK3") — wage theft,
+  filing a wage claim, DOL complaint, back pay, statute of limitations, demand
+  letter, hiring an attorney, reporting wage theft — feeding the recovery funnel.
+- **Deploy:** `npm run deploy` added (mirrors controlbook) — pulls production env,
+  builds locally, and ships the prebuilt output with `vercel deploy --prebuilt --prod`.
+- Lint clean: annotated the intentional hydration-safe client-only date effect in
+  `ClaimKitPersonaliser.tsx` (`react-hooks/set-state-in-effect`).
+
 - **Rebrand:** WageCalc HQ → **WageCoach** across all public copy, code, wordmark
   (`Logo`, favicon, OG image), `package.json`, emails (`hello@wagecoach.com`) and
   the canonical host (`wagecoach.vercel.app`). Repo + Vercel project renamed.

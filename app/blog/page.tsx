@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { POSTS } from "@/lib/posts";
+import { getPostCategory } from "@/lib/blog-images";
+import { BlogImage } from "@/components/BlogImage";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
@@ -22,13 +24,20 @@ export default function BlogIndex() {
           sub="Practical, accurate guides to U.S. wage and hour law covering overtime, minimum wage, exemptions, tipped pay and final paychecks, for workers, managers and HR teams."
         />
       </div>
-      <div className="mt-6 space-y-3">
+      <div className="mt-6 grid gap-3 sm:grid-cols-2">
         {POSTS.map((p) => (
           <Link key={p.slug} href={`/blog/${p.slug}`}
-            className="block rounded-2xl border border-line bg-card p-4 shadow-card transition-colors hover:border-brand-300 hover:bg-brand-50">
-            <div className="font-semibold text-ink">{p.title}</div>
-            <p className="mt-1 text-sm text-muted">{p.description}</p>
-            <div className="mt-1 text-xs text-faint">{p.readMins} min read</div>
+            className="group block rounded-2xl border border-line bg-card shadow-card transition-colors hover:border-brand-300 hover:bg-brand-50 overflow-hidden">
+            <BlogImage
+              category={getPostCategory(p.slug)}
+              className="w-full h-32"
+              preserveAspectRatio="xMidYMid slice"
+            />
+            <div className="p-4">
+              <div className="font-semibold text-ink group-hover:text-brand-700 transition-colors">{p.title}</div>
+              <p className="mt-1 text-sm text-muted">{p.description}</p>
+              <div className="mt-1 text-xs text-faint">{p.readMins} min read</div>
+            </div>
           </Link>
         ))}
       </div>
