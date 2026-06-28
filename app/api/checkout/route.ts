@@ -15,7 +15,13 @@ type ProductKey = keyof typeof PRODUCTS;
 
 export async function POST(req: Request) {
   const secret = process.env.STRIPE_SECRET_KEY;
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://wagecoach.vercel.app";
+  // Resolve the public base URL defensively: an env var that is empty or missing
+  // its scheme would otherwise produce a relative success_url that Stripe rejects
+  // ("Not a valid URL"). `??` doesn't catch an empty string, so normalise here.
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  let base = raw || "https://wagecoach.vercel.app";
+  if (!/^https?:\/\//i.test(base)) base = `https://${base}`;
+  base = base.replace(/\/+$/, "");
 
   let product: ProductKey = "report";
   let caseQuery = "";

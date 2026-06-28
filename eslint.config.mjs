@@ -11,6 +11,9 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    // `npm run deploy` runs `vercel build` locally, which emits compiled output
+    // here; never lint generated artifacts.
+    ".vercel/**",
     "next-env.d.ts",
   ]),
 ]);
