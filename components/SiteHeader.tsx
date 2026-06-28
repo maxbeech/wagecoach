@@ -7,10 +7,10 @@ import { Logo } from "./Logo";
 
 const NAV = [
   { href: "/calculators", label: "Calculators" },
+  { href: "/wage-claim", label: "Unpaid wages" },
   { href: "/states", label: "By state" },
   { href: "/cities", label: "By city" },
   { href: "/blog", label: "Guides" },
-  { href: "/methodology", label: "Methodology" },
 ];
 
 export default function SiteHeader() {
@@ -21,7 +21,7 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/85 backdrop-blur-md print:hidden">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
-        <Link href="/" aria-label="WageCalc HQ home" className="rounded">
+        <Link href="/" aria-label="WageCoach home" className="rounded">
           <Logo />
         </Link>
 

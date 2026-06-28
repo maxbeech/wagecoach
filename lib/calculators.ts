@@ -3,7 +3,7 @@ import type { PayInputs } from "./overtime";
 
 // The calculator catalog. Each entry powers a /calculators/[slug] page and the
 // homepage tool grid. `tool` selects which interactive component renders.
-export type ToolKind = "pay" | "salary" | "minwage" | "tipped" | "exempt" | "pto" | "finalpay";
+export type ToolKind = "pay" | "salary" | "minwage" | "tipped" | "exempt" | "pto" | "finalpay" | "backpay";
 
 export interface CalcDef {
   slug: string;
@@ -77,6 +77,26 @@ export const CALCULATORS: CalcDef[] = [
     ],
     faqs: [
       f("When is double time required?", "Only California requires it (over 12 hrs/day, or beyond 8 hrs on a 7th straight workday). Otherwise double time is an employer policy or union contract term."),
+    ],
+  },
+  {
+    slug: "back-pay-calculator",
+    name: "Back pay (am I owed?)",
+    keyword: "back pay calculator",
+    h1: "Back Pay Calculator: Am I Owed Unpaid Wages?",
+    meta: "Free back-pay calculator. Estimate the unpaid overtime or minimum wage you may be owed, how far back federal law lets you recover it, and what to do next. Not legal advice.",
+    intro: "If you were paid straight time for overtime, worked off the clock, or earned below the minimum wage, you may be owed back pay. Enter what you earned and what you were paid to estimate the unpaid wages and your recovery window under the FLSA.",
+    focus: "Estimate unpaid wages + a 2-to-3-year recovery window",
+    tool: "backpay",
+    notes: [
+      "Federal law (FLSA) lets you recover up to 2 years of back wages, or 3 years if the violation was willful, plus an equal amount in liquidated damages.",
+      "Many states allow a longer look-back or extra penalties on top of the federal back pay. Pick your state to see the agency you'd file with.",
+      "Overtime is 1.5× your regular rate for hours over 40 in a week — being salaried does not by itself make you exempt.",
+    ],
+    faqs: [
+      f("How do I know if I'm owed overtime back pay?", "If you worked more than 40 hours in a week and were paid your normal rate (not 1.5×) for the extra hours, the unpaid premium is back pay you can usually recover for up to 2 years (3 if willful)."),
+      f("How far back can I claim unpaid wages?", "Under the FLSA, 2 years, or 3 years for a willful violation. Some states allow longer — New York, for example, allows a 6-year look-back."),
+      f("Can I get more than the wages I was underpaid?", "Often yes. The FLSA allows liquidated damages equal to the back pay (doubling it), and several states add their own penalties of 2× or 3× the unpaid amount."),
     ],
   },
   {

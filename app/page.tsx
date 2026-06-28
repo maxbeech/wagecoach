@@ -38,21 +38,21 @@ export default function Home() {
         <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-b from-transparent to-paper" />
         <div className="mx-auto grid max-w-6xl items-center gap-12 pb-10 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
-            <Eyebrow>Free · Sourced to the U.S. DOL · 2026 rules</Eyebrow>
+            <Eyebrow>Free · Built on the U.S. DOL FLSA · 2026 rules</Eyebrow>
             <h1 className="mt-4 font-display text-[2.6rem] font-semibold leading-[1.03] tracking-tight text-ink sm:text-[3.4rem]">
-              Overtime and time-and-a-half pay, <span className="italic text-brand-700">itemized to the cent.</span>
+              Are you owed back pay? <span className="italic text-brand-700">Find out to the cent.</span>
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
-              Enter your rate and hours. You get your regular pay, your time-and-a-half overtime and your gross
-              total, with the federal 40-hour rule and your state&apos;s daily-overtime and minimum-wage rules
-              already built in. No sign-up, and every figure is sourced.
+              Millions of workers are underpaid for overtime every year. Enter your rate and hours and WageCoach
+              shows your correct pay, estimates any unpaid wages you can still recover, and walks you through filing
+              a wage claim in your state. No sign-up, and every figure is sourced.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
-              <Link href="#calculator" className="rounded-full bg-forest px-6 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-brand-800">
-                Calculate my pay
+              <Link href="/wage-claim" className="rounded-full bg-forest px-6 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-brand-800">
+                Am I owed back pay?
               </Link>
-              <Link href="/calculators" className="rounded-full border border-line bg-card px-6 py-3 text-sm font-semibold text-ink transition hover:border-brand-300">
-                Browse all calculators
+              <Link href="#calculator" className="rounded-full border border-line bg-card px-6 py-3 text-sm font-semibold text-ink transition hover:border-brand-300">
+                Calculate my pay
               </Link>
             </div>
             <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm">
@@ -79,6 +79,46 @@ export default function Home() {
       <section id="calculator" className="scroll-mt-24">
         <SectionHeading rule title="The overtime calculator" sub="The complete tool: pick your state to apply daily overtime and double time, switch the multiplier, or enter hours per day for California's 7th-day rule." />
         <Reveal className="mt-6"><PayCalculator /></Reveal>
+      </section>
+
+      {/* Recovery band — the core WageCoach offering */}
+      <section>
+        <Reveal className="relative overflow-hidden rounded-3xl border border-brand-200 bg-card shadow-card">
+          <div className="grid items-center gap-8 p-8 sm:p-12 lg:grid-cols-[1.1fr_0.9fr]">
+            <div>
+              <Eyebrow>If your paycheck looks short</Eyebrow>
+              <h2 className="mt-3 font-display text-2xl font-semibold text-ink sm:text-3xl">
+                Paid straight time for overtime? You may be owed back pay.
+              </h2>
+              <p className="mt-3 max-w-md leading-relaxed text-muted">
+                The back-pay estimator compares what you should have earned against what you were paid, then shows how
+                far back federal law lets you recover it — up to 2 years, or 3 if the violation was willful, plus equal
+                liquidated damages. You get a case-strength signal and your state&apos;s filing route.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link href="/wage-claim" className="rounded-full bg-forest px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-800">
+                  Estimate what I&apos;m owed
+                </Link>
+                <Link href="/free-case-review" className="rounded-full border border-line bg-card px-6 py-3 text-sm font-semibold text-ink transition hover:border-brand-300">
+                  Free case review
+                </Link>
+              </div>
+            </div>
+            <ul className="space-y-3 rounded-2xl border border-line bg-paper/50 p-6">
+              {[
+                ["Unpaid overtime", "Paid your normal rate past 40 hours"],
+                ["Salaried but owed OT", "Being salaried isn't the same as exempt"],
+                ["Off-the-clock work", "Prep, cleanup or work through breaks"],
+                ["Below minimum wage", "Cash wage plus tips under the floor"],
+              ].map(([t, d]) => (
+                <li key={t} className="flex items-baseline gap-3 text-sm">
+                  <span className="mt-1 h-3.5 w-[3px] shrink-0 rounded-full bg-gold-500/80" />
+                  <span><span className="font-semibold text-ink">{t}.</span> <span className="text-muted">{d}</span></span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
       </section>
 
       {/* Signature annotated diagram — replaces the old 3-tile grid */}
@@ -111,7 +151,7 @@ export default function Home() {
 
       {/* Ledger index — the calculators as statement line-items */}
       <section>
-        <SectionHeading rule title="Every wage question, one place" sub="Eight focused calculators, each sourced and built to show its work. Pick a line." />
+        <SectionHeading rule title="Every wage question, one place" sub="Focused calculators, each sourced and built to show its work — from overtime to back pay. Pick a line." />
         <Reveal className="mt-6 overflow-hidden rounded-2xl border border-line bg-card shadow-card">
           <div className="grid sm:grid-cols-2">
             {CALCULATORS.map((c, i) => (

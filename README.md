@@ -1,11 +1,20 @@
-# WageCalc HQ
+# WageCoach
 
-Free U.S. **wage & hour calculators** — overtime and time-and-a-half pay, minimum
-wage by state, tipped-wage checks, exempt-salary tests, PTO payout and
-final-paycheck deadlines. Built on the federal **FLSA** and **2026** state rules
-for all 50 states and DC.
+**Check your pay. Recover what you're owed.** WageCoach helps U.S. workers find
+unpaid wages and get them back. It pairs free **wage & hour calculators** — overtime
+and time-and-a-half pay, minimum wage by state, tipped-wage checks, exempt-salary
+tests, PTO payout and final-paycheck deadlines — with a **back-pay estimator** and
+step-by-step **wage-claim** help for every state, all built on the federal **FLSA**
+and **2026** state rules for all 50 states and DC.
 
-Live: https://wagecalchq.vercel.app
+**Positioning (set in this product cycle):** the free calculators attract a large
+employee audience (overtime/paycheck searches); WageCoach monetizes *that* audience at
+the highest-intent moment — "am I owed back pay?" — rather than chasing the low-volume
+employer buyer. The funnel is: free calculator → back-pay verdict → **$29 Claim Kit**
+(a pre-filled demand letter + filing guide) and a **free attorney case review**
+(lead-gen). The legacy **$19 employer report** remains as a secondary product.
+
+Live: https://wagecoach.vercel.app
 
 ## Stack
 
@@ -56,6 +65,13 @@ The engines are real and cited, not rules of thumb:
   rest-of-state and downstate figures) rather than a false "exempt".
 - **`lib/salary.ts`** — salary↔hourly converter (annual / monthly / biweekly / hourly).
 - **`lib/cities.ts`** — 2026 minimum wage for 20 major cities (Seattle, NYC, LA, SF, Chicago…), each cited.
+- **`lib/backpay.ts`** — back-pay estimator. The inverse of the overtime engine: given
+  what you should have earned and what you were paid, it estimates the unpaid wages and
+  the FLSA recovery window (2 years, or 3 if willful) plus equal liquidated damages.
+- **`lib/case-score.ts`** — a transparent "case-strength" triage signal from the size,
+  duration and recoverability of the shortfall (not a legal opinion).
+- **`lib/wage-claim-data.ts`** — per-state wage-claim agency, official filing route and
+  notable state penalties, used by the `/wage-claim/[state]` guides.
 
 The engines are covered by hand-written unit tests **plus a fuzz suite** that sweeps every
 state × rate × hours combination (33k+ cases / 150k+ assertions) to guarantee no NaN, no
@@ -73,17 +89,55 @@ npm test         # engine + data + URL tests
 npm run lint
 ```
 
-## Pro tier
+## Paid offering
 
-A one-time **$19 multi-state compliance report** PDF. The Stripe checkout route
-(`app/api/checkout/route.ts`) degrades gracefully when `STRIPE_SECRET_KEY` /
-`STRIPE_PRICE_ID` env vars are absent.
+Two one-time products, both through the same graceful Stripe route
+(`app/api/checkout/route.ts`, `POST { product }`):
+
+- **Claim Kit — $29** (`product: "kit"`, `STRIPE_KIT_PRICE_ID`). For workers. The funnel is
+  the free **back-pay estimator** (`/wage-claim`, `/calculators/back-pay-calculator`): the
+  verdict surfaces the estimate, a case-strength signal, and two CTAs — the Claim Kit and a
+  **free attorney case review**. After payment, Stripe returns to **`/claim-kit`**, a
+  `force-dynamic`, noindex page that **verifies the Checkout session server-side** (no DB —
+  the session id is the proof) and renders the deliverable from `lib/demand-letter.ts`: a
+  demand letter pre-filled with the buyer's figures plus a state filing guide.
+- **Pro report — $19** (`product: "report"`, `STRIPE_PRICE_ID`). For employers: the
+  multi-state wage & hour compliance report.
+
+The checkout route degrades gracefully when `STRIPE_SECRET_KEY` or the relevant price id is
+absent. The free attorney review (`/free-case-review`) posts to `app/api/lead/route.ts`,
+which forwards leads to `LEAD_WEBHOOK_URL` (an attorney-network/CRM intake) when set and
+otherwise confirms without storing anything — the site stays database-free.
+
+### Environment
+
+| Var | Purpose |
+| --- | --- |
+| `STRIPE_SECRET_KEY` | Stripe API key (test `sk_test_…` for dev, live `sk_live_…` in prod). Also used to verify the kit Checkout session. |
+| `STRIPE_KIT_PRICE_ID` | Price id for the $29 Claim Kit. |
+| `STRIPE_PRICE_ID` | Price id for the $19 Pro report. |
+| `NEXT_PUBLIC_SITE_URL` | Canonical base for Stripe success/cancel URLs (e.g. `https://wagecoach.vercel.app`). |
+| `LEAD_WEBHOOK_URL` | Optional. Where free-case-review leads are POSTed (CRM/Zapier/attorney intake). |
+
+Local dev: copy the keys into `.env.local` (gitignored). Use Stripe **test** keys + test
+price ids there; set the **live** values only in the Vercel project's env.
+
+### SEO/GEO
+
+The wage-claim work is built to grow on the highest-intent terms the keyword research
+surfaced ("wage theft", "back pay calculator", "how to file a wage claim [state]",
+"department of labor complaint"). `/wage-claim/[state]` renders 51 programmatic guides with
+an extractable one-paragraph answer, the filing agency, the federal window, `HowTo` +
+`FAQPage` + `BreadcrumbList` JSON-LD, and the embedded estimator — the shape answer engines
+quote. New env vars: `STRIPE_KIT_PRICE_ID`, `LEAD_WEBHOOK_URL`.
+
+> Self-help information, not legal advice, and not a law firm.
 
 ## Canonical host
 
-`lib/site.ts` sets `SITE.url`. The apex `wagecalchq.com` is not connected yet,
-so it currently points at the live Vercel host (`wagecalchq.vercel.app`) which
+`lib/site.ts` sets `SITE.url`. The apex `wagecoach.com` is not connected yet,
+so it currently points at the live Vercel host (`wagecoach.vercel.app`) which
 drives every canonical tag, the sitemap, robots and all JSON-LD URLs. When the
-custom domain is wired in Vercel, flip `domain` and `url` back to `wagecalchq.com`.
+custom domain is wired in Vercel, flip `domain` and `url` back to `wagecoach.com`.
 
 > General information, not legal or tax advice.

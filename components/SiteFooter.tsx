@@ -41,7 +41,7 @@ export default function SiteFooter() {
           <div className="lg:pr-6">
             <div className="flex items-center gap-2.5">
               <LogoMark size={26} />
-              <span className="font-display text-base font-semibold text-ink">WageCalc HQ</span>
+              <span className="font-display text-base font-semibold text-ink">WageCoach</span>
             </div>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted">
               Free, sourced wage and hour calculators built on the federal FLSA and current state rules.

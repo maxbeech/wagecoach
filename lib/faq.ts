@@ -18,7 +18,7 @@ export const HOME_FAQS: FaqItem[] = [
     a: "Only if they are non-exempt. To be exempt from overtime, an employee generally must be paid a salary of at least $684/week ($35,568/year) under federal law AND perform exempt executive, administrative or professional duties. Some states (California, New York, Washington and others) set a higher salary threshold. Salary alone does not make someone exempt.",
   },
   {
-    q: "Is the data on WageCalc HQ accurate and current?",
+    q: "Is the data on WageCoach accurate and current?",
     a: "The calculators use the federal FLSA rules and the 2026 state minimum-wage, tipped-wage, overtime, final-paycheck and break data, each cited on the methodology page. Wage and hour law changes often and has local exceptions, so always confirm with your state labor department before relying on a figure for payroll or a legal decision.",
   },
 ];

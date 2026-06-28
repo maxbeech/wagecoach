@@ -1,28 +1,52 @@
 import { NextResponse } from "next/server";
 
-// Stripe Checkout for the one-time $19 Pro multi-state compliance report. Keys
-// are injected as Vercel env vars (STRIPE_SECRET_KEY, STRIPE_PRICE_ID). When
-// absent (e.g. before the Stripe account is wired) the endpoint degrades
-// gracefully — the Pro tier reads "coming soon" via `message` instead of a 500.
-export async function POST() {
-  const secret = process.env.STRIPE_SECRET_KEY;
-  const price = process.env.STRIPE_PRICE_ID;
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://wagecalchq.vercel.app";
+// Stripe Checkout for the one-time products: the $19 multi-state compliance
+// report and the $29 wage Claim Kit. Keys are injected as Vercel env vars
+// (STRIPE_SECRET_KEY plus STRIPE_PRICE_ID / STRIPE_KIT_PRICE_ID). When the
+// relevant price is absent (e.g. before Stripe is wired) the endpoint degrades
+// gracefully — the buy button reads "launching shortly" instead of a 500.
 
+const PRODUCTS = {
+  report: { env: "STRIPE_PRICE_ID", path: "/pricing" },
+  kit: { env: "STRIPE_KIT_PRICE_ID", path: "/wage-claim" },
+} as const;
+
+type ProductKey = keyof typeof PRODUCTS;
+
+export async function POST(req: Request) {
+  const secret = process.env.STRIPE_SECRET_KEY;
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://wagecoach.vercel.app";
+
+  let product: ProductKey = "report";
+  let caseQuery = "";
+  try {
+    const body = await req.json();
+    if (body?.product === "kit") product = "kit";
+    if (typeof body?.caseQuery === "string") caseQuery = body.caseQuery.replace(/^\?/, "").slice(0, 500);
+  } catch { /* no body → default report */ }
+
+  const price = process.env[PRODUCTS[product].env];
   if (!secret || !price) {
     return NextResponse.json(
-      { message: "Pro reports are launching shortly. Email hello@wagecalchq.com for early access." },
+      { message: "This is launching shortly. Email hello@wagecoach.com for early access." },
       { status: 200 },
     );
   }
 
   try {
+    const ret = `${base}${PRODUCTS[product].path}`;
+    // The Claim Kit is delivered on a server-verified success page that renders
+    // the demand letter from the case the buyer carried over; the report just
+    // returns to pricing. {CHECKOUT_SESSION_ID} is Stripe's literal template.
+    const successUrl = product === "kit"
+      ? `${base}/claim-kit?session_id={CHECKOUT_SESSION_ID}${caseQuery ? `&${caseQuery}` : ""}`
+      : `${ret}?status=success`;
     const body = new URLSearchParams({
       "mode": "payment",
       "line_items[0][price]": price,
       "line_items[0][quantity]": "1",
-      "success_url": `${base}/pricing?status=success`,
-      "cancel_url": `${base}/pricing?status=cancel`,
+      "success_url": successUrl,
+      "cancel_url": `${ret}?status=cancel`,
       "allow_promotion_codes": "true",
     });
     const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {

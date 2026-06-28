@@ -6,8 +6,8 @@ import { Eyebrow, SectionHeading } from "@/components/primitives";
 export const revalidate = 604800; // weekly ISR
 
 export const metadata: Metadata = {
-  title: "Methodology & Sources: How WageCalc HQ Computes Pay",
-  description: "The exact FLSA rules, 2026 state wage data and sources WageCalc HQ uses for its overtime, minimum-wage and paycheck calculators. Transparent and cited.",
+  title: "Methodology & Sources: How WageCoach Computes Pay",
+  description: "The exact FLSA rules, 2026 state wage data and sources WageCoach uses for its overtime, minimum-wage and paycheck calculators. Transparent and cited.",
   alternates: { canonical: "/methodology" },
 };
 
@@ -24,7 +24,7 @@ export default function Methodology() {
           title="Methodology & Sources"
           sub={
             <>
-              WageCalc HQ implements the federal <strong>Fair Labor Standards Act (FLSA)</strong> and each
+              WageCoach implements the federal <strong>Fair Labor Standards Act (FLSA)</strong> and each
               state&apos;s 2026 wage and hour rules. This page is the single source of truth for the numbers the
               calculators use, with every source cited. It is general information, not legal advice.
             </>

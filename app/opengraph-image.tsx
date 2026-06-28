@@ -29,19 +29,19 @@ export default function OgImage() {
             <div style={{ display: "flex", width: 16, height: 5, borderRadius: 3, background: "rgba(255,255,255,0.4)" }} />
           </div>
           <div style={{ display: "flex", fontSize: 34, fontWeight: 700, color: "#16201b" }}>
-            Wage<span style={{ color: "#0d543f" }}>Calc HQ</span>
+            Wage<span style={{ color: "#0d543f" }}>Coach</span>
           </div>
         </div>
 
         <div style={{ display: "flex", marginTop: 56, fontSize: 66, fontWeight: 800, color: "#16201b", lineHeight: 1.08, maxWidth: 1020 }}>
-          Overtime and time-and-a-half pay, itemized to the cent.
+          Are you owed back pay? Find out, then get it.
         </div>
         <div style={{ display: "flex", marginTop: 24, fontSize: 30, color: "#4d554f", maxWidth: 1000 }}>
-          Federal FLSA and 2026 state rules for all 50 states and DC. Overtime, minimum wage, tipped pay and final paychecks.
+          Free overtime, minimum-wage and paycheck calculators, a back-pay estimator, and step-by-step help to file a wage claim in any state.
         </div>
 
         <div style={{ display: "flex", marginTop: "auto", gap: 16 }}>
-          {["Time and a half = 1.5×", "Minimum wage by state", "Final-pay deadlines"].map((t) => (
+          {["Estimate unpaid wages", "Case-strength signal", "File in your state"].map((t) => (
             <div key={t} style={{ display: "flex", background: "#d2e9df", color: "#0d543f", padding: "12px 22px", borderRadius: 999, fontSize: 26, fontWeight: 600 }}>
               {t}
             </div>
