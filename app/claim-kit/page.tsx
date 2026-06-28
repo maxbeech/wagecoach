@@ -16,20 +16,27 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-// Confirm the Stripe Checkout session was actually paid before unlocking the kit.
-// No database needed — the session id in the success URL is the proof. If Stripe
-// isn't configured (local/preview without keys) we can't verify, so we lock.
+// Confirm the Stripe Checkout session was actually paid FOR THE KIT before
+// unlocking it. No database needed — the session id in the success URL is the
+// proof. We must check both that the session is paid AND that it contains the
+// Kit's price line item: otherwise a cheaper session (e.g. the $19 report) or any
+// other paid session in the account would unlock the $29 Kit — a price-tier
+// bypass. If Stripe or the kit price isn't configured, we can't verify, so we lock.
 async function verifyPaid(sessionId?: string): Promise<boolean> {
   const secret = process.env.STRIPE_SECRET_KEY;
-  if (!secret || !sessionId) return false;
+  const kitPrice = process.env.STRIPE_KIT_PRICE_ID;
+  if (!secret || !kitPrice || !sessionId) return false;
   try {
-    const res = await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`, {
-      headers: { Authorization: `Bearer ${secret}` },
-      cache: "no-store",
-    });
+    // Expand line_items so we can confirm the purchased price, not just "paid".
+    const res = await fetch(
+      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}?expand[]=line_items`,
+      { headers: { Authorization: `Bearer ${secret}` }, cache: "no-store" },
+    );
     if (!res.ok) return false;
     const session = await res.json();
-    return session?.payment_status === "paid";
+    if (session?.payment_status !== "paid") return false;
+    const lines: Array<{ price?: { id?: string } }> = session?.line_items?.data ?? [];
+    return lines.some((li) => li.price?.id === kitPrice);
   } catch {
     return false;
   }
