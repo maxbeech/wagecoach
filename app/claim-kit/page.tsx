@@ -6,6 +6,7 @@ import { buildDemandLetter, buildFilingGuide } from "@/lib/demand-letter";
 import { dollars } from "@/lib/federal";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
 import ClaimKitPersonaliser from "@/components/ClaimKitPersonaliser";
+import ObfuscatedEmail from "@/components/ObfuscatedEmail";
 
 // Post-purchase deliverable. Dynamic + noindex: it depends on the live Stripe
 // session and must never be cached or crawled.
@@ -59,8 +60,8 @@ export default async function ClaimKitPage({ searchParams }: { searchParams: Pro
         <Eyebrow>Claim Kit</Eyebrow>
         <h1 className="mt-3 font-display text-2xl font-semibold text-ink">We couldn&apos;t confirm your purchase</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted">
-          This page unlocks after checkout. If you just paid and see this, give it a moment and refresh — or email
-          <a href="mailto:hello@wagecoach.com" className="text-brand-700 underline decoration-brand-300 underline-offset-2"> hello@wagecoach.com</a> and
+          This page unlocks after checkout. If you just paid and see this, give it a moment and refresh — or email{" "}
+          <ObfuscatedEmail className="text-brand-700 underline decoration-brand-300 underline-offset-2" /> and
           we&apos;ll send your kit.
         </p>
         <div className="mt-6">
