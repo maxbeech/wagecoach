@@ -2,13 +2,29 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { POSTS, getPost } from "@/lib/posts";
-import { getPostCategory } from "@/lib/blog-images";
 import { BlogImage } from "@/components/BlogImage";
 import { getCalc } from "@/lib/calculators";
 import { SITE } from "@/lib/site";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
+
+// Converts [label](url) patterns in post paragraphs to <a> links.
+// Internal paths (/foo) stay in-app; external URLs open in a new tab.
+function renderPara(text: string): React.ReactNode[] {
+  return text.split(/(\[[^\]]+\]\([^)]+\))/g).map((part, i) => {
+    const m = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (!m) return part;
+    const [, label, href] = m;
+    const ext = href.startsWith("http");
+    return (
+      <a key={i} href={href} className="text-forest underline underline-offset-2 hover:text-brand-800"
+        {...(ext ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+        {label}
+      </a>
+    );
+  });
+}
 
 export function generateStaticParams() {
   return POSTS.map((p) => ({ slug: p.slug }));
@@ -40,8 +56,10 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       </nav>
 
       <BlogImage
-        category={getPostCategory(p.slug)}
-        className="w-full rounded-2xl mb-6"
+        slug={p.slug}
+        className="w-full aspect-[16/9] rounded-2xl mb-6"
+        showCredit
+        priority
       />
 
       <Eyebrow>Guides</Eyebrow>
@@ -55,7 +73,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           <section key={i}>
             {sec.h && <h2 className="font-display text-lg font-semibold text-ink">{sec.h}</h2>}
             {sec.p.map((para, j) => (
-              <p key={j} className="mt-2 text-[15px] leading-relaxed text-muted">{para}</p>
+              <p key={j} className="mt-2 text-[15px] leading-relaxed text-muted">{renderPara(para)}</p>
             ))}
           </section>
         ))}

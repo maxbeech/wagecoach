@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { POSTS } from "@/lib/posts";
-import { getPostCategory } from "@/lib/blog-images";
 import { BlogImage } from "@/components/BlogImage";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
 
@@ -25,13 +24,13 @@ export default function BlogIndex() {
         />
       </div>
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
-        {POSTS.map((p) => (
+        {POSTS.map((p, i) => (
           <Link key={p.slug} href={`/blog/${p.slug}`}
             className="group block rounded-2xl border border-line bg-card shadow-card transition-colors hover:border-brand-300 hover:bg-brand-50 overflow-hidden">
             <BlogImage
-              category={getPostCategory(p.slug)}
-              className="w-full h-32"
-              preserveAspectRatio="xMidYMid slice"
+              slug={p.slug}
+              className="w-full h-36"
+              priority={i === 0}
             />
             <div className="p-4">
               <div className="font-semibold text-ink group-hover:text-brand-700 transition-colors">{p.title}</div>
