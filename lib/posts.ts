@@ -1104,11 +1104,11 @@ export const POSTS: Post[] = [
     related: ["exempt-salary-calculator", "overtime-calculator"],
     body: [
       { p: [
-        "\"You're on salary, so you don't get overtime.\" It's one of the most repeated lines in American workplaces, and it is very often wrong. The Fair Labor Standards Act does not exempt people because they are salaried. It exempts specific jobs that pass two separate tests, and most workers who are told they're exempt have never actually had those tests applied to their role.",
+        "\"You're on salary, so you don't get overtime.\" It's one of the most repeated lines in American workplaces, and it is very often wrong. FLSA exemptions do not cover people simply because they are salaried. Under the Fair Labor Standards Act, FLSA exemptions apply only to specific jobs that pass two separate tests, and most workers who are told they're exempt have never actually had those tests applied to their role.",
         "As of May 2026 the federal salary threshold sits at $684 a week, or $35,568 a year, after the Department of Labor formally rescinded the 2024 rule that would have pushed it toward $58,656. That's the floor. Clearing it is only step one, and it's the step employers get right most often while skipping the harder, second one entirely."
       ] },
-      { h: "The three white-collar exemptions", p: [
-        "Federal law recognizes three main \"white-collar\" exemptions, plus a few narrower ones for outside sales and certain computer professionals. Each requires a salary at or above the threshold and a specific set of job duties, not a job title.",
+      { h: "The three white-collar FLSA exemptions", p: [
+        "Federal law recognizes three main \"white-collar\" FLSA exemptions, plus a few narrower ones for outside sales and certain computer professionals. Each requires a salary at or above the threshold and a specific set of job duties, not a job title.",
         "The executive exemption covers employees whose primary duty is managing the business or a recognized department, who regularly direct the work of at least two full-time employees, and who have real input into hiring and firing decisions. A shift lead who occasionally opens the store but spends 90% of their time on the till is not exercising executive authority, no matter what the badge says.",
         "The administrative exemption covers office work directly related to management or general business operations, where the employee exercises discretion and independent judgment on significant matters. This is the exemption employers stretch furthest. Processing invoices, following a script, or applying a fixed company policy is not \"discretion and independent judgment\" in the legal sense, even if the job is skilled and important.",
         "The professional exemption splits into learned professionals (work requiring advanced knowledge in a field of science or learning, typically gained through a specialized degree, like nursing or accounting) and creative professionals (work requiring invention, imagination, or talent in a recognized artistic field). A degree in an unrelated subject doesn't automatically qualify someone; the work itself has to require that advanced, specialized knowledge."
@@ -1134,7 +1134,7 @@ export const POSTS: Post[] = [
         "Then check what it's worth. A wrongly exempt employee working consistent overtime can be owed back pay stretching back two years, three if the misclassification was willful, under [the statute of limitations on unpaid wages](/blog/statute-of-limitations-unpaid-wages). Run your numbers through the [overtime calculator](/calculators/overtime-calculator) and the [back-pay calculator](/calculators/back-pay-calculator) to see the real figure before raising it with anyone."
       ] },
       { h: "Frequently asked questions", p: [
-        "Does getting a raise above the salary threshold make me exempt? No. Clearing the salary bar is necessary but not sufficient; you also have to meet the duties test for a specific exemption. Salary alone never creates exempt status.",
+        "Does getting a raise above the salary threshold make me exempt? No. Clearing the salary bar is necessary but not sufficient; you also have to meet the duties test for a specific exemption, since FLSA exemptions are never based on salary alone.",
         "Can my employer reclassify me from exempt to non-exempt? Yes, and it's legal to do going forward. It doesn't retroactively fix unpaid overtime from when you were wrongly classified, though.",
         "What's the highly compensated employee exemption? A lighter-touch duties test for workers earning at least $107,432 a year who regularly perform at least one exempt duty. It's easier to meet than the standard tests, but it isn't automatic just because someone earns a high salary."
       ] },
@@ -1154,8 +1154,8 @@ export const POSTS: Post[] = [
     related: ["back-pay-calculator", "exempt-salary-calculator"],
     body: [
       { p: [
-        "Getting a 1099 at tax time feels administrative, almost trivial, right up until you realize what it actually cost you. No overtime. No employer half of your payroll taxes. No unemployment insurance if the work dries up. If your day-to-day looks a lot more like an employee's than a genuine freelancer's, that form may be quietly wrong, and wrong in a way that's owed back to you.",
-        "Misclassification isn't rare. It's one of the most commonly cited violations in Department of Labor wage-and-hour investigations, precisely because it's cheap for employers to do and hard for workers to notice until they add it up. Here are eight concrete signs worth checking against your own situation."
+        "Getting a 1099 at tax time feels administrative, almost trivial, right up until you realize what it actually cost you. No overtime. No employer half of your payroll taxes. No unemployment insurance if the work dries up. If your day-to-day looks a lot more like an employee's than a genuine freelancer's, you may be a misclassified employee, and that mistake is one the law lets you correct after the fact.",
+        "Being a misclassified employee isn't rare. It's one of the most commonly cited violations in Department of Labor wage-and-hour investigations, precisely because it's cheap for employers to do and hard for workers to notice until they add it up. Here are eight concrete signs worth checking against your own situation."
       ] },
       { h: "1. You work fixed hours, set by someone else", p: [
         "Genuine contractors generally control when they work. If you're told to be logged in at 9 a.m. and stay until 5 p.m., with your schedule set and enforced by the company rather than negotiated by you, that's a strong employee signal. Contractors are hired for an outcome; employees are hired for their time."
@@ -1184,12 +1184,16 @@ export const POSTS: Post[] = [
       { h: "California's stricter ABC test", p: [
         "If you're in California, the bar is higher still. Under the ABC test, a worker is presumed to be an employee unless the business proves all three: the worker is free from company control, the work falls outside the company's usual business, and the worker independently runs their own established trade. Failing even one part means employee status. Many California \"contractors\" are misclassified precisely because this test is so hard to satisfy; see [1099 vs W-2](/blog/1099-vs-w2-employment-classification) for how it interacts with federal rules."
       ] },
+      { h: "How common is this, really?", p: [
+        "Estimates vary by methodology, but the Economic Policy Institute and multiple state audits have consistently found that somewhere between 10% and 30% of employers misclassify at least one worker as an independent contractor in industries like construction, home care, delivery, and hospitality. The National Employment Law Project has flagged the practice as especially concentrated in low-wage, high-turnover sectors, precisely because a misclassified employee is less likely to challenge the arrangement while still working there.",
+        "\"The people most likely to be misclassified are the people least likely to have the time or resources to fight it,\" is a common refrain among wage-and-hour investigators, and it lines up with what the case data shows: complaints tend to surface months or years after the arrangement started, once someone finally runs the numbers."
+      ] },
       { h: "What misclassification actually costs you", p: [
         "The overtime gap is usually the biggest number. A worker averaging 50 hours a week who should have been paid overtime under the FLSA can be owed thousands of dollars a year, recoverable for two years back, three if the violation was willful. On top of that sits the tax hit: as a 1099 worker you pay both halves of Social Security and Medicare (15.3% total) instead of splitting it with an employer, plus you've had no employer-funded unemployment insurance coverage the whole time.",
         "One illustrative example, drawn from a pattern we see often rather than a single named case: a marketing \"contractor\" paid a flat day rate, working set hours in the client's Slack workspace for 18 months, discovered after running the numbers that unpaid overtime and the missing FICA match alone totaled roughly $14,000. The employer had simply never revisited a classification made when the role was genuinely part-time and occasional."
       ] },
       { h: "Frequently asked questions", p: [
-        "I signed a contractor agreement. Doesn't that settle it? No. What the contract calls you doesn't override what the actual working relationship looks like. If it functions like employment, the law can treat it as employment regardless of the label in the document.",
+        "I signed a contractor agreement. Doesn't that settle it? No. What the contract calls you doesn't override what the actual working relationship looks like. A misclassified employee is still a misclassified employee even with a signed 1099 agreement on file, if it functions like employment.",
         "Can I be reclassified while I'm still working there? Sometimes, if the company reviews the arrangement and corrects it. Many claims surface after the relationship ends, though, since bringing it up mid-engagement carries a perceived risk, and retaliation for raising a wage-and-hour concern is separately illegal.",
         "How do I formally challenge my classification? You can file a WHD complaint at [dol.gov](https://www.dol.gov/agencies/whd), file IRS Form SS-8 for an official tax-status determination, or speak with an employment attorney, particularly if several workers are in the same arrangement."
       ] },
@@ -1209,7 +1213,7 @@ export const POSTS: Post[] = [
     related: ["salary-to-hourly-calculator", "final-paycheck-calculator"],
     body: [
       { p: [
-        "Most people who've had a paycheck garnished assume there's one flat rule: a quarter of your pay, gone, no matter what the debt is for. That's true for a credit card judgment. It is not remotely true for child support, where the legal ceiling can reach 65% of your disposable earnings, more than double the consumer-debt cap.",
+        "How much can be garnished from paycheck income depends entirely on what the debt is for, and most people assume there's one flat rule: a quarter of your pay, gone, no matter the reason. That's true for a credit card judgment. It is not remotely true for child support, where the legal ceiling can reach 65% of your disposable earnings, more than double the consumer-debt cap.",
         "The federal Consumer Credit Protection Act (CCPA) sets the floor for both, but it deliberately treats the two very differently, and the gap surprises a lot of workers who assumed \"garnishment\" meant one fixed number."
       ] },
       { h: "The 25% rule for ordinary consumer debt", p: [
@@ -1232,9 +1236,12 @@ export const POSTS: Post[] = [
         "If a pay stub shows a garnishment deduction that looks larger than these caps allow, the math is worth double-checking with the [salary-to-hourly calculator](/calculators/salary-to-hourly-calculator) to confirm your actual disposable-earnings base before raising it with payroll."
       ] },
       { h: "Frequently asked questions", p: [
-        "Can I be garnished for more than one debt at a time? Yes, but the combined total still generally can't exceed the CCPA's caps, and support orders take priority over consumer garnishments when both exist.",
+        "How much can be garnished from paycheck income if I have more than one debt at once? The combined total still generally can't exceed the CCPA's caps, and support orders take priority over consumer garnishments when both exist.",
         "Does garnishment show up on my final paycheck too? Yes, garnishment orders typically continue through your last paycheck at the same employer; see [final paycheck laws by state](/blog/final-paycheck-laws-by-state) for how that interacts with other final-pay deductions.",
         "Can I negotiate a garnishment down? Sometimes, directly with the creditor or through the court that issued the order, particularly for consumer debt. Child support arrears usually require a modification filed with the family court, not a private negotiation with the employer."
+      ] },
+      { h: "A quick worked example", p: [
+        "Say a worker takes home $900 a week in disposable earnings and has both a defaulted credit card judgment and a child support order with no arrears. The support order is calculated first, up to 60% of $900, or $540. Once support is satisfied, the consumer garnishment applies to what's left, capped at the lesser of 25% of the original disposable earnings or the amount above the earnings floor, so in most cases the credit card creditor would collect little or nothing that week. This is exactly why the question of how much can be garnished from paycheck income needs a debt-by-debt answer, not a single percentage."
       ] },
       { h: "Confirm the numbers on your own pay stub", p: [
         "Garnishment math is one of the easiest places for a payroll error to slip through unnoticed, because the percentage differs so much by debt type. If your withholding looks off against the limits above, the first move is simply confirming your disposable earnings figure and comparing it to the applicable cap.",
@@ -1252,7 +1259,7 @@ export const POSTS: Post[] = [
     related: ["overtime-calculator", "final-paycheck-calculator"],
     body: [
       { p: [
-        "Here's the bit that surprises almost everyone: there is no federal law that guarantees you a lunch break. Not one. The Fair Labor Standards Act regulates minimum wage and overtime, and it says nothing at all about whether you get to eat. Whether you're legally entitled to a meal break comes down entirely to which state you clock in in.",
+        "Here's the bit that surprises almost everyone: there is no federal law that guarantees you a lunch break. Not one. The Fair Labor Standards Act regulates minimum wage and overtime, and it says nothing at all about whether you get to eat. Lunch break laws, where they exist at all, come entirely from your state, not the federal government.",
         "That gap between what people assume and what the law actually says is exactly where a lot of workers lose out, either working through unpaid \"breaks\" that never happened, or not realizing a missed break is worth real money in states that require one."
       ] },
       { h: "The federal position: silence, not a ban", p: [
@@ -1273,6 +1280,9 @@ export const POSTS: Post[] = [
       ] },
       { h: "Minor employees often get stronger protections", p: [
         "Workers under 18 are frequently covered by mandatory meal-break rules even in states that don't require them for adults, since child labor law tends to be stricter across the board. If you're a teen worker or managing one, check your state's minor labor law separately from the general adult rules."
+      ] },
+      { h: "How to check your specific state's rule", p: [
+        "Because lunch break laws vary so much by jurisdiction, the fastest way to get a reliable answer is your state department of labor's website rather than a general search, since third-party summaries go stale as rules update. Look specifically for \"meal period\" or \"meal break\" requirements under your state's wage-and-hour regulations, and note the trigger hour (often five hours) and whether the break must be paid or can be unpaid. A handful of cities also layer on their own scheduling-law requirements on top of state rules, so check your municipality too if you work somewhere like New York City, Seattle, or San Francisco."
       ] },
       { h: "Frequently asked questions", p: [
         "If my state doesn't require a lunch break, can I still take one? Yes, nothing stops your employer from offering breaks voluntarily, and many do. The question is only whether it's a legal entitlement you can enforce, and in most states it isn't.",
@@ -1295,7 +1305,7 @@ export const POSTS: Post[] = [
     related: ["overtime-calculator", "double-time-calculator"],
     body: [
       { p: [
-        "California doesn't just require meal and rest breaks, it backs the requirement with one of the most worker-favorable penalty structures in American labor law. Miss a break the employer was supposed to provide, and you're generally owed a full extra hour of pay at your regular rate, not a prorated fraction, not a warning. That penalty can apply twice in a single day, once for a missed meal break and once for a missed rest break, and it accumulates across every shift it happens on.",
+        "The California meal break penalty is one of the most worker-favorable rules in American labor law: miss a break your employer was supposed to provide, and you're generally owed a full extra hour of pay at your regular rate, not a prorated fraction, not a warning. That penalty can apply twice in a single day, once for a missed meal break and once for a missed rest break, and it accumulates across every shift it happens on.",
         "For workers in fast-paced retail, healthcare, warehouse, and restaurant jobs, where coverage gaps make breaks genuinely hard to schedule, this penalty can turn into a substantial unpaid claim without anyone realizing it was building."
       ] },
       { h: "The meal break rule", p: [
@@ -1315,6 +1325,9 @@ export const POSTS: Post[] = [
       ] },
       { h: "What counts as a valid waiver", p: [
         "Employees can voluntarily waive the first meal break only if the total shift is six hours or less, and can waive the second meal break only if the total shift is under 12 hours and the first break was taken. Any waiver has to be genuinely voluntary; an employer pressuring staff to sign a blanket waiver, or simply scheduling shifts as if the break doesn't exist, doesn't satisfy the requirement."
+      ] },
+      { h: "How to document a claim before you raise it", p: [
+        "Because the California meal break penalty is calculated per workday, the strongest claims come from workers who can show a pattern rather than a single bad shift. Keep a simple running note of the date, what time your break actually started (or didn't), and whether you were interrupted, alongside your pay stubs for the same period. California employers are also legally required to keep meal-break records themselves, so if your own log and their timekeeping data disagree, that discrepancy is itself useful evidence in a Labor Commissioner claim."
       ] },
       { h: "Frequently asked questions", p: [
         "Do I have to formally complain before the penalty applies? No. The premium is owed for each violation whether or not you raised it at the time; you're not required to have filed a complaint in the moment to be owed the wages later.",
@@ -1337,7 +1350,7 @@ export const POSTS: Post[] = [
     related: ["final-paycheck-calculator", "back-pay-calculator"],
     body: [
       { p: [
-        "A paycheck that doesn't show up on payday, or shows up and then bounces, isn't just an inconvenience while rent is due. In most states it's a specific wage violation with its own penalties, separate from the wages themselves. Employers sometimes treat a late payroll run as a minor administrative slip; the law in most states treats it as a real breach with real consequences.",
+        "A late paycheck that doesn't show up on payday, or shows up and then bounces, isn't just an inconvenience while rent is due. In most states it's a specific wage violation with its own penalties, separate from the wages themselves. Employers sometimes treat a late payroll run as a minor administrative slip; the law in most states treats it as a real breach with real consequences.",
         "If this has happened to you, the timeline of what you do in the first day or two matters, both for getting paid faster and for preserving your right to any penalty the law provides."
       ] },
       { h: "What counts as \"late\"", p: [
@@ -1357,7 +1370,10 @@ export const POSTS: Post[] = [
         "This penalty structure exists specifically because wages are treated differently from ordinary debts. Being a week late on a vendor invoice is a business problem; being a week late on payroll is a legal violation with its own built-in cost to the employer, precisely to discourage companies from treating employee pay as a flexible line item."
       ] },
       { h: "If it happens repeatedly, it's a bigger red flag", p: [
-        "A single late payroll run, corrected quickly with an apology and a clear explanation, is usually a processing hiccup. A pattern, two, three, four missed or late paydays over a few months, is a different signal entirely, often pointing to real financial trouble at the company. If that's the case, document everything and treat your own pay as the priority; don't extend informal patience past the point where you'd lose real money if the company stops operating altogether."
+        "A single late paycheck, corrected quickly with an apology and a clear explanation, is usually a processing hiccup. A pattern, two, three, four missed or late paydays over a few months, is a different signal entirely, often pointing to real financial trouble at the company. If that's the case, document everything and treat your own pay as the priority; don't extend informal patience past the point where you'd lose real money if the company stops operating altogether."
+      ] },
+      { h: "How states actually enforce the timing rule", p: [
+        "Enforcement mechanics differ, but most states route a late-paycheck complaint through the same labor commissioner's office that handles other wage claims, and many let you file online with copies of pay stubs and any written correspondence attached. A few states, Texas and California among them, publish a specific pay-frequency statute you can cite by name in a complaint, which tends to speed up processing because the violation is unambiguous on its face. If your state doesn't spell out a fixed number of days, the general standard is still \"promptly,\" and a labor agency investigator will weigh how long the delay ran and whether it looks like a pattern."
       ] },
       { h: "Frequently asked questions", p: [
         "Can I refuse to keep working if I haven't been paid? This is legally complicated and state-specific; in most cases you're still expected to perform scheduled work while pursuing the wage claim through official channels, rather than unilaterally stopping. Speak with your state labor agency about your specific situation before making that call.",
@@ -1380,7 +1396,7 @@ export const POSTS: Post[] = [
     related: ["tipped-wage-calculator", "back-pay-calculator"],
     body: [
       { p: [
-        "The following is an illustrative, composite scenario built from patterns we see regularly in tipped-wage complaints, not a single named individual's case. It's presented here because the specific mechanics, an invalid tip pool plus a misapplied tip credit, show up again and again in restaurant wage disputes, and walking through the numbers makes the pattern easier to spot in your own pay stubs.",
+        "The following is an illustrative, composite scenario built from patterns we see regularly in tipped-wage complaints, not a single named individual's case. This kind of unpaid tips overtime case is presented here because the specific mechanics, an invalid tip pool plus a misapplied tip credit, show up again and again in restaurant wage disputes, and walking through the numbers makes the pattern easier to spot in your own pay stubs.",
         "Call her Maria. She worked as a server at a mid-size casual-dining restaurant, earning the tipped minimum cash wage plus tips, and averaging around 45 hours most weeks during the busy season. On paper, everything looked normal. In practice, two separate problems were quietly costing her money every single shift."
       ] },
       { h: "Problem one: the tip pool included the wrong people", p: [
@@ -1400,6 +1416,9 @@ export const POSTS: Post[] = [
       ] },
       { h: "What made this recoverable", p: [
         "Two things made the difference here. First, the violation was structural, an invalid tip pool and a base-rate overtime error, not a one-off mistake, which meant it applied consistently across every pay period, not just an isolated bad week. Second, contemporaneous records (her own log plus pay stubs) meant there was no dispute about the facts once the complaint was filed; the investigation could focus on the legal question rather than reconstructing what actually happened months later."
+      ] },
+      { h: "Why this unpaid tips overtime case pattern is so common", p: [
+        "Restaurant payroll systems are frequently configured once, at setup, and never revisited as staff and management turnover. A tip-pool split that included a shift lead when the restaurant opened can quietly stay in the system for years after that role stops meeting the legal test for a tipped-pool participant, simply because nobody flags it. The same is true of overtime formulas: once a payroll template calculates overtime on the cash wage instead of the full minimum, it keeps doing that for every server who comes through, not just the one who happens to notice."
       ] },
       { h: "Frequently asked questions", p: [
         "Can a restaurant legally require any tip pooling at all? Yes, mandatory tip pools among eligible tipped employees, servers, bartenders, bussers, are generally legal. The problem arises specifically when ineligible staff, kitchen workers, managers, or owners, are included.",
@@ -1422,7 +1441,7 @@ export const POSTS: Post[] = [
     related: ["overtime-calculator", "time-and-a-half-calculator"],
     body: [
       { p: [
-        "Nothing about the Fair Labor Standards Act changes because you're logging in from a kitchen table instead of an office. If you're a non-exempt employee, you're still owed 1.5x your regular rate for every hour over 40 in a week, whether you worked those hours in a cubicle or on your sofa. What does change, and change a lot, is how those hours get recorded, and how easily extra time slips through unpaid when there's no manager physically watching the clock.",
+        "Nothing about the Fair Labor Standards Act changes because you're logging in from a kitchen table instead of an office. Overtime for remote employees works exactly the same as overtime for anyone else: 1.5x your regular rate for every hour over 40 in a week, whether you worked those hours in a cubicle or on your sofa. What does change, and change a lot, is how those hours get recorded, and how easily extra time slips through unpaid when there's no manager physically watching the clock.",
         "Remote and hybrid work has quietly become one of the most common sources of unrecorded overtime, not because the law is unclear, but because the systems most companies use to track hours were built for an office, and nobody updated them for a kitchen table."
       ] },
       { h: "The rule hasn't moved; the tracking has", p: [
@@ -1436,6 +1455,9 @@ export const POSTS: Post[] = [
       ] },
       { h: "Hybrid schedules add their own wrinkle", p: [
         "Workers splitting time between home and an office sometimes end up working a full day at home and then also logging hours preparing for an in-office day, or vice versa, without either half being tracked as carefully as a single, consistent location would be. If your hybrid schedule means your actual weekly hours are harder to total than a fixed schedule would be, that's exactly the kind of situation where a personal log is worth keeping."
+      ] },
+      { h: "What employers get wrong about overtime for remote employees", p: [
+        "The most common mistake isn't malicious; it's a policy written for an office that never got updated. A handbook that says \"no unapproved overtime\" made sense when a manager could physically see who stayed late. Applied to a remote team, the same policy often gets read as \"unapproved hours don't count,\" which isn't correct. If the work happened and the employer had reason to know, the approval process is a separate HR issue from the pay obligation, and the two shouldn't be conflated."
       ] },
       { h: "What a defensible personal log looks like", p: [
         "A simple daily note, start time, end time, and any after-hours work with a rough duration, is often the single most useful thing a remote non-exempt worker can do. It doesn't need to be elaborate; a running note in your phone is enough. If your recorded hours and your employer's timesheet ever diverge, your own contemporaneous log is strong evidence in a wage claim.",
@@ -1465,7 +1487,7 @@ export const POSTS: Post[] = [
     related: ["minimum-wage-calculator", "overtime-calculator"],
     body: [
       { p: [
-        "Not every minimum wage increase lands on January 1. A smaller group of states re-index or step up their minimum wage mid-year, and July 1, 2026 brought increases in Alaska and Oregon, alongside a handful of local jurisdictions. If you work in either state, your legal pay floor moved this month, whether or not your employer's payroll system caught up automatically.",
+        "Not every minimum wage increase lands on January 1. A smaller group of states re-index or step up their minimum wage mid-year, and this minimum wage increase July 2026 brought higher rates in Alaska and Oregon, alongside a handful of local jurisdictions. If you work in either state, your legal pay floor moved this month, whether or not your employer's payroll system caught up automatically.",
         "Nevada, which some year-ahead forecasts had flagged as a possible mid-2026 mover, held steady this cycle. Worth knowing if you'd been expecting a bump there: it isn't happening in 2026."
       ] },
       { h: "Alaska: up to $14.00", p: [
@@ -1482,6 +1504,9 @@ export const POSTS: Post[] = [
       { h: "What to check on your own paycheck", p: [
         "Payroll systems don't always catch a mid-year rate change automatically, especially for smaller employers running manual payroll. If you're in Alaska or Oregon, compare your hourly rate against the new figures for the pay period that includes July 1 forward; any hours worked from that date at the old rate are underpaid, recoverable as back pay.",
         "This also affects overtime math, since your regular rate, and therefore your time-and-a-half rate, rises alongside the base minimum. Run your numbers through the [minimum wage calculator](/calculators/minimum-wage-calculator) to confirm the correct figure for your exact location, then check any recent overtime weeks with the [overtime calculator](/calculators/overtime-calculator)."
+      ] },
+      { h: "How this compares to other mid-year movers", p: [
+        "Alaska and Oregon aren't the only states that adjust outside the usual January cycle; Nevada, Florida, and a handful of others have used mid-year effective dates in past years for ballot-measure or fiscal-year-tied increases. Tracking a minimum wage increase July 2026 specifically means watching state labor department bulletins directly rather than relying on a single annual roundup, since these dates don't follow one national pattern."
       ] },
       { h: "Frequently asked questions", p: [
         "Does this affect tipped workers the same way? In Alaska, yes in full, since there's no tip credit. In Oregon, also yes, Oregon likewise doesn't allow a tip credit, so tipped employees get the full new minimum wage plus tips, unlike states such as Texas or Florida that reduce the cash wage for tipped staff.",
@@ -1504,7 +1529,7 @@ export const POSTS: Post[] = [
     related: ["minimum-wage-calculator", "tipped-wage-calculator"],
     body: [
       { p: [
-        "Florida workers have been watching this date approach for six years. On September 30, 2026, the state's minimum wage reaches $15.00 an hour, the final scheduled step of Amendment 2, the constitutional amendment Florida voters approved back in November 2020. It's one of the more significant minimum-wage milestones happening anywhere in the country this year, in a state that started this journey at just $8.56.",
+        "Florida workers have been watching this date approach for six years. Florida minimum wage $15 becomes reality on September 30, 2026, the final scheduled step of Amendment 2, the constitutional amendment Florida voters approved back in November 2020. It's one of the more significant minimum-wage milestones happening anywhere in the country this year, in a state that started this journey at just $8.56.",
         "For a full-time worker, the difference between the pre-amendment wage floor and $15.00 an hour works out to well over $12,000 a year in additional gross pay, a substantial shift for a state with one of the largest low-wage workforces in the country."
       ] },
       { h: "The six-year climb, in full", p: [
@@ -1525,6 +1550,9 @@ export const POSTS: Post[] = [
         "If you work in Florida, confirm your rate updates correctly for any hours worked from September 30, 2026 onward; anything paid at the old $14.00 rate for hours worked after that date is underpaid. This also raises your overtime baseline, since time-and-a-half is calculated on your regular rate, which rises alongside the minimum.",
         "Use the [minimum wage calculator](/calculators/minimum-wage-calculator) to confirm the exact figure for your role, and if you're tipped, cross-check with the [tipped wage calculator](/calculators/tipped-wage-calculator) to make sure your employer's tip-credit math reflects the new cash-wage floor."
       ] },
+      { h: "How Florida compares to its neighbors", p: [
+        "Florida minimum wage $15 puts the state well ahead of Georgia, Alabama, Mississippi, and every other Gulf Coast state still sitting at the federal $7.25 floor. That's a roughly $16,000-a-year gap for a full-time worker between Florida and a state one border away, which is already reshaping hiring conversations in border metro areas like the Florida-Georgia line near Jacksonville and Tallahassee, where employers on the Georgia side now have to compete with a meaningfully higher posted wage just across the state line."
+      ] },
       { h: "Frequently asked questions", p: [
         "Does the $15.00 rate apply to all Florida workers? It applies broadly to covered non-exempt employment, with the standard narrow exceptions like certain student workers and some training wages. It does not apply to employees who are legitimately exempt from minimum wage and overtime law under the FLSA duties tests.",
         "Will my county or city set a higher minimum wage? Florida law generally preempts local governments from setting a minimum wage above the state rate, unlike states such as California or Washington that allow city-level minimums well above the state floor.",
@@ -1537,7 +1565,7 @@ export const POSTS: Post[] = [
   },
   {
     slug: "overtime-salary-threshold-litigation-2026",
-    title: "The 2024 Overtime Rule Is Dead: Where the Threshold Stands Now",
+    title: "Overtime Salary Threshold 2026: Where It Stands Now",
     description: "The DOL formally rescinded the 2024 overtime salary-threshold rule in May 2026. Here's what that means for the federal exempt salary floor, and why it's lower than many employers expected.",
     date: "2026-07-15",
     readMins: 9,
@@ -1545,7 +1573,7 @@ export const POSTS: Post[] = [
     related: ["exempt-salary-calculator", "overtime-calculator"],
     body: [
       { p: [
-        "For nearly two years, HR departments and payroll teams across the country planned around a number that, as of May 2026, no longer applies. The Biden-era 2024 overtime rule, which would have raised the federal exempt salary threshold from $684 a week to $1,128 a week ($58,656 a year) in stages, is officially dead. The Department of Labor confirmed its formal rescission in May 2026, closing out a legal fight that had already effectively neutered the rule since a Texas federal court vacated it back in late 2024.",
+        "For nearly two years, HR departments and payroll teams across the country planned around an overtime salary threshold 2026 figure that, as of May 2026, no longer applies. The Biden-era 2024 overtime rule, which would have raised the federal exempt salary threshold from $684 a week to $1,128 a week ($58,656 a year) in stages, is officially dead. The Department of Labor confirmed its formal rescission in May 2026, closing out a legal fight that had already effectively neutered the rule since a Texas federal court vacated it back in late 2024.",
         "If your employer raised your salary in 2024 or 2025 anticipating that rule, or if you were told you'd be reclassified as exempt once your pay crossed a threshold that's now gone, this is worth understanding in detail, because the number that actually governs your rights is not the one most people spent the last two years expecting."
       ] },
       { h: "The timeline, briefly", p: [
@@ -1564,7 +1592,7 @@ export const POSTS: Post[] = [
         "None of this litigation touched the duties test, only the salary number. A worker earning above $684 a week still has to actually perform executive, administrative, or professional duties to be lawfully exempt; see [FLSA exemptions explained](/blog/flsa-exemptions-explained) for how that test works in practice. The salary threshold fight gets the headlines, but duties-test misclassification remains the more common, and often more expensive, violation."
       ] },
       { h: "What comes next", p: [
-        "The DOL's rescission announcement signaled it intends to pursue its own rulemaking process rather than leave the 2019 thresholds in place indefinitely, but as of this writing no formal new proposal has moved through the required notice-and-comment process. Any future change would need to go through that full process again, which typically takes a year or more from proposal to final rule, and would likely face its own legal challenges given the pattern of the last decade.",
+        "The DOL's rescission announcement signaled it intends to pursue its own rulemaking process rather than leave the 2019 thresholds in place indefinitely, but as of this writing no formal new proposal has moved through the required notice-and-comment process. Any future change to the overtime salary threshold 2026 figure would need to go through that full process again, which typically takes a year or more from proposal to final rule, and would likely face its own legal challenges given the pattern of the last decade.",
         "State thresholds are unaffected by any of this federal back-and-forth. California, New York, and Washington all maintain their own, generally higher, exempt salary floors regardless of what happens federally."
       ] },
       { h: "Frequently asked questions", p: [
@@ -1579,7 +1607,7 @@ export const POSTS: Post[] = [
   },
   {
     slug: "dol-back-wages-recovered-2025",
-    title: "The DOL Recovered $259M in Back Wages in 2025. Here's Why It Matters",
+    title: "DOL Recovered $259M in Back Wages: Is a Complaint Worth It?",
     description: "The Department of Labor recovered over $259 million in unpaid wages for nearly 177,000 workers in FY2025, a five-year high. Here's what industries were hit hardest, and what it means for filing a complaint.",
     date: "2026-07-17",
     readMins: 8,
@@ -1601,9 +1629,12 @@ export const POSTS: Post[] = [
       { h: "What the agency also changed in 2025", p: [
         "Alongside enforcement, the WHD expanded its compliance-assistance efforts: new guidance materials, an improved online compliance hub, updated FLSA training videos, and a relaunch of both its opinion-letter program and the Payroll Audit Independent Determination (PAID) program, which lets employers self-report and correct violations with reduced penalty exposure. That combination, tougher enforcement on one side and easier voluntary correction on the other, is a deliberate two-track approach rather than a pure crackdown."
       ] },
-      { h: "What this means if you're considering a complaint", p: [
-        "A WHD complaint is free, confidential to the extent the law allows, and doesn't require a lawyer or a court appearance. The 2025 numbers show the agency isn't a paper tiger on this; nearly 177,000 workers actually got money back last year through exactly this process. If your situation resembles the patterns above, unpaid overtime, an invalid tip pool, a misclassification that doesn't hold up under the duties test, that's precisely the kind of case the WHD investigates and resolves regularly.",
+      { h: "What this means if you're considering a department of labor complaint", p: [
+        "A department of labor complaint is free, confidential to the extent the law allows, and doesn't require a lawyer or a court appearance. The 2025 numbers show the agency isn't a paper tiger on this; nearly 177,000 workers actually got money back last year through exactly this process. If your situation resembles the patterns above, unpaid overtime, an invalid tip pool, a misclassification that doesn't hold up under the duties test, that's precisely the kind of case the WHD investigates and resolves regularly.",
         "The process itself is covered step by step in [how to file a department of labor complaint](/blog/file-department-of-labor-complaint). What the FY2025 data adds is context: this isn't a rarely used, symbolic option. It's an active enforcement channel currently recovering more money than it has in half a decade."
+      ] },
+      { h: "How the process typically unfolds", p: [
+        "After a department of labor complaint is filed, an investigator is assigned to review payroll records, interview affected workers, and, where warranted, contact the employer directly. Straightforward cases with clear records can move in a matter of months; larger or contested investigations, especially ones involving misclassification across many employees, can take considerably longer because the agency is reconstructing pay history across an entire workforce rather than one individual's timesheet."
       ] },
       { h: "Frequently asked questions", p: [
         "Does filing a complaint guarantee my employer gets investigated? Not automatically or immediately; the WHD prioritizes cases based on severity, pattern, and available resources, but a specific, well-documented complaint significantly improves the odds of a real investigation.",
@@ -1618,7 +1649,7 @@ export const POSTS: Post[] = [
   },
   {
     slug: "labor-board-complaint-vs-attorney",
-    title: "State Labor Board vs Employment Attorney: Which Gets You Paid Faster?",
+    title: "Labor Board vs Attorney for Unpaid Wages: Which Is Faster?",
     description: "A free labor board complaint and a contingency-fee attorney both recover unpaid wages, but they suit different situations. Here's an honest, product-neutral comparison of speed, cost, and scope.",
     date: "2026-07-18",
     readMins: 10,
@@ -1626,7 +1657,7 @@ export const POSTS: Post[] = [
     related: ["back-pay-calculator", "overtime-calculator"],
     body: [
       { p: [
-        "If you've confirmed you're owed back pay, the next decision is where to take it: your state labor board (or the federal WHD), or an employment attorney. Both routes work, both are used successfully every day, and they're genuinely not competing for the same case. The honest answer to \"which is better\" is almost always \"it depends on the size and shape of your claim,\" so here's a direct, unvarnished comparison across the factors that actually decide it."
+        "If you've confirmed you're owed back pay, the next decision is where to take it: your state labor board (or the federal WHD), or an attorney for unpaid wages. Both routes work, both are used successfully every day, and they're genuinely not competing for the same case. The honest answer to \"which is better\" is almost always \"it depends on the size and shape of your claim,\" so here's a direct, unvarnished comparison across the factors that actually decide it."
       ] },
       { h: "Cost: free vs contingency", p: [
         "A labor board or WHD complaint costs nothing to file. No fees, no retainer, and the agency does the investigative legwork. This alone makes it the obvious first stop for smaller claims, where an attorney's involvement wouldn't be economical relative to the amount owed.",
@@ -1652,9 +1683,12 @@ export const POSTS: Post[] = [
       { h: "You can also do both, in sequence", p: [
         "These paths aren't mutually exclusive. Some workers file a WHD complaint first to get a documented, objective finding, then bring that finding to an attorney if the case is larger or more contested than initially thought. Others consult an attorney first specifically to decide which route fits, many offer a free initial consultation for exactly this kind of assessment, without committing to representation."
       ] },
+      { h: "What to bring to that first conversation", p: [
+        "Whichever route you choose first, showing up with organized numbers changes how quickly things move. Pay stubs covering the disputed period, a rough log of hours worked if your timesheet looks wrong, and a written record of any conversation where you raised the issue with your employer all shorten the fact-finding stage, whether that stage happens inside a WHD investigation or in a first call with an attorney for unpaid wages. Agencies and attorneys both spend a meaningful chunk of early time simply reconstructing what happened; arriving with that groundwork already done tends to move a case faster either way."
+      ] },
       { h: "Frequently asked questions", p: [
         "Does filing a WHD complaint first hurt my chances with an attorney later? Generally no; a completed WHD investigation and finding can actually strengthen a later legal claim by providing an independent factual record.",
-        "How do I find a legitimate employment attorney for a wage case? Look for attorneys who specifically list wage-and-hour or FLSA litigation as a practice area, and ask directly about their contingency fee structure and experience with cases similar in size to yours before committing.",
+        "How do I find a legitimate attorney for unpaid wages? Look for attorneys who specifically list wage-and-hour or FLSA litigation as a practice area, and ask directly about their contingency fee structure and experience with cases similar in size to yours before committing.",
         "Is a demand letter the same as hiring an attorney to sue? No; a demand letter is often the first, lower-cost step an attorney takes, a formal written claim intended to prompt settlement before any lawsuit is filed. See [how to write a demand letter for unpaid wages](/blog/demand-letter-unpaid-wages) for what that step involves on its own."
       ] },
       { h: "Start with the number, then pick the route", p: [
@@ -1665,7 +1699,7 @@ export const POSTS: Post[] = [
   },
   {
     slug: "free-paycheck-calculators-compared",
-    title: "Free Paycheck Calculators Compared: Do Any Catch Underpayment?",
+    title: "Paycheck Calculator Comparison: Do Any Catch Underpay?",
     description: "ADP, PaycheckCity, SmartAsset, and Gusto all offer free paycheck calculators, but none flag unpaid overtime or a missing tip credit. Here's an honest comparison of what each is actually built for.",
     date: "2026-07-19",
     readMins: 10,
@@ -1673,7 +1707,7 @@ export const POSTS: Post[] = [
     related: ["overtime-calculator", "back-pay-calculator"],
     body: [
       { p: [
-        "Search \"paycheck calculator\" and you'll land on tools from ADP, PaycheckCity, SmartAsset, Gusto, and a handful of others, all free, all reputable, all genuinely useful for one specific job: estimating your net take-home pay after taxes and deductions. What none of them are built to do is tell you whether your gross pay was calculated correctly in the first place. That's a different question, and it's the one that actually matters if you suspect you've been underpaid."
+        "Search \"paycheck calculator\" and you'll land on tools from ADP, PaycheckCity, SmartAsset, Gusto, and a handful of others, all free, all reputable, all genuinely useful for one specific job: estimating your net take-home pay after taxes and deductions. Run any honest paycheck calculator comparison between them, though, and you'll find none are built to tell you whether your gross pay was calculated correctly in the first place. That's a different question, and it's the one that actually matters if you suspect you've been underpaid."
       ] },
       { h: "What the big paycheck calculators are actually for", p: [
         "ADP's calculator, PaycheckCity, SmartAsset's paycheck tool, and Gusto's version all work from the same starting assumption: you tell it your gross pay, filing status, and deductions, and it works backward to show your net take-home. They're built for a genuinely useful purpose, budgeting, checking a job offer, understanding a withholding change, and they do that job well. SmartAsset in particular layers in solid state-by-state tax context, and PaycheckCity handles multi-state and bonus-pay scenarios cleanly.",
@@ -1693,6 +1727,9 @@ export const POSTS: Post[] = [
       ] },
       { h: "What none of these tools can tell you", p: [
         "No calculator, wage-focused or tax-focused, can tell you definitively whether a legal violation occurred; that requires human judgment about your specific facts, sometimes a formal investigation. What a good calculator can do is turn a vague suspicion into a specific, defensible number, which is exactly the evidence you need whether you're raising it with HR, filing a WHD complaint, or talking to an attorney."
+      ] },
+      { h: "A side-by-side summary", p: [
+        "For a quick paycheck calculator comparison: ADP and Gusto lean toward payroll-professional accuracy and multi-state complexity, PaycheckCity is strong for one-off bonus and multi-state scenarios, and SmartAsset pairs its calculator with the most approachable state tax explainers of the group. None of the four ask about your hours worked versus hours paid, your tip pool eligibility, or your exemption status, because that verification step sits entirely outside what a tax-withholding tool is designed to check."
       ] },
       { h: "Frequently asked questions", p: [
         "Are ADP, PaycheckCity, SmartAsset, and Gusto's calculators accurate for tax estimates? Generally yes, for their intended purpose of estimating net pay from a correct gross figure; they're well-maintained and widely used by payroll professionals themselves.",
@@ -1731,6 +1768,9 @@ export const POSTS: Post[] = [
       ] },
       { h: "What it can't do", p: [
         "It can't force your employer to pay; a demand letter is a formal request, not an enforceable order. It can't investigate on your behalf the way the WHD can, pulling employer records or interviewing coworkers. It can't represent you if the dispute escalates to litigation. It's a starting move, useful specifically because it's fast, cheap, and often enough to resolve a clear-cut, moderate claim without further escalation, not a complete legal solution."
+      ] },
+      { h: "How the wage claim kit compares to doing it yourself", p: [
+        "You could, in principle, write your own demand letter from scratch: pull the relevant FLSA or state statute, calculate the back pay manually, and format it as a formal request. Plenty of workers do exactly that, successfully. What the wage claim kit buys you is speed and confidence that the calculation and the citation are both correct, since the same engine behind it powers the [back-pay calculator](/calculators/back-pay-calculator) and the state-by-state filing data behind [wage claim guides](/wage-claim). If you're comfortable doing the legwork yourself, the free calculator alone may be all you need; the kit exists for the more common case where the letter itself is the intimidating part."
       ] },
       { h: "A realistic way to decide", p: [
         "Run your numbers through the free [back-pay calculator](/calculators/back-pay-calculator) first, regardless of what you do next; that's free and tells you the actual size of your claim. If the total is a few hundred to a few thousand dollars, and you'd like to try a direct, professional-looking request before going further, the kit is a reasonable $29 first step. If the total is large, or your situation involves more than a straightforward pay calculation, that free number is exactly what an attorney or the WHD will want to see anyway, so it's not wasted either way."
