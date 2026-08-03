@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import CheckoutButton from "@/components/CheckoutButton";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
+import { SITE } from "@/lib/site";
 
 export const revalidate = 604800; // weekly ISR
 
@@ -88,6 +89,18 @@ export default function Pricing() {
         WageCoach is general information, not legal or tax advice, and is not a law firm. Wage law has local
         exceptions and strict deadlines, so confirm with your state labor department or an attorney before acting.
       </p>
+
+      {/* Machine-readable pricing, kept in lockstep with the three tiers rendered above. */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org", "@type": "SoftwareApplication",
+        name: SITE.name, applicationCategory: "BusinessApplication", operatingSystem: "Web",
+        description: SITE.description, url: `${SITE.url}/pricing`,
+        offers: [
+          { "@type": "Offer", name: "Free calculators & back-pay estimator", price: "0", priceCurrency: "USD", description: "Every overtime, minimum-wage and paycheck calculator, plus the back-pay estimator. No account, forever." },
+          { "@type": "Offer", name: "Claim Kit", price: "29", priceCurrency: "USD", description: "A demand letter pre-filled with your figures, your state's wage-claim agency and filing route, and a step-by-step complaint guide, delivered as a printable PDF." },
+          { "@type": "Offer", name: "Pro report", price: "19", priceCurrency: "USD", description: "A multi-state wage & hour compliance report PDF covering minimum wage, overtime, tipped, final-pay and break rules, cited and dated." },
+        ],
+      }) }} />
     </div>
   );
 }

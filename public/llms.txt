@@ -1,0 +1,44 @@
+# WageCoach
+
+> WageCoach is a free U.S. wage & hour toolkit for workers: overtime, minimum-wage, tipped-wage,
+> exempt-status, PTO-payout and final-paycheck calculators, plus a back-pay estimator that flags
+> unpaid wages and walks through filing a claim in any state. Every figure is built on the federal
+> Fair Labor Standards Act (FLSA) and each state's 2026 wage and hour rules, and is cited on the
+> methodology page. WageCoach also sells a one-time $29 Claim Kit (demand letter + filing guide)
+> for workers and a one-time $19 multi-state compliance report for employers, and offers a free
+> attorney case review. WageCoach provides general information, not legal advice, and is not a law
+> firm.
+
+## Tools
+
+- [Overtime calculator](https://www.wagecoach.com/calculators/overtime-calculator): FLSA weekly overtime (1.5x over 40 hrs/week) plus state daily-overtime and California double-time rules.
+- [Back-pay calculator](https://www.wagecoach.com/calculators/back-pay-calculator): estimates unpaid wages you may be owed and the 2-to-3-year FLSA recovery window, plus liquidated damages.
+- [Time and a half calculator](https://www.wagecoach.com/calculators/time-and-a-half-calculator): the 1.5x overtime premium, per hour and per week.
+- [Double time calculator](https://www.wagecoach.com/calculators/double-time-calculator): pay at 2x the regular rate, including California's daily double-time rule.
+- [Salary to hourly calculator](https://www.wagecoach.com/calculators/salary-to-hourly-calculator): converts annual salary to hourly (and back), across every pay period.
+- [Minimum wage by state](https://www.wagecoach.com/calculators/minimum-wage-calculator): 2026 minimum and tipped wage for all 50 states plus DC.
+- [Tipped wage calculator](https://www.wagecoach.com/calculators/tipped-wage-calculator): checks whether cash wage plus tips meets the applicable minimum wage.
+- [Exempt vs non-exempt calculator](https://www.wagecoach.com/calculators/exempt-salary-calculator): checks a salary against the federal (and state) overtime-exemption threshold.
+- [PTO payout calculator](https://www.wagecoach.com/calculators/pto-payout-calculator): cash value of unused PTO and whether your state requires payout on separation.
+- [Final paycheck deadlines by state](https://www.wagecoach.com/calculators/final-paycheck-calculator): when your last paycheck is legally due, fired or quit.
+- [All calculators](https://www.wagecoach.com/calculators)
+
+## Recover unpaid wages
+
+- [Am I owed back pay?](https://www.wagecoach.com/wage-claim): back-pay estimator plus links to a filing guide for every state.
+- [Wage-claim filing guides, by state](https://www.wagecoach.com/wage-claim/california): 51 state guides (50 states + DC) that name the filing agency, the federal 2-to-3-year recovery window and step-by-step filing instructions. Linked example: California.
+- [Free attorney case review](https://www.wagecoach.com/free-case-review): no-cost, no-obligation review of a wage claim by an employment attorney.
+
+## State & city wage data
+
+- [Minimum wage and labor law by state](https://www.wagecoach.com/states): 2026 minimum wage, overtime, tipped-wage, final-paycheck and break rules for all 50 states plus DC.
+- [City minimum wages](https://www.wagecoach.com/cities): 2026 minimum wage for major U.S. cities with a local rate above their state's.
+
+## Guides
+
+- [Wage & hour guides](https://www.wagecoach.com/blog): plain-English explainers on overtime, wage theft, worker classification, tipped pay, garnishment, severance and more.
+
+## Pricing & sources
+
+- [Pricing](https://www.wagecoach.com/pricing): every calculator is free forever; a $29 Claim Kit for workers and a $19 multi-state compliance report for employers.
+- [Methodology & sources](https://www.wagecoach.com/methodology): the FLSA constants and 2026 state data behind every calculator, with citations to the U.S. DOL and named sources.

@@ -14,7 +14,7 @@ employer buyer. The funnel is: free calculator → back-pay verdict → **$29 Cl
 (a pre-filled demand letter + filing guide) and a **free attorney case review**
 (lead-gen). The legacy **$19 employer report** remains as a secondary product.
 
-Live: https://wagecoach.vercel.app
+Live: https://www.wagecoach.com
 
 ## Stack
 
@@ -116,7 +116,7 @@ otherwise confirms without storing anything — the site stays database-free.
 | `STRIPE_SECRET_KEY` | Stripe API key (test `sk_test_…` for dev, live `sk_live_…` in prod). Also used to verify the kit Checkout session. |
 | `STRIPE_KIT_PRICE_ID` | Price id for the $29 Claim Kit. |
 | `STRIPE_PRICE_ID` | Price id for the $19 Pro report. |
-| `NEXT_PUBLIC_SITE_URL` | Canonical base for Stripe success/cancel URLs (e.g. `https://wagecoach.vercel.app`). |
+| `NEXT_PUBLIC_SITE_URL` | Canonical base for Stripe success/cancel URLs (e.g. `https://www.wagecoach.com`). |
 | `LEAD_WEBHOOK_URL` | Optional. Where free-case-review leads are POSTed (CRM/Zapier/attorney intake). |
 
 Local dev: copy the keys into `.env.local` (gitignored). Use Stripe **test** keys + test
@@ -135,9 +135,21 @@ quote. New env vars: `STRIPE_KIT_PRICE_ID`, `LEAD_WEBHOOK_URL`.
 
 ## Canonical host
 
-`lib/site.ts` sets `SITE.url`. The apex `wagecoach.com` is not connected yet,
-so it currently points at the live Vercel host (`wagecoach.vercel.app`) which
-drives every canonical tag, the sitemap, robots and all JSON-LD URLs. When the
-custom domain is wired in Vercel, flip `domain` and `url` back to `wagecoach.com`.
+`lib/site.ts` sets `SITE.url` to `https://www.wagecoach.com` — the wired custom
+domain, which is what actually serves the site. It drives every canonical tag,
+the sitemap, robots and all JSON-LD URLs. The apex `wagecoach.com` 308-redirects
+to `www.wagecoach.com`.
+
+## GEO surfaces (AI answer engines)
+
+- `public/llms.txt` — machine-readable overview of the product and its real
+  routes, per the [llms.txt](https://llmstxt.org/) convention.
+- `app/robots.ts` allows all user agents (including GPTBot, ClaudeBot,
+  PerplexityBot, Google-Extended, CCBot) by not restricting anything.
+- JSON-LD: `Organization` + `WebSite` on the homepage, `SoftwareApplication`
+  on every calculator and `/pricing` (with `Offer`s matching the visible $0 /
+  $29 / $19 prices), `Article` on blog posts, `FAQPage` wherever `Faq` is used,
+  `HowTo` + `BreadcrumbList` on `/wage-claim/[state]`, `BreadcrumbList` on
+  `/calculators/[slug]`, `/states/[slug]` and `/cities/[slug]`.
 
 > General information, not legal or tax advice.

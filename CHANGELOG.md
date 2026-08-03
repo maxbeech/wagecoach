@@ -1,5 +1,26 @@
 # Changelog
 
+## Unreleased — GEO audit fixes
+
+- **`llms.txt` added** (`public/llms.txt`): a machine-readable summary of what
+  WageCoach is, plus links to every real route (tools, wage-claim guides,
+  state/city data, blog, pricing, methodology) for AI answer engines. Was
+  previously 404.
+- **Machine-readable pricing (`/pricing`):** added a `SoftwareApplication` +
+  `Offer[]` JSON-LD block with the free ($0), Claim Kit ($29) and Pro report
+  ($19) tiers, matching the prices rendered on the page. This was the gap
+  flagged by the 2026-07-10 SEO audit ("missing SoftwareApplication schema") —
+  calculators and the homepage already emitted a $0 `Offer`, but nothing
+  reflected the two paid products.
+- **Site identity JSON-LD:** added `Organization` and `WebSite` schema to the
+  homepage so answer engines can resolve "WageCoach" as an entity, alongside
+  the existing `WebApplication` block.
+- **Blog `Article` schema:** added `image` (the post's real hero image) and
+  `mainEntityOfPage`.
+- **README:** corrected the stale "apex not connected" canonical-host note
+  (the custom domain has been wired for a while — `wagecoach.com` 308s to
+  `www.wagecoach.com`) and documented the GEO surfaces above.
+
 ## Unreleased — Production readiness + Claim Kit improvements
 
 - **Canonical host live:** `lib/site.ts` now points at `www.wagecoach.com` (the

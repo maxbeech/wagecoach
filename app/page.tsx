@@ -253,6 +253,15 @@ export default function Home() {
         description: SITE.description, url: SITE.url,
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       }) }} />
+      {/* Site-wide identity, so answer engines can resolve "WageCoach" as an entity. */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org", "@type": "Organization",
+        name: SITE.name, url: SITE.url, description: SITE.description, email: SITE.email,
+      }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org", "@type": "WebSite",
+        name: SITE.name, url: SITE.url, description: SITE.description,
+      }) }} />
     </div>
   );
 }

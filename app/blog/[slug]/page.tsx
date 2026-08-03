@@ -96,8 +96,10 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org", "@type": "Article",
         headline: p.title, description: p.description, datePublished: p.date,
+        image: `${SITE.url}/blog/posts/${p.slug}.jpg`,
         author: { "@type": "Organization", name: SITE.name },
         publisher: { "@type": "Organization", name: SITE.name },
+        mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE.url}/blog/${p.slug}` },
       }) }} />
     </article>
   );
