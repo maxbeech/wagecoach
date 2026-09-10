@@ -1,6 +1,6 @@
 // SEO guides. Each post renders as headings + paragraphs.
 // Links in paragraph strings use [label](url) syntax — rendered by the blog page.
-export interface PostSection { h?: string; p: string[] }
+export interface PostSection { h?: string; p: string[]; table?: { headers: string[]; rows: string[][] } }
 export interface Post {
   slug: string;
   title: string;
@@ -1784,6 +1784,69 @@ export const POSTS: Post[] = [
       { h: "The honest bottom line", p: [
         "The kit is worth $29 for a specific kind of claim: clear, calculable, and one you'd like to try resolving directly before escalating. It is not a substitute for a free government investigation if that's genuinely all you want, and it's not a substitute for legal representation if your situation is larger or more complicated than a straightforward wage calculation.",
         "This is general information, not legal advice, and everything above applies to our own product; take the self-assessment seriously rather than the sales pitch."
+      ] }
+    ]
+  },
+  {
+    slug: "is-overtime-mandatory",
+    title: "Is Overtime Mandatory? What Your Employer Can (and Can't) Force You to Work",
+    description: "Yes, in most jobs employers can require overtime and fire you for refusing. See the real exceptions, then check your pay with our free calculator.",
+    date: "2026-09-10", readMins: 9, keyword: "is overtime mandatory", related: ["overtime-calculator", "time-and-a-half-calculator"],
+    body: [
+      { p: [
+        "Short answer: yes, in most jobs, your employer can legally require you to work overtime, and can fire you for refusing, as long as they pay you correctly for the extra hours. The Fair Labor Standards Act (FLSA) sets no cap on how many hours an adult can be scheduled in a week. A handful of carve-outs exist — union contracts, disability accommodations, certain family emergencies, and state-level shift-length caps for nurses — but they're narrower than most workers assume."
+      ] },
+      { h: "\"Mandatory overtime\" isn't a special legal category", p: [
+        "It helps to drop the idea that mandatory overtime is its own defined thing with its own rulebook. Legally, there's just \"overtime\" (hours worked past 40 in a workweek, or past a state's daily threshold) and \"your schedule\" (whatever hours your employer assigns you). Nothing in federal law separates voluntary hours from assigned ones.",
+        "So when a manager posts a schedule that includes a mandatory Saturday shift pushing you to 46 hours for the week, that's not a special \"forced overtime\" violation sitting apart from ordinary wage law. It's simply your scheduled hours, and the only legal question that matters is whether you're paid 1.5 times your regular rate for the six hours over 40. Get that math wrong and you have an unpaid-overtime problem worth checking with the [overtime calculator](/calculators/overtime-calculator); get it right and the schedule itself, however unwelcome, is lawful."
+      ] },
+      { h: "Can your employer actually force you to stay?", p: [
+        "For the large majority of hourly, non-exempt workers 16 and older, yes. The U.S. Department of Labor's [Wage and Hour Division](https://www.dol.gov/agencies/whd/state/overtime) is explicit that the FLSA \"does not limit the number of hours in a day or days in a week an employer may require an employee to work,\" for any employee 16 years or older, provided the correct overtime premium is paid once hours exceed 40 in a workweek.",
+        "That single sentence surprises a lot of people, because it means there's no federal \"maximum shift length,\" no mandatory rest period between shifts, and no cap on consecutive days worked, outside a few regulated industries like trucking and aviation. Your employer sets the schedule; your only guaranteed protection is the pay rate on the extra hours, not the right to skip them."
+      ] },
+      { h: "What happens if you say no", p: [
+        "Refuse a mandatory shift in most states and, legally, your employer can discipline or fire you for it. Almost every US state (Montana is the lone exception after a probationary period) follows at-will employment, meaning either side can end the job for almost any reason, or no reason, and \"you didn't show up for the extra shift I scheduled\" clears that low bar easily.",
+        "As employment attorney Eric B. Kingsley told [Super Lawyers](https://www.superlawyers.com/resources/wage-and-hour-laws/can-you-be-forced-to-work-overtime-is-it-legal/) when discussing scheduling disputes, \"one can understand the employer's perspective that you have to get the work done, but you also have to be sensitive to employees' work schedules.\" That tension is real, but sympathy for the employee's side doesn't change the legal baseline: outside the exceptions below, refusing a lawfully assigned shift is not, by itself, a protected act."
+      ] },
+      { h: "The real exceptions where you can push back", p: [
+        "A short list of situations does give you solid legal footing to decline, and they're worth knowing precisely rather than relying on rumor.",
+        "Family and Medical Leave Act (FMLA): if you or an immediate family member has a serious health condition and you qualify for FMLA leave, your employer can't force you into overtime that conflicts with that protected leave.",
+        "Disability accommodation (ADA): if a reduced or capped schedule is a reasonable accommodation for a disability, mandatory overtime that violates it can be unlawful.",
+        "Religious observance (Title VII): forcing a shift that conflicts with a sincerely held religious practice, when a reasonable accommodation exists, can trigger discrimination protections.",
+        "A union contract or individual employment agreement: many collective bargaining agreements cap forced overtime, require advance notice, or make it voluntary past a threshold — check your contract before assuming federal law is the only rule that applies.",
+        "State-specific shift caps for healthcare workers: this is the biggest and most concrete exception, and it deserves its own section."
+      ] },
+      { h: "Nurses and healthcare workers: the exception that actually has teeth", p: [
+        "Hospital short-staffing pushed a wave of state legislatures to act specifically on nurse scheduling, and the result is a real, enforceable patchwork rather than a federal rule. At least 18 states now restrict mandatory overtime for nurses in some form: Alaska, California, Connecticut, Illinois, Maine, Maryland, Massachusetts, Minnesota, Missouri, New Hampshire, New Jersey, New York, Oregon, Pennsylvania, Rhode Island, Texas, Washington, and West Virginia.",
+        "The details vary a lot by state, so the table below is a starting point, not a substitute for checking your own state's current statute."
+      ], table: {
+        headers: ["State", "Core restriction", "Typical emergency exception"],
+        rows: [
+          ["Alaska", "No shift may exceed 14 consecutive hours; no forced overtime beyond the scheduled shift", "None specified"],
+          ["California", "Cannot require more than 12 hours in a 24-hour period", "Declared disaster or unforeseeable emergency"],
+          ["Connecticut", "Guaranteed predetermined schedule; can't be forced past it", "Ongoing procedure or genuine emergency"],
+          ["Illinois", "Overtime only for unforeseen emergencies; capped at 4 hours past the scheduled shift", "Unforeseen emergency only"],
+          ["New York", "Labor Law §167 bars forcing hours beyond the regular schedule", "Health care disaster, state emergency, unforeseeable emergency, ongoing procedure"],
+          ["Texas", "Hospitals restricted from mandating overtime for direct-care nurses", "Declared disaster or catastrophic event"],
+        ],
+      } },
+      { h: "If you're a nurse or tech in a restricted state", p: [
+        "Check your state's exact statute before refusing a shift, since the emergency exceptions are usually broader than workers expect and hospitals sometimes invoke \"unforeseen circumstances\" liberally. New York's own [Department of Labor guidance](https://dol.ny.gov/mandatory-overtime-nurses) on Labor Law §167 is a good model for how specific these rules get. If you believe a hospital forced a shift outside the statute's exceptions, that's a workplace-law violation worth raising with your state labor agency or an employment attorney, separate from any pay dispute."
+      ] },
+      { h: "Being paid correctly for the mandatory hours matters more", p: [
+        "Here's the part that actually costs most workers money: it isn't usually whether the overtime was mandatory, it's whether it was calculated correctly once you worked it. Overtime in the US averaged 3.8 weekly hours in manufacturing in 2025 and ran close to 4 hours a week for much of 2026, according to [Bureau of Labor Statistics](https://www.bls.gov/opub/ted/2026/overtime-hours-in-manufacturing-industries.htm) data, and those hours, multiplied by a wrong regular rate or a missed nondiscretionary bonus, add up fast over a year.",
+        "The regular rate has to include most bonuses and shift differentials, not just your base hourly wage, and the 1.5x multiplier applies to that full regular rate. If your pay stub shows overtime calculated only on your base wage, or shows straight time for hours past 40, that's a wage-and-hour problem regardless of whether the shift itself was mandatory. Run your numbers through the [overtime calculator](/calculators/overtime-calculator) or, if you want the plain premium rate on its own, the [time and a half calculator](/calculators/time-and-a-half-calculator)."
+      ] },
+      { h: "What to actually do about it", p: [
+        "If the schedule is lawful but you simply don't want to work it, your options are limited to negotiation, your union contract if you have one, or looking for another job — the law generally won't force your employer to excuse you. If you suspect the overtime pay itself is wrong, that's a different and much more actionable problem: pull your last several pay stubs, log the hours you actually worked, and compare them against what you were paid.",
+        "If the numbers don't match, the [back-pay calculator](/calculators/back-pay-calculator) estimates what you may be owed across the FLSA's two- to three-year recovery window, including potential liquidated damages. For the full mechanics of a correct overtime calculation, [how to calculate overtime pay](/blog/how-to-calculate-overtime-pay) walks through it step by step, and [unpaid overtime recovery](/blog/unpaid-overtime-recovery) covers what happens after you find a shortfall."
+      ] },
+      { h: "Frequently asked questions", p: [
+        "Can I be fired for refusing overtime in an at-will state? In most cases, yes. Outside Montana (which drops at-will status after a probationary period), employers can generally discipline or terminate you for declining a lawfully scheduled shift, unless a specific exception like FMLA, ADA, a union contract, or a state healthcare-worker law applies.",
+        "Is there a federal limit on how many hours I can be scheduled? No. The FLSA sets no cap on daily or weekly hours for employees 16 and over; its only requirement is paying the correct overtime premium once weekly hours pass 40. A few regulated industries, like commercial trucking and aviation, have separate hours-of-service rules.",
+        "Does salaried mean my employer can force unlimited overtime with no extra pay? Only if you're properly classified as exempt under the FLSA's salary and duties tests. A misclassified \"salaried\" worker who doesn't actually meet the exemption test is still owed overtime; check the classification carefully with [exempt vs non-exempt employees](/blog/exempt-vs-non-exempt-employees) before assuming a salary erases overtime rights.",
+        "Do minors have different mandatory-overtime protections? Yes, workers under 18 fall under separate federal and state child-labor hour restrictions that cap daily and weekly hours regardless of overtime pay, and those limits apply even when the FLSA's general adult rules wouldn't restrict scheduling.",
+        "What's the fastest way to check if I'm owed money from mandatory overtime shifts? Compare your actual hours worked to your pay stub's overtime line using the [overtime calculator](/calculators/overtime-calculator); a mismatch there is a far more common (and fixable) problem than the mandatory scheduling itself."
       ] }
     ]
   },

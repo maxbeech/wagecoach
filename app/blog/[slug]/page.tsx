@@ -42,11 +42,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+// Pulls Q&A pairs out of a "Frequently asked questions" section for FAQPage schema.
+// Every FAQ paragraph in lib/posts.ts follows "Question? Answer text.", split on the first "? ".
+function extractFaq(body: typeof POSTS[number]["body"]): { q: string; a: string }[] {
+  const sec = body.find((s) => s.h?.toLowerCase() === "frequently asked questions");
+  if (!sec) return [];
+  return sec.p.map((para) => {
+    const idx = para.indexOf("? ");
+    if (idx === -1) return null;
+    return { q: para.slice(0, idx + 1), a: para.slice(idx + 2) };
+  }).filter((x): x is { q: string; a: string } => x !== null);
+}
+
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const p = getPost(slug);
   if (!p) notFound();
   const related = (p.related ?? []).map(getCalc).filter(Boolean);
+  const faq = extractFaq(p.body);
 
   return (
     <article className="mx-auto max-w-2xl">
@@ -75,6 +88,28 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             {sec.p.map((para, j) => (
               <p key={j} className="mt-2 text-[15px] leading-relaxed text-muted">{renderPara(para)}</p>
             ))}
+            {sec.table && (
+              <div className="mt-3 overflow-x-auto rounded-xl border border-line">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="bg-brand-50">
+                      {sec.table.headers.map((h, k) => (
+                        <th key={k} className="px-3 py-2 font-semibold text-ink">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sec.table.rows.map((row, r) => (
+                      <tr key={r} className="border-t border-line">
+                        {row.map((cell, c) => (
+                          <td key={c} className="px-3 py-2 align-top text-muted">{cell}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </section>
         ))}
       </div>
@@ -101,6 +136,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         publisher: { "@type": "Organization", name: SITE.name },
         mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE.url}/blog/${p.slug}` },
       }) }} />
+
+      {faq.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org", "@type": "FAQPage",
+          mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+        }) }} />
+      )}
     </article>
   );
 }
