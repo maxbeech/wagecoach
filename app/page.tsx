@@ -14,6 +14,7 @@ import { CITIES } from "@/lib/cities";
 import { POSTS } from "@/lib/posts";
 import { FEDERAL, dollars } from "@/lib/federal";
 import { SITE } from "@/lib/site";
+import { safeJsonLd } from "@/lib/json-ld";
 
 export const revalidate = 604800; // weekly ISR
 
@@ -247,18 +248,18 @@ export default function Home() {
         </div>
       </section>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "WebApplication",
         name: SITE.name, applicationCategory: "BusinessApplication", operatingSystem: "Web",
         description: SITE.description, url: SITE.url,
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       }) }} />
       {/* Site-wide identity, so answer engines can resolve "WageCoach" as an entity. */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "Organization",
         name: SITE.name, url: SITE.url, description: SITE.description, email: SITE.email,
       }) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "WebSite",
         name: SITE.name, url: SITE.url, description: SITE.description,
       }) }} />

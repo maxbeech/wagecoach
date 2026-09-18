@@ -6,6 +6,7 @@ import { CITIES, getCity, cityState } from "@/lib/cities";
 import { effectiveMinWage } from "@/lib/states";
 import { FEDERAL, dollars } from "@/lib/federal";
 import { SITE } from "@/lib/site";
+import { safeJsonLd } from "@/lib/json-ld";
 import { Eyebrow, SectionHeading, Stat, Chip, MoreLink } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
@@ -83,7 +84,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         {st && <div className="mt-4"><MoreLink href={`/states/${st.slug}`}>{st.name} state labor laws</MoreLink></div>}
       </section>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "City minimum wages", item: `${SITE.url}/cities` },

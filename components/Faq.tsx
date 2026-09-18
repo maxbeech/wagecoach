@@ -1,4 +1,5 @@
 import { type FaqItem } from "@/lib/faq";
+import { safeJsonLd } from "@/lib/json-ld";
 
 export default function Faq({ items, title = "Frequently asked questions" }: { items: FaqItem[]; title?: string }) {
   return (
@@ -16,7 +17,7 @@ export default function Faq({ items, title = "Frequently asked questions" }: { i
         ))}
       </div>
       {/* FAQ structured data for rich results — single source from the same items. */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "FAQPage",
         mainEntity: items.map((it) => ({ "@type": "Question", name: it.q, acceptedAnswer: { "@type": "Answer", text: it.a } })),
       }) }} />

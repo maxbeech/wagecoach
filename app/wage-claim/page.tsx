@@ -3,6 +3,7 @@ import Link from "next/link";
 import BackPayCalculator from "@/components/BackPayCalculator";
 import { STATES } from "@/lib/states";
 import { SITE } from "@/lib/site";
+import { safeJsonLd } from "@/lib/json-ld";
 import { Eyebrow, SectionHeading, MoreLink } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
@@ -54,7 +55,7 @@ export default function WageClaimIndex() {
         <div className="mt-3"><MoreLink href="/free-case-review">Get a free case review</MoreLink></div>
       </section>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Unpaid wages", item: `${SITE.url}/wage-claim` },

@@ -5,6 +5,7 @@ import { POSTS, getPost } from "@/lib/posts";
 import { BlogImage } from "@/components/BlogImage";
 import { getCalc } from "@/lib/calculators";
 import { SITE } from "@/lib/site";
+import { safeJsonLd } from "@/lib/json-ld";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
@@ -128,7 +129,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         </div>
       )}
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "Article",
         headline: p.title, description: p.description, datePublished: p.date,
         image: `${SITE.url}/blog/posts/${p.slug}.jpg`,
@@ -138,7 +139,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       }) }} />
 
       {faq.length > 0 && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
           "@context": "https://schema.org", "@type": "FAQPage",
           mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
         }) }} />

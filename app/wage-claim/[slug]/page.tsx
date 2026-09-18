@@ -6,6 +6,7 @@ import Faq from "@/components/Faq";
 import { STATES, getState } from "@/lib/states";
 import { wageClaim } from "@/lib/wage-claim-data";
 import { SITE } from "@/lib/site";
+import { safeJsonLd } from "@/lib/json-ld";
 import { Eyebrow, SectionHeading, Chip, MoreLink } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
@@ -143,13 +144,13 @@ export default async function WageClaimState({ params }: { params: Promise<{ slu
         </div>
       </section>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "HowTo",
         name: `How to file a wage claim in ${s.name}`,
         description: `Recover unpaid wages in ${s.name} by filing with ${wc.agency}.`,
         step: flow.map((st, i) => ({ "@type": "HowToStep", position: i + 1, name: st.name, text: st.text })),
       }) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Unpaid wages", item: `${SITE.url}/wage-claim` },

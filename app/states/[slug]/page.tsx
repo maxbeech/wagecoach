@@ -6,6 +6,7 @@ import { STATES, getState, effectiveMinWage } from "@/lib/states";
 import { citiesForState } from "@/lib/cities";
 import { dollars } from "@/lib/federal";
 import { SITE } from "@/lib/site";
+import { safeJsonLd } from "@/lib/json-ld";
 import { Eyebrow, SectionHeading, Chip } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
@@ -136,7 +137,7 @@ export default async function StatePage({ params }: { params: Promise<{ slug: st
         </div>
       </section>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "By state", item: `${SITE.url}/states` },

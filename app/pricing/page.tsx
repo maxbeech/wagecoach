@@ -3,6 +3,7 @@ import Link from "next/link";
 import CheckoutButton from "@/components/CheckoutButton";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
 import { SITE } from "@/lib/site";
+import { safeJsonLd } from "@/lib/json-ld";
 
 export const revalidate = 604800; // weekly ISR
 
@@ -91,7 +92,7 @@ export default function Pricing() {
       </p>
 
       {/* Machine-readable pricing, kept in lockstep with the three tiers rendered above. */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "SoftwareApplication",
         name: SITE.name, applicationCategory: "BusinessApplication", operatingSystem: "Web",
         description: SITE.description, url: `${SITE.url}/pricing`,

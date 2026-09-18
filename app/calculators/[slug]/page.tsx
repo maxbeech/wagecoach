@@ -11,6 +11,7 @@ import BackPayCalculator from "@/components/BackPayCalculator";
 import Faq from "@/components/Faq";
 import { CALCULATORS, getCalc, type CalcDef } from "@/lib/calculators";
 import { SITE } from "@/lib/site";
+import { safeJsonLd } from "@/lib/json-ld";
 import { Eyebrow, SectionHeading, Chip, LedgerTick } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
@@ -83,13 +84,13 @@ export default async function CalculatorPage({ params }: { params: Promise<{ slu
         </div>
       </section>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "SoftwareApplication",
         name: c.h1, applicationCategory: "BusinessApplication", operatingSystem: "Web",
         description: c.meta, url: `${SITE.url}/calculators/${c.slug}`,
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       }) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Calculators", item: `${SITE.url}/calculators` },
