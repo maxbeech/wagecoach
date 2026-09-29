@@ -4,8 +4,6 @@ import "./globals.css";
 import { SITE } from "@/lib/site";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { OpenHelmAnalytics } from "../lib/openhelm-analytics";
 
 // Editorial serif for headings; clean sans for UI; mono for ledger figures.
@@ -34,8 +32,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main className="mx-auto max-w-6xl px-5 py-10 sm:py-12">{children}</main>
         <SiteFooter />
-        <Analytics />
-        <SpeedInsights />
         <OpenHelmAnalytics />
       </body>
     </html>

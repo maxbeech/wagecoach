@@ -58,5 +58,5 @@ compliance product reusing the 50-state dataset.
   are conservative estimates.
 - **Attorney lead-gen is bar-regulated** (referral-fee/advertising rules vary by state) —
   confirm the model with counsel before scaling Phase 2.
-- Never commit secrets. Stripe/webhook keys live in `.env.local` (gitignored) and Vercel env.
+- Never commit secrets. Stripe/webhook keys live in `.env.local` (gitignored) and the Helm7 product's variables.
 - Wage figures are current for **2026** and cited; update with sources, not guesses.

@@ -131,7 +131,7 @@ otherwise confirms without storing anything — the site stays database-free.
 | `LEAD_WEBHOOK_URL` | Optional. Where free-case-review leads are POSTed (CRM/Zapier/attorney intake). |
 
 Local dev: copy the keys into `.env.local` (gitignored). Use Stripe **test** keys + test
-price ids there; set the **live** values only in the Vercel project's env.
+price ids there; set the **live** values only in the Helm7 product's variables.
 
 ### SEO/GEO
 
@@ -164,3 +164,7 @@ to `www.wagecoach.com`.
   `/calculators/[slug]`, `/states/[slug]` and `/cities/[slug]`.
 
 > General information, not legal or tax advice.
+
+## Hosting
+
+Runs on Helm7 (`wagecoach` product, Falkenstein), built from `master` on every push. There is no Vercel project any more; `npm test` fails if a `@vercel/*` package or a `vercel` CLI script comes back.

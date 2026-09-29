@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased — moved from Vercel to Helm7
+
+- Removed `@vercel/analytics` and `@vercel/speed-insights`: they report nothing off Vercel and shipped dead script to every visitor. Traffic is measured by the GA4 tag that was already there. Removed the `deploy` script that ran the Vercel CLI. `test/no-vercel.test.mts` keeps both out.
+
 ## Unreleased — Sentry synthetic crawler error filtering
 
 - Ignore the exact `SyntaxError: Invalid or unexpected token` signature emitted
