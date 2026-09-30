@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { dollars } from "@/lib/federal";
 import { effectiveMinWage, getStateByAbbr, STATES } from "@/lib/states";
 import { Field, StateSelect } from "./ui";
+import { useCalculatorUse } from "./use-calculator-use";
 
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
@@ -33,8 +34,9 @@ export default function StateWageLookup({ seedAbbr = "CA", focus = "minwage" }: 
   const s = getStateByAbbr(abbr) ?? STATES[0];
   const min = effectiveMinWage(s);
 
+  const calcRef = useCalculatorUse<HTMLDivElement>("minwage");
   return (
-    <div className="rounded-2xl border border-line bg-card p-5 shadow-card sm:p-6">
+    <div ref={calcRef} className="rounded-2xl border border-line bg-card p-5 shadow-card sm:p-6">
       <Field label="State">
         <StateSelect value={s.abbr} onChange={onChange} />
       </Field>

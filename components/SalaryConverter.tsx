@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { dollars } from "@/lib/federal";
 import { computeSalary, DEFAULT_SALARY, type SalaryMode } from "@/lib/salary";
 import { Field, NumberField, Segmented } from "./ui";
+import { useCalculatorUse } from "./use-calculator-use";
 
 function Row({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
@@ -33,8 +34,9 @@ export default function SalaryConverter() {
     setMode(m);
   };
 
+  const calcRef = useCalculatorUse<HTMLDivElement>("salary");
   return (
-    <div className="grid gap-5 md:grid-cols-2">
+    <div ref={calcRef} className="grid gap-5 md:grid-cols-2">
       <div className="rounded-2xl border border-line bg-card p-5 shadow-card sm:p-6 print:hidden">
         <Segmented<SalaryMode>
           ariaLabel="Conversion direction"

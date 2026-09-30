@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — instrumented user journeys for OpenHelm
+
+- **Refreshed the shared client** (`lib/openhelm-analytics*`). The old copy pushed plain arrays into `dataLayer`, which gtag.js silently ignores, so no event or page view was ever sent. The current one pushes `arguments` objects and adds `identify()` (unused here: there are no accounts).
+- Events, all named in `lib/analytics-events.ts` and sent through `lib/analytics-track.ts`: `calculator_used` (first edit of any calculator, with the tool), `backpay_calculator_used`, `begin_checkout`, `checkout_cancelled`, `purchase`, `case_review_viewed`, `generate_lead`, and the failure siblings `begin_checkout_failed`, `purchase_confirmation_failed`, `generate_lead_failed`, each with a short code `reason` and never free text.
+- `purchase` fires on `/claim-kit` only after the server has asked Stripe and confirmed a paid session holding the Kit price. `value` is what Stripe charged, and `transaction_id` is a one-way hash, not the Stripe session id. The verification moved from the page into `lib/kit-purchase.ts` unchanged in behaviour, so its rules and failure reasons are tested.
+- The $19 report has no purchase event: its return URL (`/pricing?status=success`) is not verified against Stripe, so a `purchase` there would count anyone who typed the URL.
+- The existing server-side `lead_delivered` Measurement Protocol event is unchanged.
+- No Content-Security-Policy exists in this repo (`next.config.ts`, no middleware), so nothing blocks googletagmanager.com or google-analytics.com from here.
+
 ## Unreleased — moved from Vercel to Helm7
 
 - Removed `@vercel/analytics` and `@vercel/speed-insights`: they report nothing off Vercel and shipped dead script to every visitor. Traffic is measured by the GA4 tag that was already there. Removed the `deploy` script that ran the Vercel CLI. `test/no-vercel.test.mts` keeps both out.

@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CLAIM_LABELS, type ClaimType } from "@/lib/backpay";
 import { decodeBackPay } from "@/lib/backpay-url";
 import { dollars } from "@/lib/federal";
+import { analyticsEvents, analyticsFailureReason, leadParams } from "@/lib/analytics-events";
+import { trackEvent } from "@/lib/analytics-track";
 import { Field, StateSelect, inputCls } from "./ui";
 
 const CLAIMS: ClaimType[] = ["overtime", "misclassification", "off_the_clock", "minimum_wage"];
@@ -18,6 +20,7 @@ export default function CaseReviewForm() {
   const [summary, setSummary] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
+  const viewed = useRef(false);
 
   // Prefill from the estimate the person carried over from the calculator. The
   // one-time hydration from the URL on mount is the same justified pattern the
@@ -31,6 +34,7 @@ export default function CaseReviewForm() {
     if (decoded.state) setState(decoded.state.abbr);
     if (Number.isFinite(amt) && amt > 0) setAmount(Math.round(amt));
     /* eslint-enable react-hooks/set-state-in-effect */
+    if (!viewed.current) { viewed.current = true; trackEvent(analyticsEvents.caseReviewViewed); }
   }, []);
 
   async function submit(e: React.FormEvent) {
@@ -43,9 +47,14 @@ export default function CaseReviewForm() {
         body: JSON.stringify({ name, email, phone, state, claimType: CLAIM_LABELS[claim], amount, summary }),
       });
       const data = await res.json();
-      if (data.ok) { setStatus("done"); setMessage(data.message); return; }
+      if (data.ok) {
+        trackEvent(analyticsEvents.generateLead, leadParams(claim, state));
+        setStatus("done"); setMessage(data.message); return;
+      }
+      trackEvent(analyticsEvents.generateLeadFailed, { reason: analyticsFailureReason(res.status) });
       setStatus("error"); setMessage(data.message ?? "Something went wrong. Please try again.");
     } catch {
+      trackEvent(analyticsEvents.generateLeadFailed, { reason: "request_failed" });
       setStatus("error"); setMessage("Something went wrong. Please try again.");
     }
   }

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { analyticsEvents, beginCheckoutParams, checkoutFailureReason } from "@/lib/analytics-events";
+import { trackEvent } from "@/lib/analytics-track";
 
 // Starts a Stripe Checkout session via /api/checkout. The route degrades
 // gracefully: if Stripe isn't configured (no env keys) it returns a clear
@@ -20,6 +22,7 @@ export default function CheckoutButton({
 
   async function go() {
     setLoading(true); setError(null);
+    trackEvent(analyticsEvents.beginCheckout, beginCheckoutParams(product));
     try {
       // For the kit, carry the back-pay case (it lives in the page URL) so the
       // post-purchase page can render the demand letter pre-filled.
@@ -31,8 +34,11 @@ export default function CheckoutButton({
       });
       const data = await res.json();
       if (data.url) { window.location.href = data.url; return; }
+      const reason = checkoutFailureReason(res.status, false);
+      trackEvent(analyticsEvents.beginCheckoutFailed, { product, reason: reason ?? "unavailable" });
       setError(data.message ?? "Checkout is not available yet. Please check back soon.");
     } catch {
+      trackEvent(analyticsEvents.beginCheckoutFailed, { product, reason: "request_failed" });
       setError("Something went wrong starting checkout. Please try again.");
     } finally {
       setLoading(false);

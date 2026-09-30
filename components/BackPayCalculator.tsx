@@ -7,6 +7,7 @@ import { getStateByAbbr } from "@/lib/states";
 import { dollars } from "@/lib/federal";
 import { Field, NumberField, StateSelect, inputCls } from "./ui";
 import BackPayResults from "./BackPayResults";
+import { useCalculatorUse } from "./use-calculator-use";
 
 const CLAIM_OPTIONS: { value: ClaimType; label: string }[] = [
   { value: "overtime", label: "Unpaid overtime (paid straight time, no premium)" },
@@ -36,8 +37,9 @@ export default function BackPayCalculator({ seed }: { seed?: Partial<BackPayInpu
   const set = <K extends keyof BackPayInputs>(k: K, v: BackPayInputs[K]) => setInp((p) => ({ ...p, [k]: v }));
   const straightTime = Math.round(inp.hourlyRate * inp.hoursPerWeek * 100) / 100;
 
+  const calcRef = useCalculatorUse<HTMLDivElement>("backpay");
   return (
-    <div className="grid gap-5 md:grid-cols-2">
+    <div ref={calcRef} className="grid gap-5 md:grid-cols-2">
       <div className="rounded-2xl border border-line bg-card p-5 shadow-card sm:p-6 print:hidden">
         <h2 className="font-display text-base font-semibold text-ink">Your situation</h2>
         <div className="mt-4 space-y-4">

@@ -93,6 +93,17 @@ npm test         # engine + data + URL tests
 npm run lint
 ```
 
+## Analytics
+
+GA4 through `lib/openhelm-analytics.tsx` (the shared `openhelm-analytics` service). An unset
+`NEXT_PUBLIC_GA_MEASUREMENT_ID` means no script and no events. There are no accounts, so no
+`oh_user_ref`: a visitor is the anonymous GA client. Event names and failure reasons live in
+`lib/analytics-events.ts`. To check a change, open GA DebugView on a build with the id set and walk
+a calculator edit, the back-pay estimate, Claim Kit checkout and the free case review; each step
+should show its event and no `*_failed` sibling. `purchase` is sent from `/claim-kit` after Stripe
+confirms the session. `session_id` appears in that page's URL, so add it under GA Admin, Data
+collection, Data redaction, URL query parameter keys.
+
 ## Monitoring
 
 Browser errors are reported to Sentry when `NEXT_PUBLIC_SENTRY_DSN` is set. The
