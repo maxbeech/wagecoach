@@ -6,6 +6,7 @@ import { decodeInputs, encodeInputs } from "@/lib/pay-url";
 import { STATES } from "@/lib/states";
 import { Field, NumberField, Segmented, inputCls } from "./ui";
 import PayResults from "./PayResults";
+import { useCalculatorUse } from "./use-calculator-use";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -41,8 +42,9 @@ export default function PayCalculator({ seed }: { seed?: Partial<PayInputs> }) {
       return { ...p, dailyHours: d };
     });
 
+  const calcRef = useCalculatorUse<HTMLDivElement>("pay");
   return (
-    <div className="grid gap-5 md:grid-cols-2">
+    <div ref={calcRef} className="grid gap-5 md:grid-cols-2">
       <div className="rounded-2xl border border-line bg-card p-5 shadow-card sm:p-6 print:hidden">
         <h2 className="font-display text-base font-semibold text-ink">Your hours</h2>
         <div className="mt-4 space-y-4">

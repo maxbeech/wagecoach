@@ -7,6 +7,8 @@ import { dollars } from "@/lib/federal";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
 import ClaimKitPersonaliser from "@/components/ClaimKitPersonaliser";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
+import KitPurchaseTracker from "@/components/analytics/kit-purchase-tracker";
+import { verifyKitPurchase } from "@/lib/kit-purchase";
 
 // Post-purchase deliverable. Dynamic + noindex: it depends on the live Stripe
 // session and must never be cached or crawled.
@@ -18,30 +20,9 @@ export const metadata: Metadata = {
 };
 
 // Confirm the Stripe Checkout session was actually paid FOR THE KIT before
-// unlocking it. No database needed — the session id in the success URL is the
-// proof. We must check both that the session is paid AND that it contains the
-// Kit's price line item: otherwise a cheaper session (e.g. the $19 report) or any
-// other paid session in the account would unlock the $29 Kit — a price-tier
-// bypass. If Stripe or the kit price isn't configured, we can't verify, so we lock.
-async function verifyPaid(sessionId?: string): Promise<boolean> {
-  const secret = process.env.STRIPE_SECRET_KEY;
-  const kitPrice = process.env.STRIPE_KIT_PRICE_ID;
-  if (!secret || !kitPrice || !sessionId) return false;
-  try {
-    // Expand line_items so we can confirm the purchased price, not just "paid".
-    const res = await fetch(
-      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}?expand[]=line_items`,
-      { headers: { Authorization: `Bearer ${secret}` }, cache: "no-store" },
-    );
-    if (!res.ok) return false;
-    const session = await res.json();
-    if (session?.payment_status !== "paid") return false;
-    const lines: Array<{ price?: { id?: string } }> = session?.line_items?.data ?? [];
-    return lines.some((li) => li.price?.id === kitPrice);
-  } catch {
-    return false;
-  }
-}
+// unlocking it (lib/kit-purchase.ts): paid AND holding the Kit's price line item,
+// otherwise a cheaper session would unlock the $29 Kit. If Stripe or the kit price
+// isn't configured we can't verify, so we lock.
 
 function toSearch(params: Record<string, string | string[] | undefined>): string {
   const p = new URLSearchParams();
@@ -52,11 +33,13 @@ function toSearch(params: Record<string, string | string[] | undefined>): string
 export default async function ClaimKitPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const sp = await searchParams;
   const sessionId = typeof sp.session_id === "string" ? sp.session_id : undefined;
-  const paid = await verifyPaid(sessionId);
+  const verified = await verifyKitPurchase(sessionId);
 
-  if (!paid) {
+  if (!verified.ok) {
     return (
       <div className="mx-auto max-w-xl text-center">
+        {/* Only report a failure for someone who came back from Stripe with a session. */}
+        {sessionId && <KitPurchaseTracker failureReason={verified.reason} />}
         <Eyebrow>Claim Kit</Eyebrow>
         <h1 className="mt-3 font-display text-2xl font-semibold text-ink">We couldn&apos;t confirm your purchase</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted">
@@ -79,6 +62,7 @@ export default async function ClaimKitPage({ searchParams }: { searchParams: Pro
 
   return (
     <div className="mx-auto max-w-3xl">
+      <KitPurchaseTracker purchase={verified.purchase} />
       <Eyebrow>Your Claim Kit · paid ✓</Eyebrow>
       <div className="mt-3">
         <SectionHeading as="h1" title="Your wage Claim Kit is ready" sub={`Below is your demand letter, pre-filled with your figures, and a step-by-step guide to filing in ${where}. Print it, fill in the bracketed details, and send.`} />

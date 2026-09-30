@@ -5,6 +5,7 @@ import { dollars } from "@/lib/federal";
 import { getStateByAbbr } from "@/lib/states";
 import { exemptCheck } from "@/lib/wage";
 import { Field, NumberField, StateSelect } from "./ui";
+import { useCalculatorUse } from "./use-calculator-use";
 
 export default function ExemptChecker({ seedAbbr = "" }: { seedAbbr?: string }) {
   const [abbr, setAbbr] = useState(seedAbbr);
@@ -12,8 +13,9 @@ export default function ExemptChecker({ seedAbbr = "" }: { seedAbbr?: string }) 
   const state = abbr ? getStateByAbbr(abbr) ?? null : null;
   const r = useMemo(() => exemptCheck(salary, state), [salary, state]);
 
+  const calcRef = useCalculatorUse<HTMLDivElement>("exempt");
   return (
-    <div className="grid gap-5 md:grid-cols-2">
+    <div ref={calcRef} className="grid gap-5 md:grid-cols-2">
       <div className="rounded-2xl border border-line bg-card p-5 shadow-card sm:p-6">
         <h2 className="font-display text-base font-semibold text-ink">Salary details</h2>
         <div className="mt-4 space-y-4">

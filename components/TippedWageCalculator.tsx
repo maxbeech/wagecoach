@@ -5,6 +5,7 @@ import { dollars } from "@/lib/federal";
 import { getStateByAbbr } from "@/lib/states";
 import { tipCredit } from "@/lib/wage";
 import { Field, NumberField, StateSelect } from "./ui";
+import { useCalculatorUse } from "./use-calculator-use";
 
 export default function TippedWageCalculator({ seedAbbr = "" }: { seedAbbr?: string }) {
   const [abbr, setAbbr] = useState(seedAbbr);
@@ -15,8 +16,9 @@ export default function TippedWageCalculator({ seedAbbr = "" }: { seedAbbr?: str
   const state = abbr ? getStateByAbbr(abbr) ?? null : null;
   const r = useMemo(() => tipCredit({ cashWage, hours, tips, state }), [cashWage, hours, tips, state]);
 
+  const calcRef = useCalculatorUse<HTMLDivElement>("tipped");
   return (
-    <div className="grid gap-5 md:grid-cols-2">
+    <div ref={calcRef} className="grid gap-5 md:grid-cols-2">
       <div className="rounded-2xl border border-line bg-card p-5 shadow-card sm:p-6">
         <h2 className="font-display text-base font-semibold text-ink">Your tipped pay</h2>
         <div className="mt-4 space-y-4">
