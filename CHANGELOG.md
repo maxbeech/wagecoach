@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — Sentry to the Maxed Labs standard
+
+- Logs on (`enableLogs`, console forwarded), one shared fail-closed scrubber for events, logs, breadcrumbs and transactions, with tests including an adversarial long string.
+- Errors become Issues: `global-error`, a segment `error.tsx`, `onRequestError`, and the checkout, lead, Stripe-verification and form catch blocks now report through `captureServerError` / `captureClientError` (ids only).
+- A visible Feedback control in the header and footer replaces the floating Sentry button; reports go through a tunnel route. Source maps upload when `SENTRY_AUTH_TOKEN` is set.
+
 ## Unreleased — instrumented user journeys for OpenHelm
 
 - **Refreshed the shared client** (`lib/openhelm-analytics*`). The old copy pushed plain arrays into `dataLayer`, which gtag.js silently ignores, so no event or page view was ever sent. The current one pushes `arguments` objects and adds `identify()` (unused here: there are no accounts).

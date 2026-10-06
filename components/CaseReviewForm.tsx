@@ -6,6 +6,7 @@ import { decodeBackPay } from "@/lib/backpay-url";
 import { dollars } from "@/lib/federal";
 import { analyticsEvents, analyticsFailureReason, leadParams } from "@/lib/analytics-events";
 import { trackEvent } from "@/lib/analytics-track";
+import { captureClientError } from "@/lib/observability";
 import { Field, StateSelect, inputCls } from "./ui";
 
 const CLAIMS: ClaimType[] = ["overtime", "misclassification", "off_the_clock", "minimum_wage"];
@@ -53,7 +54,8 @@ export default function CaseReviewForm() {
       }
       trackEvent(analyticsEvents.generateLeadFailed, { reason: analyticsFailureReason(res.status) });
       setStatus("error"); setMessage(data.message ?? "Something went wrong. Please try again.");
-    } catch {
+    } catch (err) {
+      captureClientError(err, { scope: "case_review_submit" });
       trackEvent(analyticsEvents.generateLeadFailed, { reason: "request_failed" });
       setStatus("error"); setMessage("Something went wrong. Please try again.");
     }

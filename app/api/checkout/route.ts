@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import * as Sentry from "@sentry/nextjs";
+import { captureServerError, captureServerMessage } from "@/lib/observability";
 
 // Stripe Checkout for the one-time products: the $19 multi-state compliance
 // report and the $29 wage Claim Kit. Keys are injected as Vercel env vars
@@ -63,16 +63,17 @@ export async function POST(req: Request) {
     });
     const session = await res.json();
     if (!res.ok) {
-      Sentry.captureMessage("Stripe checkout session creation failed", {
-        level: "error",
-        tags: { flow: "checkout", product },
-        extra: { status: res.status, stripeError: session?.error?.message },
+      captureServerMessage("Stripe checkout session creation failed", {
+        scope: "checkout",
+        product,
+        status: res.status,
+        stripeErrorCode: session?.error?.code,
       });
       return NextResponse.json({ message: session?.error?.message ?? "Stripe error" }, { status: 502 });
     }
     return NextResponse.json({ url: session.url });
   } catch (err) {
-    Sentry.captureException(err, { tags: { flow: "checkout", product } });
+    captureServerError(err, { scope: "checkout", product });
     return NextResponse.json({ message: "Could not reach Stripe. Please try again." }, { status: 502 });
   }
 }

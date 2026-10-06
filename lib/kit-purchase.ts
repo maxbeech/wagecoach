@@ -1,3 +1,4 @@
+import { captureServerError, captureServerMessage } from "./observability";
 import { userRefFor } from "./openhelm-analytics-mp";
 import { analyticsFailureReason } from "./analytics-events";
 
@@ -60,9 +61,15 @@ export async function verifyKitPurchase(
       `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}?expand[]=line_items`,
       { headers: { Authorization: `Bearer ${secret}` }, cache: "no-store" },
     );
-    if (!res.ok) return { ok: false, reason: analyticsFailureReason(res.status) };
+    if (!res.ok) {
+      if (res.status >= 500 || res.status === 401 || res.status === 403) {
+        captureServerMessage("Stripe session lookup failed", { scope: "kit_purchase", status: res.status });
+      }
+      return { ok: false, reason: analyticsFailureReason(res.status) };
+    }
     return await judgeKitSession(await res.json(), kitPrice, sessionId);
-  } catch {
+  } catch (err) {
+    captureServerError(err, { scope: "kit_purchase" });
     return { ok: false, reason: "unreachable" };
   }
 }

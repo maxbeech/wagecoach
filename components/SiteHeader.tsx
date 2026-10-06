@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Logo } from "./Logo";
+import FeedbackButton from "./FeedbackButton";
 
 const NAV = [
   { href: "/calculators", label: "Calculators" },
@@ -36,6 +37,7 @@ export default function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <FeedbackButton variant="header" />
           <Link href="/pricing"
             className="hidden rounded-full bg-forest px-4 py-2 text-sm font-medium text-white shadow-sm ring-1 ring-inset ring-white/10 transition hover:bg-brand-800 sm:inline-block">
             Pro report
@@ -58,6 +60,7 @@ export default function SiteHeader() {
                 {l.label}
               </Link>
             ))}
+            <FeedbackButton variant="menu" onOpen={() => setOpen(false)} />
             <Link href="/pricing" onClick={() => setOpen(false)} className="mt-3 rounded-full bg-forest px-4 py-2.5 text-center text-sm font-medium text-white">
               Pro report
             </Link>

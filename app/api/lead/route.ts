@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import * as Sentry from "@sentry/nextjs";
 import { SITE } from "@/lib/site";
 import { buildLeadEmail, type Lead } from "@/lib/lead-email";
 import { sendEmail as sendProductEmail } from "@/lib/openhelm-mail";
+import { captureServerError, captureServerMessage } from "@/lib/observability";
 import { configFromEnv, newClientId, trackEvent } from "@/lib/openhelm-analytics-mp";
 
 // Free-case-review intake. A submitted lead is delivered to whichever channels
@@ -32,6 +32,10 @@ async function sendEmail(lead: Lead): Promise<boolean | null> {
   const { subject, html, text } = buildLeadEmail(lead);
   const result = await sendProductEmail({ to, subject, html, text, replyTo: lead.email });
   if (result.sent === false && result.reason === "not_configured") return null;
+  if (result.sent === false) {
+    // The platform's message can quote the recipient, so only the code goes out.
+    captureServerMessage("Lead email send failed", { scope: "lead_email", reason: result.reason });
+  }
   return result.sent;
 }
 
@@ -43,6 +47,7 @@ async function sendWebhook(lead: Lead): Promise<boolean | null> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...lead, source: "wagecoach/free-case-review", at: new Date().toISOString() }),
   });
+  if (!res.ok) captureServerMessage("Lead webhook rejected", { scope: "lead_webhook", status: res.status });
   return res.ok;
 }
 
@@ -51,6 +56,7 @@ export async function POST(req: Request) {
   try {
     lead = await req.json();
   } catch {
+    // A malformed body is the caller's problem, not an incident.
     return NextResponse.json({ message: "Invalid submission." }, { status: 400 });
   }
 
@@ -63,16 +69,16 @@ export async function POST(req: Request) {
   try {
     results = await Promise.all([sendEmail(lead), sendWebhook(lead)]);
   } catch (err) {
-    Sentry.captureException(err, { tags: { flow: "free_case_review_delivery" } });
+    captureServerError(err, { scope: "lead_delivery" });
     results = [false];
   }
   const configured = results.filter((r) => r !== null);
   // If at least one channel is configured and none of them succeeded, surface
   // a clear fallback so the lead is never silently lost.
   if (configured.length > 0 && !configured.some((r) => r === true)) {
-    Sentry.captureMessage("Free case review lead delivery failed on every configured channel", {
-      level: "error",
-      tags: { flow: "free_case_review_delivery" },
+    captureServerMessage("Free case review lead delivery failed on every configured channel", {
+      scope: "lead_delivery",
+      channels: configured.length,
     });
     return NextResponse.json(
       { message: "We couldn't submit that just now. Please email hello@mail.wagecoach.com and we'll connect you." },
@@ -88,14 +94,13 @@ export async function POST(req: Request) {
   trackEvent(mpConfig, "lead_delivered", { claim_type: lead.claimType ?? "" })
     .then((result) => {
       if (!result.sent && result.reason !== "not_configured") {
-        Sentry.captureMessage("lead_delivered Measurement Protocol event failed", {
-          level: "warning",
-          tags: { flow: "free_case_review_delivery" },
-          extra: { reason: result.reason, error: result.error },
+        captureServerMessage("lead_delivered Measurement Protocol event failed", {
+          scope: "lead_analytics",
+          reason: result.reason,
         });
       }
     })
-    .catch((err) => Sentry.captureException(err, { tags: { flow: "free_case_review_delivery" } }));
+    .catch((err) => captureServerError(err, { scope: "lead_analytics" }));
 
   return NextResponse.json({
     ok: true,

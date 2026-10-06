@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { analyticsEvents, beginCheckoutParams, checkoutFailureReason } from "@/lib/analytics-events";
 import { trackEvent } from "@/lib/analytics-track";
+import { captureClientError } from "@/lib/observability";
 
 // Starts a Stripe Checkout session via /api/checkout. The route degrades
 // gracefully: if Stripe isn't configured (no env keys) it returns a clear
@@ -37,7 +38,8 @@ export default function CheckoutButton({
       const reason = checkoutFailureReason(res.status, false);
       trackEvent(analyticsEvents.beginCheckoutFailed, { product, reason: reason ?? "unavailable" });
       setError(data.message ?? "Checkout is not available yet. Please check back soon.");
-    } catch {
+    } catch (err) {
+      captureClientError(err, { scope: "checkout_start", product });
       trackEvent(analyticsEvents.beginCheckoutFailed, { product, reason: "request_failed" });
       setError("Something went wrong starting checkout. Please try again.");
     } finally {

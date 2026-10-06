@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LogoMark } from "./Logo";
 import { SITE } from "@/lib/site";
+import FeedbackButton from "./FeedbackButton";
 
 const COLS: { heading: string; links: { href: string; label: string }[] }[] = [
   {
@@ -56,6 +57,9 @@ export default function SiteFooter() {
                     <Link href={l.href} className="text-muted transition-colors hover:text-brand-700">{l.label}</Link>
                   </li>
                 ))}
+                {col.heading === "More" && (
+                  <li><FeedbackButton variant="link" /></li>
+                )}
               </ul>
             </div>
           ))}

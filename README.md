@@ -106,10 +106,16 @@ collection, Data redaction, URL query parameter keys.
 
 ## Monitoring
 
-Browser errors are reported to Sentry when `NEXT_PUBLIC_SENTRY_DSN` is set. The
-client filter excludes only the observed crawler-owned parse signature
-(`app:///…/script.js:1:2`); application errors and other JavaScript failures
-continue to be reported.
+Errors, logs and user feedback go to the Sentry project `wagecoach_web` (org `maxed-labs`) when
+`NEXT_PUBLIC_SENTRY_DSN` / `SENTRY_DSN` are set (see `.env.example`; `NEXT_PUBLIC_` is read at build time).
+
+- One shared options helper, `lib/sentry-options.ts`, feeds the browser, server and edge inits.
+- `lib/scrub.ts` scrubs events, logs, breadcrumbs and transactions: emails, phone numbers, tokens, API keys,
+  secret-looking fields and query strings. It is linear-time, truncates long text, and fails closed (drops the
+  item if scrubbing throws). Feedback keeps the name and email the person typed.
+- Server code reports through `lib/observability.ts`; context is ids, codes and counts only.
+- The "Feedback" control (header, mobile menu, footer) opens Sentry's form. Reports tunnel through a random route.
+- The old crawler filter (`lib/sentry-client-filter.ts`) still drops the synthetic `script.js` parse error.
 
 ## Paid offering
 
