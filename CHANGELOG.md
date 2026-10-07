@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-07: Blog authorship signals
+- Blog posts now show a visible byline and publish date, carry author meta, and emit
+  og:url, og:site_name, article:published_time and article:author. Article JSON-LD still
+  names an Organization author until a real Person is chosen.
+
 ## 2026-10-07: GEO machine-readability
 
 - robots.txt now names GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-SearchBot, PerplexityBot, Google-Extended and CCBot with an explicit allow.

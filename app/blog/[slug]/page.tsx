@@ -10,6 +10,10 @@ import { Eyebrow, SectionHeading } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
 
+// Byline. SITE has no named human author, so the byline is the editorial team
+// (an Organization). Swap this for a real Person to emit Person JSON-LD.
+const AUTHOR = { "@type": "Organization" as const, name: `${SITE.name} Editorial Team` };
+
 // Converts [label](url) patterns in post paragraphs to <a> links.
 // Internal paths (/foo) stay in-app; external URLs open in a new tab.
 function renderPara(text: string): React.ReactNode[] {
@@ -39,7 +43,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: p.title,
     description: p.description,
     alternates: { canonical: `/blog/${p.slug}` },
-    openGraph: { type: "article", title: p.title, description: p.description },
+    authors: [{ name: AUTHOR.name }],
+    openGraph: {
+      type: "article", title: p.title, description: p.description,
+      url: `/blog/${p.slug}`, siteName: SITE.name,
+      publishedTime: p.date, authors: [AUTHOR.name],
+    },
   };
 }
 
@@ -80,7 +89,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <div className="mt-3">
         <SectionHeading as="h1" title={p.title} sub={p.description} />
       </div>
-      <div className="mt-2 text-xs text-faint">{p.readMins} min read</div>
+      <div className="mt-2 text-xs text-faint">
+        By {AUTHOR.name} · <time dateTime={p.date}>{p.date}</time> · {p.readMins} min read
+      </div>
 
       <div className="mt-6 space-y-5">
         {p.body.map((sec, i) => (
@@ -133,7 +144,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         "@context": "https://schema.org", "@type": "Article",
         headline: p.title, description: p.description, datePublished: p.date,
         image: `${SITE.url}/blog/posts/${p.slug}.jpg`,
-        author: { "@type": "Organization", name: SITE.name },
+        author: AUTHOR,
         publisher: { "@type": "Organization", name: SITE.name },
         mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE.url}/blog/${p.slug}` },
       }) }} />
