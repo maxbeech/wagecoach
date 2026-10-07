@@ -108,8 +108,8 @@ function scrubUrlData(data: Record<string, unknown>): Record<string, unknown> {
   return scrubValue(cleaned) as Record<string, unknown>;
 }
 
-function isFeedback(event: { type?: string }): boolean {
-  return event.type === "feedback";
+function isFeedback(event: { type?: string; contexts?: unknown }): boolean {
+  return event.type === "feedback" || Boolean((event.contexts as { feedback?: unknown } | undefined)?.feedback);
 }
 
 function scrubRequest(request: NonNullable<ErrorEvent["request"]>): void {
@@ -123,9 +123,15 @@ function scrubRequest(request: NonNullable<ErrorEvent["request"]>): void {
 function scrubBaseEvent(event: ErrorEvent | TransactionEvent): void {
   if (event.request) scrubRequest(event.request);
   if (event.extra) event.extra = scrubValue(event.extra) as Record<string, unknown>;
-  if (event.contexts) event.contexts = scrubValue(event.contexts) as typeof event.contexts;
+  if (event.contexts) {
+    // Feedback is the one place the reporter's own name/email/message are kept.
+    const fb = isFeedback(event) ? event.contexts.feedback : undefined;
+    event.contexts = scrubValue(event.contexts) as typeof event.contexts;
+    if (fb) event.contexts.feedback = fb;
+  }
   if (event.tags) event.tags = scrubValue(event.tags) as typeof event.tags;
-  if (event.user) event.user = { id: event.user.id };
+  // The reporter's own user fields are kept on feedback; otherwise ids only.
+  if (event.user && !isFeedback(event)) event.user = { id: event.user.id };
   if (typeof event.message === "string") event.message = scrubText(event.message);
   if (event.logentry?.message) event.logentry.message = scrubText(event.logentry.message);
   if (event.transaction) event.transaction = scrubText(stripQuery(event.transaction));
@@ -143,7 +149,7 @@ function scrubCrumb(b: Breadcrumb): Breadcrumb {
 }
 
 function scrubEventUnsafe(event: ErrorEvent): ErrorEvent | null {
-  if (isFeedback(event)) return event;
+  // Feedback events are NOT exempt: only contexts.feedback / user survive as-is.
   scrubBaseEvent(event);
   for (const ex of event.exception?.values ?? []) {
     if (typeof ex.value === "string") ex.value = scrubText(ex.value);

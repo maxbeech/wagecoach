@@ -57,8 +57,23 @@ eq(ev.breadcrumbs[0].data.to, "/a", "breadcrumb to");
 eq(ev.breadcrumbs[0].data.from, "/c", "breadcrumb from");
 ok(!ev.breadcrumbs[0].message.includes("token"), "breadcrumb message query stripped");
 
-const fb: any = { type: "feedback", contexts: { feedback: { name: "Jane", contact_email: "jane@example.com", message: "hi" } } };
-eq(scrubEvent(fb), fb, "feedback events keep name and email");
+const fbOut: any = scrubEvent({
+  type: "feedback",
+  contexts: { feedback: { name: "Jane", contact_email: "jane@example.com", message: "hi" }, other: { email: "z@z.co" } },
+  user: { email: "jane@example.com" },
+  breadcrumbs: [{ message: "see q@q.co?x=1" }],
+  request: { url: "https://x.test/p?token=1" },
+  tags: { token: "t" },
+  extra: { password: "p" },
+} as any);
+eq(fbOut.contexts.feedback.contact_email, "jane@example.com", "feedback keeps reporter email");
+eq(fbOut.contexts.feedback.name, "Jane", "feedback keeps reporter name");
+eq(fbOut.user.email, "jane@example.com", "feedback keeps reporter user");
+eq(fbOut.contexts.other.email, "[redacted]", "feedback other contexts scrubbed");
+ok(!JSON.stringify(fbOut.breadcrumbs).includes("q@q.co"), "feedback breadcrumbs scrubbed");
+eq(fbOut.request.url, "https://x.test/p", "feedback request url stripped");
+eq(fbOut.tags.token, "[redacted]", "feedback tags scrubbed");
+eq(fbOut.extra.password, "[redacted]", "feedback extra scrubbed");
 
 const crumb: any = scrubBreadcrumb({ message: "mail a@b.com", data: { url: "https://x.test/a?b=1" } });
 eq(crumb.data.url, "https://x.test/a", "breadcrumb fn strips url query");
@@ -85,6 +100,9 @@ const boom = failClosed("x", () => { throw new Error("boom"); });
 eq(boom({}), null, "throwing scrubber returns null");
 const hostile: any = { type: undefined, get request() { throw new Error("hostile getter"); } };
 eq(scrubEvent(hostile), null, "event with a throwing property is dropped, not sent raw");
+eq(scrubTransaction({ type: "transaction", get request() { throw new Error("x"); } } as any), null, "throwing transaction dropped");
+eq(scrubLog({ level: "info", get message() { throw new Error("x"); } } as any), null, "throwing log dropped");
+eq(scrubBreadcrumb({ get message() { throw new Error("x"); } } as any), null, "throwing breadcrumb dropped");
 console.error = origError;
 
 // Linear time: adversarial strings must finish quickly and be truncated.

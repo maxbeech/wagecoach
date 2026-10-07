@@ -112,7 +112,7 @@ Errors, logs and user feedback go to the Sentry project `wagecoach_web` (org `ma
 - One shared options helper, `lib/sentry-options.ts`, feeds the browser, server and edge inits.
 - `lib/scrub.ts` scrubs events, logs, breadcrumbs and transactions: emails, phone numbers, tokens, API keys,
   secret-looking fields and query strings. It is linear-time, truncates long text, and fails closed (drops the
-  item if scrubbing throws). Feedback keeps the name and email the person typed.
+  item if scrubbing throws). Feedback is scrubbed too; only the reporter's own name and email are kept.
 - Server code reports through `lib/observability.ts`; context is ids, codes and counts only.
 - The "Feedback" control (header, mobile menu, footer) opens Sentry's form. Reports tunnel through a random route.
 - The old crawler filter (`lib/sentry-client-filter.ts`) still drops the synthetic `script.js` parse error.

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased — Sentry feedback events no longer bypass the scrubber
+
+- Feedback events are now scrubbed like any other event; only the reporter's own `contexts.feedback` and user fields are kept. Tests added for it and for throwing scrubbers dropping transactions, logs and breadcrumbs.
+
 ## Unreleased — Sentry to the Maxed Labs standard
 
 - Logs on (`enableLogs`, console forwarded), one shared fail-closed scrubber for events, logs, breadcrumbs and transactions, with tests including an adversarial long string.
