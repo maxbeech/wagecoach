@@ -138,6 +138,14 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE.url}/blog/${p.slug}` },
       }) }} />
 
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Blog", item: `${SITE.url}/blog` },
+          { "@type": "ListItem", position: 2, name: p.title, item: `${SITE.url}/blog/${p.slug}` },
+        ],
+      }) }} />
+
       {faq.length > 0 && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
           "@context": "https://schema.org", "@type": "FAQPage",

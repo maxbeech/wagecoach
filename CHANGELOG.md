@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-07: GEO machine-readability
+
+- robots.txt now names GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-SearchBot, PerplexityBot, Google-Extended and CCBot with an explicit allow.
+- Blog posts emit `BreadcrumbList` JSON-LD alongside `Article`.
+- Sitemap `lastmod` (`SITE.updated`) bumped from 2026-06-15 to 2026-10-07.
+
 ## 2026-10-07: Sentry scrubber security pass
 
 - **Long secrets.** JWTs, bearer tokens, vendor keys (`sk_`, `whsec_`, `hlm_sk_`, `sntrys_`) and `key=value` secrets of any length are now redacted whole. The old bounded patterns left the tail of anything longer than their limit.
