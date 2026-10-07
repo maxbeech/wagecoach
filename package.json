@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx test/overtime.test.mts && tsx test/wage.test.mts && tsx test/pay-url.test.mts && tsx test/salary.test.mts && tsx test/backpay.test.mts && tsx test/sentry-client-filter.test.mts && tsx test/json-ld.test.mts && tsx test/lead-email.test.mts && tsx test/fuzz.test.mts && tsx test/no-vercel.test.mts && tsx test/analytics-events.test.mts && tsx test/kit-purchase.test.mts && tsx test/analytics-client.test.mts && tsx test/scrub.test.mts && tsx test/observability.test.mts"
+    "test": "tsx test/overtime.test.mts && tsx test/wage.test.mts && tsx test/pay-url.test.mts && tsx test/salary.test.mts && tsx test/backpay.test.mts && tsx test/sentry-client-filter.test.mts && tsx test/json-ld.test.mts && tsx test/lead-email.test.mts && tsx test/fuzz.test.mts && tsx test/no-vercel.test.mts && tsx test/analytics-events.test.mts && tsx test/kit-purchase.test.mts && tsx test/analytics-client.test.mts && tsx test/scrub.test.mts && tsx test/observability.test.mts && tsx test/scrub-hardening.test.mts"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.71.0",

@@ -117,6 +117,8 @@ Errors, logs and user feedback go to the Sentry project `wagecoach_web` (org `ma
 - The "Feedback" control (header, mobile menu, footer) opens Sentry's form. Reports tunnel through a random route.
 - The old crawler filter (`lib/sentry-client-filter.ts`) still drops the synthetic `script.js` parse error.
 
+The Sentry scrubber (`lib/scrub.ts`) redacts secrets of any length, backs up to a clean boundary when it truncates, and fails closed; its regression tests are in `test/scrub-hardening.test.mts`.
+
 ## Paid offering
 
 Two one-time products, both through the same graceful Stripe route
