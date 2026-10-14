@@ -5,6 +5,8 @@ import BackPayCalculator from "@/components/BackPayCalculator";
 import Faq from "@/components/Faq";
 import { STATES, getState } from "@/lib/states";
 import { wageClaim } from "@/lib/wage-claim-data";
+import { effectiveMinWage } from "@/lib/states";
+import { dollars } from "@/lib/federal";
 import { SITE } from "@/lib/site";
 import { safeJsonLd } from "@/lib/json-ld";
 import { Eyebrow, SectionHeading, Chip, MoreLink } from "@/components/primitives";
@@ -119,6 +121,17 @@ export default async function WageClaimState({ params }: { params: Promise<{ slu
         </ol>
       </section>
 
+      {/* State rules that decide how much a claim is worth, from the state rate sheet. */}
+      <section className="mt-10 rounded-2xl border border-line bg-card p-5 shadow-card">
+        <h2 className="font-display text-lg font-semibold text-ink">{s.name} pay rules that shape your claim</h2>
+        <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted">
+          <li><strong className="text-ink">Minimum wage:</strong> {dollars(effectiveMinWage(s))}/hour in 2026. Pay below this is an unpaid-wage claim on its own.</li>
+          <li><strong className="text-ink">Overtime:</strong> {s.dailyOt ? `${s.name} requires daily overtime over ${s.dailyOt.afterHours} hours as well as weekly over 40, so missed daily overtime counts toward back pay.` : `${s.name} follows the federal weekly rule: 1.5x the regular rate over 40 hours.`}</li>
+          <li><strong className="text-ink">Final paycheck:</strong> if fired, {s.finalPayFired}. If you quit, {s.finalPayQuit}. A late final check can be part of your claim.</li>
+        </ul>
+        <div className="mt-3"><MoreLink href={`/states/${s.slug}`}>{s.name} minimum wage and labor laws</MoreLink></div>
+      </section>
+
       <section className="mt-10 rounded-2xl border border-brand-200 bg-brand-50 p-5 shadow-card">
         <h2 className="font-display text-lg font-semibold text-brand-800">Want a lawyer to check it first?</h2>
         <p className="mt-1 text-sm leading-relaxed text-brand-800">
@@ -138,7 +151,7 @@ export default async function WageClaimState({ params }: { params: Promise<{ slu
       <section className="mt-8">
         <h2 className="font-display text-sm font-semibold text-ink">Wage claims in other states</h2>
         <div className="mt-2 flex flex-wrap gap-2">
-          {STATES.filter((x) => x.slug !== s.slug).slice(0, 12).map((x) => (
+          {STATES.filter((x) => x.slug !== s.slug).map((x) => (
             <Chip key={x.slug} href={`/wage-claim/${x.slug}`}>{x.name}</Chip>
           ))}
         </div>

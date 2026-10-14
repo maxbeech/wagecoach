@@ -4,10 +4,11 @@ import { notFound } from "next/navigation";
 import PayCalculator from "@/components/PayCalculator";
 import { STATES, getState, effectiveMinWage } from "@/lib/states";
 import { citiesForState } from "@/lib/cities";
+import { wageClaim } from "@/lib/wage-claim-data";
 import { dollars } from "@/lib/federal";
 import { SITE } from "@/lib/site";
 import { safeJsonLd } from "@/lib/json-ld";
-import { Eyebrow, SectionHeading, Chip } from "@/components/primitives";
+import { Eyebrow, SectionHeading, Chip, MoreLink } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
 
@@ -113,6 +114,15 @@ export default async function StatePage({ params }: { params: Promise<{ slug: st
         with your state labor department before relying on this for payroll or a legal decision.
       </p>
 
+      <section className="mt-8 rounded-2xl border border-brand-200 bg-brand-50 p-5">
+        <h2 className="font-display text-lg font-semibold text-brand-800">Owed unpaid wages in {s.name}?</h2>
+        <p className="mt-1 text-sm leading-relaxed text-brand-800">
+          {s.name} wage claims go through {wageClaim(s.abbr).agency}. See the filing route, the back-pay window and a
+          calculator that estimates what you may be owed.
+        </p>
+        <div className="mt-3"><MoreLink href={`/wage-claim/${s.slug}`}>How to file a wage claim in {s.name}</MoreLink></div>
+      </section>
+
       {cities.length > 0 && (
         <section className="mt-8 rounded-2xl border border-line bg-card p-5 shadow-card">
           <h2 className="font-display text-lg font-semibold text-ink">Cities in {s.name} with a higher minimum wage</h2>
@@ -131,7 +141,7 @@ export default async function StatePage({ params }: { params: Promise<{ slug: st
       <section className="mt-8">
         <h2 className="font-display text-sm font-semibold text-ink">Other states</h2>
         <div className="mt-2 flex flex-wrap gap-2">
-          {STATES.filter((x) => x.slug !== s.slug).slice(0, 12).map((x) => (
+          {STATES.filter((x) => x.slug !== s.slug).map((x) => (
             <Chip key={x.slug} href={`/states/${x.slug}`}>{x.name}</Chip>
           ))}
         </div>
