@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { POSTS, getPost } from "@/lib/posts";
 import { BlogImage } from "@/components/BlogImage";
 import { getCalc } from "@/lib/calculators";
+import { relatedPosts } from "@/lib/related";
 import { SITE } from "@/lib/site";
 import { safeJsonLd } from "@/lib/json-ld";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
@@ -70,6 +71,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   if (!p) notFound();
   const related = (p.related ?? []).map(getCalc).filter(Boolean);
   const faq = extractFaq(p.body);
+  const moreGuides = relatedPosts(p.slug);
 
   return (
     <article className="mx-auto max-w-2xl">
@@ -138,6 +140,20 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             ))}
           </div>
         </div>
+      )}
+
+      {moreGuides.length > 0 && (
+        <section className="mt-8">
+          <h2 className="font-display text-lg font-semibold text-ink">Related guides</h2>
+          <ul className="mt-3 space-y-2">
+            {moreGuides.map((g) => (
+              <li key={g.slug}>
+                <Link href={`/blog/${g.slug}`} className="text-sm font-medium text-forest underline underline-offset-2 hover:text-brand-800">{g.title}</Link>
+                <span className="text-sm text-muted"> {g.description}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({

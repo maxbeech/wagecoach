@@ -77,7 +77,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
       <section className="mt-8">
         <h2 className="font-display text-sm font-semibold text-ink">Other cities</h2>
         <div className="mt-2 flex flex-wrap gap-2">
-          {CITIES.filter((x) => x.slug !== c.slug).slice(0, 12).map((x) => (
+          {CITIES.filter((x) => x.slug !== c.slug).map((x) => (
             <Chip key={x.slug} href={`/cities/${x.slug}`}>{x.city}</Chip>
           ))}
         </div>

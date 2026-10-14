@@ -10,6 +10,7 @@ import PtoPayoutCalculator from "@/components/PtoPayoutCalculator";
 import BackPayCalculator from "@/components/BackPayCalculator";
 import Faq from "@/components/Faq";
 import { CALCULATORS, getCalc, type CalcDef } from "@/lib/calculators";
+import { postsForCalculator } from "@/lib/related";
 import { SITE } from "@/lib/site";
 import { safeJsonLd } from "@/lib/json-ld";
 import { Eyebrow, SectionHeading, Chip, LedgerTick } from "@/components/primitives";
@@ -74,6 +75,20 @@ export default async function CalculatorPage({ params }: { params: Promise<{ slu
       </section>
 
       <Faq items={c.faqs} />
+
+      {postsForCalculator(c.slug).length > 0 && (
+        <section className="mt-10">
+          <h2 className="font-display text-lg font-semibold text-ink">Guides that explain the rules</h2>
+          <ul className="mt-3 space-y-2">
+            {postsForCalculator(c.slug).map((g) => (
+              <li key={g.slug}>
+                <Link href={`/blog/${g.slug}`} className="text-sm font-medium text-forest underline underline-offset-2 hover:text-brand-800">{g.title}</Link>
+                <span className="text-sm text-muted"> {g.description}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="mt-10">
         <h2 className="font-display text-sm font-semibold text-ink">Other calculators</h2>
