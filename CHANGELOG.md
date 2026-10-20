@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-21: On-call pay refresh (content lifecycle pass)
+
+- `/blog/on-call-pay-rules` (114 impressions, position 11, zero clicks): sharper short answer at the
+  top, and the 24-hour sleep-period sentence now says the exclusion is agreed between employee and
+  employer, matching DOL Fact Sheet #22. Date set to 2026-10-21 after the substantive edit.
+
 ## 2026-10-20: Official sources only, webhook live
 
 - Final-pay and break rules in `lib/state-extras.ts` now cite U.S. DOL and state `.gov` pages only

@@ -615,10 +615,10 @@ export const POSTS: Post[] = [
     slug: "on-call-pay-rules",
     title: "On-Call Pay: When Waiting by the Phone Has to Be Paid",
     description: "The FLSA test for on-call pay in 2026: engaged-to-wait vs waiting-to-be-engaged, when standby time is paid, and how restrictive on-call policies can owe you wages.",
-    date: "2026-08-26", readMins: 7, keyword: "on call pay rules", related: ["overtime-calculator"],
+    date: "2026-10-21", readMins: 7, keyword: "on call pay rules", related: ["overtime-calculator"],
     body: [
       { p: [
-          "On-call time must be paid when an employer's restrictions keep you from using the time effectively for yourself; simply carrying a phone at home usually is not enough. Every actual call-out is work time, and paid on-call hours can also push a non-exempt worker into overtime.",
+          "Short answer: on-call time is paid when your employer's restrictions keep you from using it effectively for yourself. Carrying a phone at home and answering if called usually is not paid time. Every actual call-out is always work time, and paid on-call hours can also push a non-exempt worker into overtime.",
           "The U.S. Department of Labor draws the same practical distinction: being required to remain on the employer's premises is work time, while at-home availability usually is not unless added constraints substantially limit personal freedom. The answer turns on the real restrictions and records, not the name of the shift. [Read DOL Fact Sheet #22](https://www.dol.gov/agencies/whd/fact-sheets/22-flsa-hours-worked)."
         ] },
       { h: "The core test: engaged to wait vs waiting to be engaged", p: [
@@ -648,7 +648,7 @@ export const POSTS: Post[] = [
       { h: "Frequently asked questions", p: [
           "Do I get paid for on-call time if I'm never actually called in? It depends entirely on the restrictions. If the standby conditions are tight enough that you can't use the time for yourself, yes, you're owed for the waiting whether or not the phone ever rings. If you're basically free and just carry a phone, the waiting usually isn't paid, but any actual call-out is.",
           "My employer pays a flat $50 on-call stipend per night. Is that legal? Maybe not. A flat stipend is fine if your standby isn't compensable. But if your on-call time is compensable, you're owed at least minimum wage for every hour and overtime once you pass 40, and a flat $50 may fall short. The stipend can't be used to avoid the hourly and overtime rules.",
-          "Can sleeping time on an overnight on-call shift be unpaid? Sometimes. For shifts of 24 hours or more, the FLSA lets employers exclude a bona fide sleep period (up to 8 hours) if you get adequate sleeping facilities and can usually sleep uninterrupted. But if you're called during that period, the interruption is paid, and if you can't get at least 5 hours of sleep the whole period becomes compensable."
+          "Can sleeping time on an overnight on-call shift be unpaid? Sometimes. For shifts of 24 hours or more, you and your employer can agree to exclude a regularly scheduled sleep period of up to 8 hours, if the employer provides adequate sleeping facilities and you can usually sleep uninterrupted. But if you're called during that period, the interruption is paid, and if you can't get at least 5 hours of sleep the whole period becomes compensable."
         ] },
       { h: "Count your standby hours and check for overtime", p: [
           "On-call disputes turn on facts, so build a record. For a few representative weeks, write down your standby hours, the restrictions you're under (response window, where you can be, activity limits), and every call-out with its start and end time. That log is the backbone of any claim.",
