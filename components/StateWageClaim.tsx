@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Faq from "./Faq";
 import { safeJsonLd } from "@/lib/json-ld";
 import { wageClaim } from "@/lib/wage-claim-data";
@@ -45,9 +44,11 @@ export default function StateWageClaim({ s }: { s: StateLaw }) {
         you claim up to 2 years of back pay (3 if the violation was willful), plus an equal amount in liquidated damages.
       </p>
       <div className="mt-4">
-        <Link href={`/wage-claim?st=${s.abbr}`} className="inline-block rounded-full bg-forest px-6 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-brand-800">
+        {/* A plain link on purpose: the estimator reads its inputs from window.location on
+            mount, which a client-side navigation hasn't updated yet. */}
+        <a href={`/wage-claim?st=${s.abbr}`} className="inline-block rounded-full bg-forest px-6 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-brand-800">
           Estimate what I&apos;m owed in {s.name}
-        </Link>
+        </a>
       </div>
 
       <div className="mt-6 overflow-hidden rounded-2xl border border-line bg-card shadow-card">

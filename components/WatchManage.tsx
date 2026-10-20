@@ -19,6 +19,8 @@ export default function WatchManage({ token, places, maxLocations, paid }: { tok
   const [msg, setMsg] = useState<{ tone: "ok" | "err"; text: string } | null>(null);
   const dirty = list.join() !== places.join();
   const full = list.length >= maxLocations;
+  // On a one-place plan the picker replaces the place instead of adding one.
+  const swap = maxLocations === 1;
 
   async function post(path: string, body: Record<string, unknown>, kind: "save" | "unsub" | "billing") {
     setBusy(kind); setMsg(null);
@@ -57,17 +59,18 @@ export default function WatchManage({ token, places, maxLocations, paid }: { tok
         ))}
       </ul>
 
-      {!full ? (
-        <div className="mt-3 flex gap-2">
-          <select className={inputCls} value={adding} aria-label="Add a place" onChange={(e) => setAdding(e.target.value)}>
-            <option value="">Add a state or city</option>
-            {ALL_LOCATIONS.filter((l) => !list.includes(l.key)).map((l) => <option key={l.key} value={l.key}>{l.label}</option>)}
-          </select>
-          <button type="button" disabled={!adding} onClick={() => { setList([...list, adding]); setAdding(""); }}
-            className="mt-1 shrink-0 rounded-lg border border-line px-4 text-sm font-medium text-ink transition hover:border-brand-300 disabled:opacity-50">Add</button>
-        </div>
-      ) : (
-        !paid && <p className="mt-3 text-xs text-muted">The free plan covers one place. Wage Watch covers up to 10.</p>
+      <div className="mt-3 flex gap-2">
+        <select className={inputCls} value={adding} aria-label={swap ? "Switch place" : "Add a place"} disabled={full && !swap} onChange={(e) => setAdding(e.target.value)}>
+          <option value="">{swap ? "Switch to another state or city" : full ? "Place limit reached" : "Add a state or city"}</option>
+          {ALL_LOCATIONS.filter((l) => !list.includes(l.key)).map((l) => <option key={l.key} value={l.key}>{l.label}</option>)}
+        </select>
+        <button type="button" disabled={!adding || (full && !swap)} onClick={() => { setList(swap ? [adding] : [...list, adding]); setAdding(""); }}
+          className="mt-1 shrink-0 rounded-lg border border-line px-4 text-sm font-medium text-ink transition hover:border-brand-300 disabled:opacity-50">{swap ? "Switch" : "Add"}</button>
+      </div>
+      {!paid && (
+        <p className="mt-2 text-xs text-muted">
+          The free plan covers one place. <a href="#upgrade" className="font-medium text-brand-700 underline decoration-brand-300 underline-offset-2">Wage Watch</a> covers up to 10.
+        </p>
       )}
 
       <div className="mt-5 flex flex-wrap items-center gap-2">

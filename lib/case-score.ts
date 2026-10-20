@@ -57,7 +57,7 @@ export function scoreCase(inp: BackPayInputs, r: BackPayResult): CaseScore {
   factors.push({
     label: "Total back pay at stake",
     detail: r.backPay >= 1000
-      ? "The amount is large enough that most wage attorneys will take a look."
+      ? "The amount is large enough to be worth pursuing, by a state claim or with a lawyer."
       : "The amount is modest; a state labor-board claim or small-claims filing may fit best.",
     positive: r.backPay >= 1000,
   });

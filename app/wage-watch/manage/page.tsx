@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import CheckoutButton from "@/components/CheckoutButton";
-import PlanCard from "@/components/PlanCard";
+import { Check } from "@/components/PlanCard";
 import ProReportView from "@/components/ProReportView";
 import UpcomingChanges from "@/components/UpcomingChanges";
 import WatchManage from "@/components/WatchManage";
 import KitPurchaseTracker from "@/components/analytics/kit-purchase-tracker";
+import StripSearchParams from "@/components/StripSearchParams";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
 import { buildProReport } from "@/lib/pro-report";
 import { getStateByAbbr, type StateLaw } from "@/lib/states";
@@ -68,7 +69,8 @@ export default async function ManagePage({ searchParams }: { searchParams: Promi
       {upgraded === "yes" && sessionId && <KitPurchaseTracker purchase={{ transactionId: sessionId, value: WATCH_PLANS.watch.priceUsd, currency: "USD" }} item={WATCH_ITEM} />}
       {upgraded === "failed" && <KitPurchaseTracker failureReason="watch_activation" item={WATCH_ITEM} />}
 
-      <Eyebrow>{paid ? "Wage Watch · active" : "Free alerts"}</Eyebrow>
+      <StripSearchParams keys={["session_id", "status", "confirmed"]} />
+      <Eyebrow>{watcher.unsubscribedAt ? "Unsubscribed" : paid ? "Wage Watch · active" : "Free alerts"}</Eyebrow>
       <div className="mt-3">
         <SectionHeading as="h1" title="Your wage alerts" sub={`Emails go to ${watcher.email}.`} />
       </div>
@@ -76,9 +78,19 @@ export default async function ManagePage({ searchParams }: { searchParams: Promi
       {sp.confirmed && !watcher.unsubscribedAt && <Banner>You&apos;re in. We&apos;ll email you before the next change in your places.</Banner>}
       {upgraded === "yes" && <Banner>Wage Watch is on. Add up to {WATCH_PLANS.watch.maxLocations} places below.</Banner>}
       {upgraded === "failed" && <Banner tone="warn">We couldn&apos;t confirm the payment yet. Refresh in a minute; if it still says free, reply to any of our emails.</Banner>}
-      {watcher.unsubscribedAt && <Banner tone="warn">You&apos;re unsubscribed. Sign up again on the Wage Watch page to restart alerts.</Banner>}
+
       {!watcher.confirmedAt && !watcher.unsubscribedAt && <Banner tone="warn">Confirm your email first: open the link we sent you.</Banner>}
 
+      {watcher.unsubscribedAt ? (
+        <div className="settle-in mt-8 max-w-lg rounded-2xl border border-line bg-card p-6 shadow-card">
+          <h2 className="font-display text-base font-semibold text-ink">You&apos;re unsubscribed</h2>
+          <p className="mt-1 text-sm leading-relaxed text-muted">
+            We won&apos;t email you again.{paid ? " Your Wage Watch subscription is still billed until you cancel it from billing." : ""} To start
+            alerts again, sign up with the same email and confirm.
+          </p>
+          <div className="mt-4"><Link href="/wage-watch" className="rounded-full bg-forest px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-800">Sign up again</Link></div>
+        </div>
+      ) : (
       <div className="mt-8 grid items-start gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <WatchManage token={token} places={watcher.locations} maxLocations={plan.maxLocations} paid={paid} />
         <section>
@@ -86,17 +98,25 @@ export default async function ManagePage({ searchParams }: { searchParams: Promi
           <div className="mt-3"><UpcomingChanges changes={upcoming} today={today} empty="No changes announced for your places yet. We'll email you when one is." /></div>
         </section>
       </div>
+      )}
 
       {!paid && !watcher.unsubscribedAt && (
-        <section className="mt-12 max-w-xl">
-          <PlanCard name={WATCH_PLANS.watch.name} price={`$${WATCH_PLANS.watch.priceUsd}`} unit="a month" featured
-            blurb="For businesses in several states or cities." features={WATCH_FEATURES.watch}>
-            <CheckoutButton product="watch" token={token} label={`Upgrade for $${WATCH_PLANS.watch.priceUsd} a month`} />
-          </PlanCard>
+        <section id="upgrade" className="mt-12 grid items-center gap-6 rounded-3xl border border-brand-300 bg-card p-7 shadow-float ring-1 ring-brand-100 md:grid-cols-[1.2fr_0.8fr]">
+          <div>
+            <div className="text-sm font-semibold uppercase tracking-wide text-brand-700">{WATCH_PLANS.watch.name}</div>
+            <ul className="mt-3 space-y-2.5 text-sm text-muted">
+              {WATCH_FEATURES.watch.map((f) => <li key={f} className="flex gap-2.5"><Check />{f}</li>)}
+            </ul>
+          </div>
+          <div className="md:border-l md:border-line md:pl-6">
+            <div className="font-display text-4xl font-semibold text-ink">${WATCH_PLANS.watch.priceUsd}<span className="font-sans text-base font-medium text-faint"> a month</span></div>
+            <p className="mt-1 text-sm text-muted">For businesses in several states or cities.</p>
+            <div className="mt-4"><CheckoutButton product="watch" token={token} label={`Upgrade for $${WATCH_PLANS.watch.priceUsd} a month`} /></div>
+          </div>
         </section>
       )}
 
-      {paid && states.length > 0 && (
+      {paid && !watcher.unsubscribedAt && states.length > 0 && (
         <div className="mt-14 border-t border-line pt-10">
           <ProReportView report={buildProReport(states)} heading={{
             eyebrow: "Compliance sheet",

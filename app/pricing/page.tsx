@@ -43,14 +43,16 @@ export default function Pricing() {
 
       <div className="mt-8 grid items-stretch gap-5 md:grid-cols-3">
         <PlanCard name="Free" price="$0" blurb="Forever. No account." features={FREE}>
+          <p className="mb-3 text-xs leading-relaxed text-faint">No signup. Results stay in the link.</p>
           <Link href="/calculators" className={`${link} border border-line text-ink hover:border-brand-300`}>Open the calculators</Link>
         </PlanCard>
         <PlanCard name="Claim Kit" price="$29" unit="one-time" badge="For workers" featured blurb="Everything you need to claim back pay." features={KIT}>
+          <p className="mb-3 text-xs leading-relaxed text-faint">Built from your estimate, so it starts there. Self-help information, not legal advice.</p>
           <Link href="/wage-claim" className={`${link} bg-forest text-white hover:bg-brand-800`}>Start with your estimate</Link>
-          <p className="mt-3 text-xs leading-relaxed text-faint">The kit is built from your estimate, so it starts there. Self-help information, not legal advice.</p>
         </PlanCard>
         <PlanCard name={watch.name} price={`$${watch.priceUsd}`} unit="a month" badge="For employers" blurb={`Rate-change alerts for up to ${watch.maxLocations} places. Free for one.`} features={WATCH_FEATURES.watch}>
-          <Link href="/wage-watch" className={`${link} border border-line text-ink hover:border-brand-300`}>Start free</Link>
+          <p className="mb-3 text-xs leading-relaxed text-faint">Start with one place free, then upgrade from your settings.</p>
+          <Link href="/wage-watch" className={`${link} border border-line text-ink hover:border-brand-300`}>Get Wage Watch</Link>
         </PlanCard>
       </div>
 

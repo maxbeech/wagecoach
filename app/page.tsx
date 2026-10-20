@@ -6,7 +6,7 @@ import Reveal from "@/components/Reveal";
 import OvertimeBar from "@/components/illustrations/OvertimeBar";
 import WageSpectrum from "@/components/illustrations/WageSpectrum";
 import { Eyebrow, SectionHeading, MoreLink } from "@/components/primitives";
-import { MockReport } from "@/components/mockups";
+import { MockAlert } from "@/components/mockups";
 import { HOME_FAQS } from "@/lib/faq";
 import { CALCULATORS } from "@/lib/calculators";
 import { STATES, effectiveMinWage } from "@/lib/states";
@@ -243,7 +243,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="lg:rotate-[-1.4deg]">
-            <MockReport />
+            <MockAlert />
           </div>
         </div>
       </section>

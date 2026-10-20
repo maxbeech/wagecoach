@@ -23,6 +23,7 @@ export default function WatchSignup({ defaultLocation = "", compact = false }: {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!place) { setError("Pick a state or city to watch."); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) { setError("That email address doesn't look right."); return; }
     setState("sending"); setError(null);
     try {
       const res = await fetch("/api/watch/subscribe", {
@@ -60,15 +61,15 @@ export default function WatchSignup({ defaultLocation = "", compact = false }: {
   }
 
   const select = (
-    <select className={inputCls} value={place} aria-label="Place to watch" onChange={(e) => setPlace(e.target.value)} required>
+    <select className={inputCls} value={place} aria-label="Place to watch" onChange={(e) => { setPlace(e.target.value); setError(null); }}>
       <option value="" disabled>Pick a state or city</option>
       <optgroup label="States">{STATES.map((l) => <option key={l.key} value={l.key}>{l.label}</option>)}</optgroup>
       <optgroup label="Cities and counties">{CITIES.map((l) => <option key={l.key} value={l.key}>{l.label}</option>)}</optgroup>
     </select>
   );
   const emailInput = (
-    <input type="email" required autoComplete="email" placeholder="you@company.com" aria-label="Email" className={inputCls}
-      value={email} onChange={(e) => setEmail(e.target.value)} />
+    <input type="email" autoComplete="email" inputMode="email" placeholder="you@company.com" aria-label="Email" className={inputCls}
+      value={email} onChange={(e) => { setEmail(e.target.value); setError(null); }} />
   );
   const button = (
     <button type="submit" disabled={state === "sending"}
@@ -78,7 +79,7 @@ export default function WatchSignup({ defaultLocation = "", compact = false }: {
   );
 
   return (
-    <form onSubmit={submit} noValidate={false} className={compact ? "" : "space-y-3"}>
+    <form onSubmit={submit} noValidate className={compact ? "" : "space-y-3"}>
       {compact ? (
         <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
           {!defaultLocation && <div className="sm:w-56">{select}</div>}
