@@ -156,7 +156,9 @@ gate numbers (50 confirmed signups, 15 multi-location in 8 weeks) remain the bar
 | Wage Watch free + paid | Done. Helm7 Postgres, Stripe subscription, cron route |
 | GA4 bot filter (Singapore "Direct") | **Manual**: GA4 Admin → Data filters (no API for it here) |
 | GSC manual-actions and Pages checks | **Manual**: Search Console UI |
-| Stripe webhook registration + billing portal | **Manual**: see the README "Stripe webhook" section |
+| Stripe webhook registration | Done 2026-10-20: live endpoint created, secret set on Helm7 production |
+| Billing portal (live mode) | **Manual**: Stripe Dashboard → Settings → Billing → Customer portal → activate (needs the live key, which isn't held locally) |
+| Compliance-sheet citations | Done 2026-10-20: DOL and state .gov only, guarded by a test |
 
 ### Checkpoints to record here
 

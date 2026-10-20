@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-20: Official sources only, webhook live
+
+- Final-pay and break rules in `lib/state-extras.ts` now cite U.S. DOL and state `.gov` pages only
+  (Rippling, Patriot Software, TimeClick, Winthrop and minimum-wage.org removed; Vermont cites 21
+  V.S.A. § 304). `test/state-extras-sources.test.mts` fails if a non-official source returns.
+- `STRIPE_WEBHOOK_SECRET` set on Helm7 production (live-mode endpoint).
+
 ## 2026-10-20: Monetization reset (Pro report and lead-gen out, Wage Watch in)
 
 Why: nobody converted to Pro, but the data said the offer wasn't the main problem. GA4 showed about

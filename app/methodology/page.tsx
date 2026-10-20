@@ -70,7 +70,7 @@ export default function Methodology() {
           2026 state minimum and tipped wages are cross-checked across the U.S. Department of Labor and
           reputable payroll/compliance trackers (GovDocs, Paycom, Paycor, Ogletree). Final-paycheck
           deadlines and meal/rest-break rules are compiled from state labor-department (.gov) pages and
-          cross-referenced with Rippling, Patriot Software and the TimeClick break-law guide. Each
+          the U.S. DOL Wage and Hour Division state tables. Each
           state page links the figures back to these sources.
         </p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
