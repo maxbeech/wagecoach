@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import CheckoutButton from "@/components/CheckoutButton";
-import ProReportBuy from "@/components/ProReportBuy";
+import PlanCard from "@/components/PlanCard";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
 import { SITE } from "@/lib/site";
 import { safeJsonLd } from "@/lib/json-ld";
+import { WATCH_FEATURES } from "@/lib/watch-copy";
+import { WATCH_PLANS } from "@/lib/watch-plan";
 
 export const revalidate = 604800; // weekly ISR
 
 export const metadata: Metadata = {
-  title: "Pricing — Wage Claim Kit & Multi-State Compliance Report",
-  description: "Every calculator is free. Workers: a $29 Claim Kit to recover unpaid wages. Employers: a $19 multi-state wage & hour compliance report.",
+  title: "Pricing: Free Calculators, Claim Kit and Wage Watch",
+  description: "Every calculator is free. Workers: a $29 Claim Kit to recover unpaid wages. Employers: minimum wage change alerts, free for one place or $9 a month for up to 10.",
   alternates: { canonical: "/pricing" },
 };
 
 const FREE = [
-  "Every overtime, minimum-wage and paycheck calculator",
+  "Every overtime, minimum-wage, paycheck and time card calculator",
   "Back-pay estimator with case-strength signal",
   "2026 minimum and tipped wage for all 50 states plus DC",
   "How to file a wage claim in every state",
@@ -26,65 +27,31 @@ const KIT = [
   "A demand letter pre-filled with your figures",
   "Your state's wage-claim agency and filing route",
   "Step-by-step complaint guide and deadlines",
-  "Printable PDF — yours to send or take to a lawyer",
-];
-const PRO = [
-  "Multi-state compliance report PDF for your whole team",
-  "Minimum wage, overtime, tipped, final-pay and breaks per state",
-  "Cited sources and effective dates for each rule",
-  "Branded summary for HR and payroll review",
+  "Printable, and yours to send or take to a lawyer",
 ];
 
-function Check() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="mt-0.5 shrink-0" aria-hidden>
-      <circle cx="8" cy="8" r="8" fill="#d2e9df" />
-      <path d="M4.5 8.2l2.3 2.3 4.7-4.8" stroke="#0d543f" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
+const link = "rounded-full px-6 py-3 text-center text-sm font-semibold transition block";
 
 export default function Pricing() {
+  const watch = WATCH_PLANS.watch;
   return (
     <div>
       <Eyebrow>Pricing</Eyebrow>
       <div className="mt-3">
-        <SectionHeading as="h1" title="Simple pricing" sub="Every calculator is free forever. If you're a worker chasing unpaid wages, the Claim Kit turns your estimate into something you can act on. If you run payroll across several states, the Pro report compiles every state's rules into one printable PDF." />
+        <SectionHeading as="h1" title="Simple pricing" sub="Every calculator is free. If you're owed wages, the Claim Kit turns your estimate into a letter and a filing plan. If you employ people in more than one place, Wage Watch tells you before the minimum wage changes." />
       </div>
 
-      <div className="mt-8 grid items-start gap-5 md:grid-cols-3">
-        <div className="rounded-3xl border border-line bg-card p-7 shadow-card">
-          <div className="text-sm font-semibold uppercase tracking-wide text-faint">Free</div>
-          <div className="mt-2 font-display text-4xl font-semibold text-ink">$0</div>
-          <p className="mt-1 text-sm text-muted">Forever. No account.</p>
-          <ul className="mt-5 space-y-2.5 text-sm text-muted">
-            {FREE.map((f) => <li key={f} className="flex gap-2.5"><Check />{f}</li>)}
-          </ul>
-        </div>
-
-        <div className="relative rounded-3xl border border-brand-300 bg-card p-7 shadow-float ring-1 ring-brand-100">
-          <span className="absolute -top-3 right-7 rounded-full bg-gold-500 px-3 py-1 text-xs font-semibold text-white">For workers</span>
-          <div className="text-sm font-semibold uppercase tracking-wide text-brand-700">Claim Kit</div>
-          <div className="mt-2 font-display text-4xl font-semibold text-ink">$29<span className="font-sans text-base font-medium text-faint"> one-time</span></div>
-          <p className="mt-1 text-sm text-muted">Everything you need to claim back pay.</p>
-          <ul className="mt-5 space-y-2.5 text-sm text-muted">
-            {KIT.map((f) => <li key={f} className="flex gap-2.5"><Check />{f}</li>)}
-          </ul>
-          <div className="mt-6"><CheckoutButton product="kit" /></div>
-          <p className="mt-3 text-xs leading-relaxed text-faint">
-            Start free with the <Link href="/wage-claim" className="text-brand-700 underline decoration-brand-300 underline-offset-2">back-pay estimator</Link>. The kit is self-help information, not legal advice.
-          </p>
-        </div>
-
-        <div className="rounded-3xl border border-line bg-card p-7 shadow-card">
-          <div className="text-sm font-semibold uppercase tracking-wide text-faint">Pro report</div>
-          <div className="mt-2 font-display text-4xl font-semibold text-ink">$19<span className="font-sans text-base font-medium text-faint"> one-time</span></div>
-          <p className="mt-1 text-sm text-muted">For employers running multi-state payroll.</p>
-          <ul className="mt-5 space-y-2.5 text-sm text-muted">
-            {PRO.map((f) => <li key={f} className="flex gap-2.5"><Check />{f}</li>)}
-          </ul>
-          <div className="mt-6"><ProReportBuy /></div>
-        </div>
+      <div className="mt-8 grid items-stretch gap-5 md:grid-cols-3">
+        <PlanCard name="Free" price="$0" blurb="Forever. No account." features={FREE}>
+          <Link href="/calculators" className={`${link} border border-line text-ink hover:border-brand-300`}>Open the calculators</Link>
+        </PlanCard>
+        <PlanCard name="Claim Kit" price="$29" unit="one-time" badge="For workers" featured blurb="Everything you need to claim back pay." features={KIT}>
+          <Link href="/wage-claim" className={`${link} bg-forest text-white hover:bg-brand-800`}>Start with your estimate</Link>
+          <p className="mt-3 text-xs leading-relaxed text-faint">The kit is built from your estimate, so it starts there. Self-help information, not legal advice.</p>
+        </PlanCard>
+        <PlanCard name={watch.name} price={`$${watch.priceUsd}`} unit="a month" badge="For employers" blurb={`Rate-change alerts for up to ${watch.maxLocations} places. Free for one.`} features={WATCH_FEATURES.watch}>
+          <Link href="/wage-watch" className={`${link} border border-line text-ink hover:border-brand-300`}>Start free</Link>
+        </PlanCard>
       </div>
 
       <p className="mt-6 max-w-2xl text-xs leading-relaxed text-faint">
@@ -92,15 +59,16 @@ export default function Pricing() {
         exceptions and strict deadlines, so confirm with your state labor department or an attorney before acting.
       </p>
 
-      {/* Machine-readable pricing, kept in lockstep with the three tiers rendered above. */}
+      {/* Machine-readable pricing, kept in lockstep with the tiers rendered above. */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         "@context": "https://schema.org", "@type": "SoftwareApplication",
         name: SITE.name, applicationCategory: "BusinessApplication", operatingSystem: "Web",
         description: SITE.description, url: `${SITE.url}/pricing`,
         offers: [
-          { "@type": "Offer", name: "Free calculators & back-pay estimator", price: "0", priceCurrency: "USD", description: "Every overtime, minimum-wage and paycheck calculator, plus the back-pay estimator. No account, forever." },
-          { "@type": "Offer", name: "Claim Kit", price: "29", priceCurrency: "USD", description: "A demand letter pre-filled with your figures, your state's wage-claim agency and filing route, and a step-by-step complaint guide, delivered as a printable PDF." },
-          { "@type": "Offer", name: "Pro report", price: "19", priceCurrency: "USD", description: "A multi-state wage & hour compliance report PDF covering minimum wage, overtime, tipped, final-pay and break rules, cited and dated." },
+          { "@type": "Offer", name: "Free calculators & back-pay estimator", price: "0", priceCurrency: "USD", description: "Every overtime, minimum-wage, paycheck and time card calculator, plus the back-pay estimator. No account." },
+          { "@type": "Offer", name: "Claim Kit", price: "29", priceCurrency: "USD", description: "A demand letter pre-filled with your figures, your state's wage-claim agency and filing route, and a step-by-step complaint guide." },
+          { "@type": "Offer", name: watch.name, price: String(watch.priceUsd), priceCurrency: "USD", description: `Minimum wage change alerts for up to ${watch.maxLocations} states and cities, with a printable compliance sheet.`,
+            priceSpecification: { "@type": "UnitPriceSpecification", price: String(watch.priceUsd), priceCurrency: "USD", billingDuration: "P1M" } },
         ],
       }) }} />
     </div>

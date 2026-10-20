@@ -6,11 +6,6 @@ import { ok, report } from "./_assert.mts";
 
 const read = (p: string) => readFileSync(p, "utf8");
 
-const lead = read("app/api/lead/route.ts");
-// Each channel reports its own thrown error through `settle` (scope is lead_email or lead_webhook), so one failing channel cannot hide another's success.
-ok(/channel\.catch\(\(err\) => \{\s*captureServerError\(err, \{ scope \}\)/.test(lead), "lead route reports delivery exceptions per channel");
-ok(/captureServerMessage\("Lead email send failed"/.test(lead), "lead route reports a failed email send");
-ok(/captureServerMessage\("Lead webhook rejected"/.test(lead), "lead route reports a rejected webhook");
 const checkout = read("app/api/checkout/route.ts");
 ok(/captureServerError\(err, \{ scope: "checkout"/.test(checkout), "checkout reports exceptions");
 ok(/captureServerMessage\("Stripe checkout session creation failed"/.test(checkout), "checkout reports Stripe failures");
@@ -24,7 +19,6 @@ ok(/captureServerError\(err, \{ scope: "stripe_webhook"/.test(webhook), "webhook
 ok(/captureServerMessage\("Pro report email was not sent"/.test(webhook), "webhook reports a failed email");
 ok(/captureServerMessage\("Stripe webhook is not configured"/.test(webhook), "webhook reports being unconfigured");
 ok(/captureServerMessage\("Checkout is not configured"/.test(checkout), "checkout reports being unconfigured");
-ok(/captureClientError\(err, \{ scope: "case_review_submit"/.test(read("components/CaseReviewForm.tsx")), "case review form reports");
 ok(/captureClientError\(err, \{ scope: "checkout_start"/.test(read("components/CheckoutButton.tsx")), "checkout button reports");
 
 ok(/Sentry\.captureException\(error\)/.test(read("app/global-error.tsx")), "global-error captures");

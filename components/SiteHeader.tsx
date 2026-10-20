@@ -38,9 +38,9 @@ export default function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <FeedbackButton variant="header" />
-          <Link href="/pricing"
+          <Link href="/wage-claim"
             className="hidden rounded-full bg-forest px-4 py-2 text-sm font-medium text-white shadow-sm ring-1 ring-inset ring-white/10 transition hover:bg-brand-800 sm:inline-block">
-            Pro report
+            Check my pay
           </Link>
           <button type="button" aria-label="Menu" aria-expanded={open} onClick={() => setOpen((v) => !v)}
             className="grid h-9 w-9 place-items-center rounded-lg border border-line text-ink md:hidden">
@@ -61,8 +61,8 @@ export default function SiteHeader() {
               </Link>
             ))}
             <FeedbackButton variant="menu" onOpen={() => setOpen(false)} />
-            <Link href="/pricing" onClick={() => setOpen(false)} className="mt-3 rounded-full bg-forest px-4 py-2.5 text-center text-sm font-medium text-white">
-              Pro report
+            <Link href="/wage-claim" onClick={() => setOpen(false)} className="mt-3 rounded-full bg-forest px-4 py-2.5 text-center text-sm font-medium text-white">
+              Check my pay
             </Link>
           </div>
         </nav>

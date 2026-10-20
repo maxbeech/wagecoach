@@ -47,12 +47,12 @@ ok(Boolean(e.stateNote), "NY: confirm case surfaces a state note");
 e = exemptCheck(70000, getStateByAbbr("NY")!);
 eq(e.meetsSalary, true, "NY: $70k clears the higher downstate threshold");
 
-// Alaska: 2 × state min ($13.00) × 2080 = $54,080.
+// Alaska: 2 × state min ($14.00 since July 1, 2026) × 2080 = $58,240.
 e = exemptCheck(40000, getStateByAbbr("AK")!);
-eq(e.threshold, 54080, "AK exempt threshold = 2×$13.00×2080 = $54,080");
-eq(e.meetsSalary, false, "AK: $40k below $54,080");
-e = exemptCheck(55000, getStateByAbbr("AK")!);
-eq(e.meetsSalary, true, "AK: $55k meets $54,080");
+eq(e.threshold, 58240, "AK exempt threshold = 2×$14.00×2080 = $58,240");
+eq(e.meetsSalary, false, "AK: $40k below $58,240");
+e = exemptCheck(59000, getStateByAbbr("AK")!);
+eq(e.meetsSalary, true, "AK: $59k meets $58,240");
 
 // Maine: 3,000 × state min ($15.10) = $45,300.
 e = exemptCheck(45300, getStateByAbbr("ME")!);

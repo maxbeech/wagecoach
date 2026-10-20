@@ -3,7 +3,7 @@ import type { PayInputs } from "./overtime";
 
 // The calculator catalog. Each entry powers a /calculators/[slug] page and the
 // homepage tool grid. `tool` selects which interactive component renders.
-export type ToolKind = "pay" | "salary" | "minwage" | "tipped" | "exempt" | "pto" | "finalpay" | "backpay";
+export type ToolKind = "pay" | "salary" | "minwage" | "tipped" | "exempt" | "pto" | "finalpay" | "backpay" | "timecard";
 
 export interface CalcDef {
   slug: string;
@@ -97,6 +97,28 @@ export const CALCULATORS: CalcDef[] = [
       f("How do I know if I'm owed overtime back pay?", "If you worked more than 40 hours in a week and were paid your normal rate (not 1.5×) for the extra hours, the unpaid premium is back pay you can usually recover for up to 2 years (3 if willful)."),
       f("How far back can I claim unpaid wages?", "Under the FLSA, 2 years, or 3 years for a willful violation. Some states allow longer — New York, for example, allows a 6-year look-back."),
       f("Can I get more than the wages I was underpaid?", "Often yes. The FLSA allows liquidated damages equal to the back pay (doubling it), and several states add their own penalties of 2× or 3× the unpaid amount."),
+    ],
+  },
+  {
+    slug: "time-card-calculator",
+    name: "Time card",
+    keyword: "time card calculator",
+    h1: "Time Card Calculator with Lunch Breaks",
+    meta: "Free time card calculator. Enter clock in, clock out and lunch for each day to get total hours in h:mm and decimal, weekly or biweekly, plus overtime and gross pay.",
+    intro: "Type in when you clocked in, when you clocked out and how long your unpaid lunch was. You get hours for each day, the week or the pay period, and how much of it is overtime. Night shifts that run past midnight work too.",
+    focus: "Clock in, clock out and lunch, weekly or biweekly",
+    tool: "timecard",
+    notes: [
+      "Hours = clock out minus clock in, minus unpaid breaks. A shift that ends before it starts is treated as running past midnight and counts toward the day it began.",
+      "Biweekly cards are split into two separate workweeks. Federal overtime is figured per week, never averaged across two.",
+      "California, Alaska, Nevada and Colorado also count daily overtime, and California adds double time. Pick your state to apply them.",
+      "Short breaks of about 20 minutes or less are generally paid time under federal rules. Only count a lunch you were fully relieved of work for.",
+    ],
+    faqs: [
+      f("How do I calculate hours on a time card with a lunch break?", "Subtract clock-in from clock-out, then subtract the unpaid lunch. 9:00 to 5:30 with a 30-minute lunch is 8 hours. Convert minutes to a decimal by dividing by 60, so 7:45 is 7.75 hours."),
+      f("How do I calculate a biweekly time card?", "Add up each workweek on its own, then add the two weeks together. Overtime is based on each week separately, so 30 hours one week and 50 the next gives 10 overtime hours, not zero."),
+      f("How do I calculate hours when I work past midnight?", "Count from clock-in to clock-out across midnight. 10:00 pm to 6:00 am is 8 hours. This calculator does that for you when the clock-out time is earlier than the clock-in time."),
+      f("What if my time card is short?", "If your paycheck pays fewer hours than you recorded, or overtime came out at straight time, that gap may be back pay you can recover. The back pay calculator estimates it."),
     ],
   },
   {

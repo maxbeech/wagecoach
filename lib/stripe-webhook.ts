@@ -7,7 +7,15 @@ import { buildReportEmail } from "./report-email";
 import { publicBaseUrl } from "./site";
 import { verifyStripeSignature } from "./stripe-signature";
 import { verifyPurchase, type Env, type StripeSession } from "./stripe-purchase";
+import { activateFromSession, applySubscriptionEvent, isWatchObject } from "./watch-billing";
+import { pgStore, type WatchStore } from "./watch-store";
 
+// Two jobs, routed by what the event is about:
+//   - Wage Watch subscriptions (tagged wagecoach_product=wage_watch): upgrade on a
+//     completed Checkout, mirror customer.subscription.updated/deleted. See
+//     lib/watch-billing.ts.
+//   - The retired Pro report's safety net, kept so past buyers still get their link.
+//
 // Safety net for the Pro report. The buyer normally lands on /pro-report straight
 // from Checkout, but a tab closed before the redirect, or a bank payment that
 // settles days later, would leave a paid buyer with nothing. Stripe's fulfilment
@@ -28,6 +36,8 @@ import { verifyPurchase, type Env, type StripeSession } from "./stripe-purchase"
 
 /** The second event covers delayed payment methods, whose session is unpaid when it completes. */
 export const FULFIL_EVENTS = ["checkout.session.completed", "checkout.session.async_payment_succeeded"];
+/** Subscription lifecycle events, mirrored onto Wage Watch subscribers. */
+export const SUBSCRIPTION_EVENTS = ["customer.subscription.updated", "customer.subscription.deleted"];
 
 // Checkout holds the buyer's redirect for up to 10 seconds while it waits for our
 // reply, so both outbound calls are bounded to stay well inside that.
@@ -39,6 +49,7 @@ export interface WebhookDeps {
   fetchImpl: typeof fetch;
   sendMail: typeof sendEmail;
   ledger: EventLedger;
+  watchStore: WatchStore | null;
   nowSeconds: () => number;
   stripeMs: number;
   mailMs: number;
@@ -103,14 +114,16 @@ export async function handleStripeWebhook(
     fetchImpl: fetch,
     sendMail: sendEmail,
     ledger: processLedger,
+    watchStore: null,
     nowSeconds: () => Math.floor(Date.now() / 1000),
     stripeMs: DEFAULT_STRIPE_MS,
     mailMs: DEFAULT_MAIL_MS,
     ...overrides,
   };
+  if (!("watchStore" in overrides)) d.watchStore = pgStore();
 
   const secret = d.env.STRIPE_WEBHOOK_SECRET;
-  const missing = !secret ? "STRIPE_WEBHOOK_SECRET" : !d.env.STRIPE_SECRET_KEY ? "STRIPE_SECRET_KEY" : !d.env.STRIPE_PRICE_ID ? "STRIPE_PRICE_ID" : null;
+  const missing = !secret ? "STRIPE_WEBHOOK_SECRET" : !d.env.STRIPE_SECRET_KEY ? "STRIPE_SECRET_KEY" : null;
   if (missing || !secret) {
     captureServerMessage("Stripe webhook is not configured", { scope: "stripe_webhook", missing: missing ?? "unknown" });
     return reply(503, { ok: false, reason: "not_configured" });
@@ -120,7 +133,7 @@ export async function handleStripeWebhook(
     return reply(400, { ok: false, reason: "bad_signature" });
   }
 
-  let event: { id?: unknown; type?: unknown; data?: { object?: { id?: unknown } } };
+  let event: { id?: unknown; type?: unknown; data?: { object?: { id?: unknown; status?: string; customer?: string; metadata?: Record<string, string> | null } } };
   try {
     event = JSON.parse(rawBody);
   } catch {
@@ -128,9 +141,15 @@ export async function handleStripeWebhook(
   }
   const eventId = typeof event.id === "string" ? event.id : "";
   if (!eventId) return reply(400, { ok: false, reason: "bad_payload" });
-  if (typeof event.type !== "string" || !FULFIL_EVENTS.includes(event.type)) {
+  if (typeof event.type !== "string" || ![...FULFIL_EVENTS, ...SUBSCRIPTION_EVENTS].includes(event.type)) {
     return reply(200, { received: true, ignored: "event_type" });
   }
+
+  const obj = event.data?.object;
+  if (isWatchObject(obj)) return handleWatchEvent(event.type, obj ?? {}, eventId, d);
+  if (SUBSCRIPTION_EVENTS.includes(event.type)) return reply(200, { received: true, ignored: "not_ours" });
+  // The Pro report is no longer sold; without its price configured nothing here is ours.
+  if (!d.env.STRIPE_PRICE_ID) return reply(200, { received: true, ignored: "not_report" });
 
   const sessionId = typeof event.data?.object?.id === "string" ? event.data.object.id : undefined;
   const verified = await verifyPurchase("report", sessionId, d.env, d.fetchImpl, d.stripeMs);
@@ -153,6 +172,31 @@ export async function handleStripeWebhook(
       return reply(500, { ok: false, reason: outcome.failure });
     }
     return reply(200, { received: true, delivered: outcome.delivered });
+  } catch (err) {
+    await d.ledger.release(eventId);
+    captureServerError(err, { scope: "stripe_webhook", event_id: eventId });
+    return reply(500, { ok: false, reason: "handler_error" });
+  }
+}
+
+/** Wage Watch: activate on a completed subscription Checkout, mirror lifecycle changes. */
+async function handleWatchEvent(type: string, obj: { id?: unknown; status?: string; customer?: string; metadata?: Record<string, string> | null }, eventId: string, d: WebhookDeps): Promise<WebhookReply> {
+  if (!d.watchStore) {
+    captureServerMessage("Stripe webhook is not configured", { scope: "stripe_webhook", missing: "DATABASE_URL" });
+    return reply(503, { ok: false, reason: "not_configured" });
+  }
+  if (!(await d.ledger.claim(eventId))) return reply(200, { received: true, duplicate: true });
+  try {
+    if (SUBSCRIPTION_EVENTS.includes(type)) {
+      const applied = await applySubscriptionEvent({ ...obj, id: typeof obj.id === "string" ? obj.id : undefined }, d.watchStore);
+      return reply(200, { received: true, watch: applied ? "updated" : "unknown_subscription" });
+    }
+    const res = await activateFromSession(typeof obj.id === "string" ? obj.id : undefined, d.watchStore, d.env, d.fetchImpl);
+    if (res.ok) return reply(200, { received: true, watch: "activated" });
+    if (res.reason === "not_paid") return reply(200, { received: true, ignored: "not_paid" });
+    await d.ledger.release(eventId);
+    captureServerMessage("Wage Watch activation failed", { scope: "stripe_webhook", reason: res.reason, event_id: eventId });
+    return reply(500, { ok: false, reason: res.reason });
   } catch (err) {
     await d.ledger.release(eventId);
     captureServerError(err, { scope: "stripe_webhook", event_id: eventId });

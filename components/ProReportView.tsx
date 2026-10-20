@@ -51,18 +51,25 @@ function StateSection({ r }: { r: ReportRow }) {
   );
 }
 
-export default function ProReportView({ report, children }: { report: ProReport; children?: React.ReactNode }) {
+// Also renders the Wage Watch compliance sheet: same data, different heading,
+// passed in through `heading` so the two can't drift apart.
+export default function ProReportView({ report, children, heading }: {
+  report: ProReport;
+  children?: React.ReactNode;
+  heading?: { eyebrow: string; title: string; sub: string };
+}) {
   const { rows, highlights: h, federal: f } = report;
   const count = rows.length;
+  const head = heading ?? {
+    eyebrow: "Your Pro report · paid ✓",
+    title: "Your multi-state compliance report",
+    sub: `You paid for the Pro report. It is on this page. It covers ${count} ${count === 1 ? "state" : "states"}: ${names(rows.map((r) => r.abbr))}. Use Print / Save as PDF to keep a copy for your team.`,
+  };
   return (
     <div className="mx-auto max-w-4xl">
-      <Eyebrow>Your Pro report · paid ✓</Eyebrow>
+      <Eyebrow>{head.eyebrow}</Eyebrow>
       <div className="mt-3">
-        <SectionHeading
-          as="h1"
-          title="Your multi-state compliance report"
-          sub={`You paid for the Pro report. It is on this page. It covers ${count} ${count === 1 ? "state" : "states"}: ${names(rows.map((r) => r.abbr))}. Use Print / Save as PDF to keep a copy for your team.`}
-        />
+        <SectionHeading as={heading ? "h2" : "h1"} title={head.title} sub={head.sub} />
       </div>
       <div className="mt-4"><ReportActions /></div>
 

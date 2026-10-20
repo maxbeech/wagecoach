@@ -1,4 +1,4 @@
-import { esc } from "./lead-email";
+import { esc } from "./html";
 import { SITE } from "./site";
 
 // The email that carries a buyer's report link. Sent by the Stripe webhook, so a

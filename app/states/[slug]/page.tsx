@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PayCalculator from "@/components/PayCalculator";
+import StateWageClaim from "@/components/StateWageClaim";
+import RateChangeAlert from "@/components/RateChangeAlert";
+import { stateKey } from "@/lib/locations";
 import { STATES, getState, effectiveMinWage } from "@/lib/states";
 import { citiesForState } from "@/lib/cities";
-import { wageClaim } from "@/lib/wage-claim-data";
 import { dollars } from "@/lib/federal";
 import { SITE } from "@/lib/site";
 import { safeJsonLd } from "@/lib/json-ld";
-import { Eyebrow, SectionHeading, Chip, MoreLink } from "@/components/primitives";
+import { Eyebrow, SectionHeading, Chip } from "@/components/primitives";
 
 export const revalidate = 604800; // weekly ISR
 
@@ -21,8 +23,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const s = getState(slug);
   if (!s) return {};
   return {
-    title: `${s.name} Minimum Wage, Overtime & Labor Laws (2026)`,
-    description: `${s.name}'s 2026 minimum wage is ${dollars(effectiveMinWage(s))}/hr. See overtime rules, tipped wage, final-paycheck deadlines and break laws, plus a free pay calculator.`,
+    title: `${s.name} Minimum Wage, Overtime & Wage Claims (2026)`,
+    description: `${s.name}'s minimum wage is ${dollars(effectiveMinWage(s))}/hr. Overtime, tipped pay, final-paycheck and break rules, how to file a wage claim, and a free pay calculator.`,
     alternates: { canonical: `/states/${s.slug}` },
   };
 }
@@ -61,7 +63,8 @@ export default async function StatePage({ params }: { params: Promise<{ slug: st
             <>
               In 2026, the {s.name} minimum wage is <strong>{dollars(min)}/hour</strong>. Overtime is{" "}
               {s.dailyOt ? `required daily (over ${s.dailyOt.afterHours} hrs) and weekly (over 40)` : "1.5× the regular rate over 40 hours a week"}.
-              Below are the wage, overtime, final-paycheck and break rules, plus a calculator pre-set to {s.name}.
+              Below are the wage, overtime, final-paycheck and break rules, a calculator pre-set to {s.name}, and
+              how to file a wage claim if you&apos;re owed money.
             </>
           }
         />
@@ -114,14 +117,9 @@ export default async function StatePage({ params }: { params: Promise<{ slug: st
         with your state labor department before relying on this for payroll or a legal decision.
       </p>
 
-      <section className="mt-8 rounded-2xl border border-brand-200 bg-brand-50 p-5">
-        <h2 className="font-display text-lg font-semibold text-brand-800">Owed unpaid wages in {s.name}?</h2>
-        <p className="mt-1 text-sm leading-relaxed text-brand-800">
-          {s.name} wage claims go through {wageClaim(s.abbr).agency}. See the filing route, the back-pay window and a
-          calculator that estimates what you may be owed.
-        </p>
-        <div className="mt-3"><MoreLink href={`/wage-claim/${s.slug}`}>How to file a wage claim in {s.name}</MoreLink></div>
-      </section>
+      <RateChangeAlert locationKey={stateKey(s.abbr)} place={s.name} />
+
+      <StateWageClaim s={s} />
 
       {cities.length > 0 && (
         <section className="mt-8 rounded-2xl border border-line bg-card p-5 shadow-card">

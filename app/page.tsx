@@ -100,8 +100,8 @@ export default function Home() {
                 <Link href="/wage-claim" className="rounded-full bg-forest px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-800">
                   Estimate what I&apos;m owed
                 </Link>
-                <Link href="/free-case-review" className="rounded-full border border-line bg-card px-6 py-3 text-sm font-semibold text-ink transition hover:border-brand-300">
-                  Free case review
+                <Link href="/calculators/time-card-calculator" className="rounded-full border border-line bg-card px-6 py-3 text-sm font-semibold text-ink transition hover:border-brand-300">
+                  Add up my hours
                 </Link>
               </div>
             </div>
@@ -228,18 +228,18 @@ export default function Home() {
 
       <Faq items={HOME_FAQS} />
 
-      {/* Closing CTA — sell the artifact */}
+      {/* Closing CTA: the employer product */}
       <section className="relative overflow-hidden rounded-3xl border border-line bg-card shadow-card">
         <div className="grid items-center gap-8 p-8 sm:p-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <Eyebrow>For teams across states</Eyebrow>
-            <h2 className="mt-3 font-display text-2xl font-semibold text-ink sm:text-3xl">One sourced wage sheet for every state your team works in</h2>
+            <Eyebrow>For employers</Eyebrow>
+            <h2 className="mt-3 font-display text-2xl font-semibold text-ink sm:text-3xl">Hear about a wage change before it hits payroll</h2>
             <p className="mt-3 max-w-md leading-relaxed text-muted">
-              The Pro report compiles minimum wage, overtime, tipped pay, final-paycheck deadlines and break rules
-              for every state you choose, dated and cited, into one printable PDF.
+              Wage Watch emails you before the minimum wage changes in the states and cities where you have staff,
+              with the new rate, the date and the official source. Free for one place.
             </p>
-            <Link href="/pricing" className="mt-6 inline-block rounded-full bg-forest px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-800">
-              See the Pro report
+            <Link href="/wage-watch" className="mt-6 inline-block rounded-full bg-forest px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-800">
+              Set up alerts
             </Link>
           </div>
           <div className="lg:rotate-[-1.4deg]">

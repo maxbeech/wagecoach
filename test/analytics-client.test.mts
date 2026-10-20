@@ -14,14 +14,14 @@ const entries = () => (win.dataLayer ?? []).map((e) => Array.from(e as ArrayLike
 const shape = (e: unknown) => Object.prototype.toString.call(e);
 
 track("begin_checkout", { product: "kit" });
-trackEvent("generate_lead", { claim_type: "overtime", state: "CA" });
+trackEvent("sign_up", { method: "email", locations: 1 });
 trackCalculatorUse("backpay");
 trackPageView("/pricing");
 
 ok((win.dataLayer ?? []).every((e) => !Array.isArray(e)), "dataLayer holds arguments objects, never plain arrays");
 ok((win.dataLayer ?? []).every((e) => shape(e) === "[object Arguments]"), "every entry is an Arguments object");
 eq(JSON.stringify(entries()[0]), JSON.stringify(["event", "begin_checkout", { product: "kit" }]), "track sends event, name, params");
-eq(JSON.stringify(entries()[1]), JSON.stringify(["event", "generate_lead", { claim_type: "overtime", state: "CA" }]), "trackEvent forwards to track");
+eq(JSON.stringify(entries()[1]), JSON.stringify(["event", "sign_up", { method: "email", locations: 1 }]), "trackEvent forwards to track");
 eq(entries().slice(2, 4).map((e) => e[1]).join(), "calculator_used,backpay_calculator_used", "back-pay use sends both events");
 eq(entries()[4][1], "page_view", "page views use the same shape");
 

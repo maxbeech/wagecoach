@@ -166,6 +166,15 @@
 .range-brass::-moz-range-thumb:active { transform: scale(1.18); }
 
 /* Respect users who ask for less motion. */
+/* A short settle-in for status messages that replace a form (signup sent, saved). */
+@keyframes settle-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+.settle-in {
+  animation: settle-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -8,6 +8,7 @@ import TippedWageCalculator from "@/components/TippedWageCalculator";
 import ExemptChecker from "@/components/ExemptChecker";
 import PtoPayoutCalculator from "@/components/PtoPayoutCalculator";
 import BackPayCalculator from "@/components/BackPayCalculator";
+import TimeCardCalculator from "@/components/TimeCardCalculator";
 import Faq from "@/components/Faq";
 import { CALCULATORS, getCalc, type CalcDef } from "@/lib/calculators";
 import { postsForCalculator } from "@/lib/related";
@@ -38,6 +39,7 @@ function Tool({ c }: { c: CalcDef }) {
     case "exempt": return <ExemptChecker />;
     case "pto": return <PtoPayoutCalculator />;
     case "backpay": return <BackPayCalculator />;
+    case "timecard": return <TimeCardCalculator />;
   }
 }
 

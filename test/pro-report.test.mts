@@ -42,7 +42,7 @@ eq(row("TX").overtime.daily, null, "Texas has no daily overtime");
 eq(row("TX").tipped.cashWage, 2.13, "Texas tipped cash wage");
 eq(row("NY").tipped.cashWage, null, "New York tipped cash wage varies");
 ok((row("NY").minWageNote ?? "").includes("NYC"), "New York keeps its NYC note");
-approx(row("AK").minWage, 13, "Alaska minimum wage");
+approx(row("AK").minWage, 14, "Alaska minimum wage ($14.00 since July 1, 2026)");
 eq(row("AK").tipped.creditAllowed, false, "Alaska has no tip credit");
 approx(row("ME").tipped.cashWage as number, 7.55, "Maine tipped cash wage");
 ok(row("CO").overtime.daily?.includes("12 hours/day") === true, "Colorado daily overtime after 12");

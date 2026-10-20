@@ -34,7 +34,8 @@ const COLS: { heading: string; links: { href: string; label: string }[] }[] = [
     links: [
       { href: "/blog", label: "Guides" },
       { href: "/methodology", label: "Methodology & sources" },
-      { href: "/pricing", label: "Pro report" },
+      { href: "/wage-watch", label: "Wage Watch alerts" },
+      { href: "/pricing", label: "Pricing" },
     ],
   },
 ];

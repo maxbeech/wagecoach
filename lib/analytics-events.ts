@@ -2,11 +2,12 @@
  * Every GA event this product sends, in one place, so no call site carries a
  * string literal. snake_case, at most 40 characters (GA4's limit), enforced by
  * test/analytics-events.test.ts. GA4 recommended names are kept where one fits
- * (`begin_checkout`, `purchase`, `generate_lead`).
+ * (`begin_checkout`, `purchase`, `sign_up`).
  *
  * WageCoach has no accounts, so there is no `oh_user_ref` to send: a visitor is
- * only the anonymous GA client. The free step is using a calculator, the paid
- * step is a verified Claim Kit purchase.
+ * only the anonymous GA client. The free steps are using a calculator and
+ * signing up for Wage Watch alerts; the paid steps are a verified Claim Kit
+ * purchase and a Wage Watch subscription.
  *
  * Each step that can fail has a `*_failed` sibling carrying a short, non-PII
  * `reason`, so a stuck step with no error reads differently from a failing one.
@@ -18,16 +19,15 @@ export const analyticsEvents = {
   // Acquisition: visit -> free use of a calculator -> paid Claim Kit.
   calculatorUsed: "calculator_used",
   backpayCalculatorUsed: "backpay_calculator_used",
-  // Upgrade: Stripe Checkout for the Claim Kit ($29) or the Pro report ($19).
+  // Upgrade: Stripe Checkout for the Claim Kit ($29) or Wage Watch ($9/mo).
   beginCheckout: "begin_checkout",
   beginCheckoutFailed: "begin_checkout_failed",
   checkoutCancelled: "checkout_cancelled",
   purchase: "purchase",
   purchaseConfirmationFailed: "purchase_confirmation_failed",
-  // Free attorney case review (lead generation).
-  caseReviewViewed: "case_review_viewed",
-  generateLead: "generate_lead",
-  generateLeadFailed: "generate_lead_failed",
+  // Wage Watch: free email alerts when a tracked location's wage changes.
+  watchSignup: "sign_up",
+  watchSignupFailed: "sign_up_failed",
 } as const;
 
 export type AnalyticsEventName = (typeof analyticsEvents)[keyof typeof analyticsEvents];
@@ -35,12 +35,12 @@ export type AnalyticsEventName = (typeof analyticsEvents)[keyof typeof analytics
 export type Primitive = string | number | boolean;
 export type EventParams = Record<string, Primitive | Record<string, Primitive>[]>;
 
-export type CheckoutProduct = "kit" | "report";
+export type CheckoutProduct = "kit" | "watch";
 
 /** List prices, used only for `begin_checkout`. `purchase` carries the amount Stripe charged. */
 export const CHECKOUT_PRODUCTS: Record<CheckoutProduct, { id: string; name: string; priceUsd: number }> = {
   kit: { id: "claim_kit", name: "WageCoach Claim Kit", priceUsd: 29 },
-  report: { id: "pro_report", name: "WageCoach Pro report", priceUsd: 19 },
+  watch: { id: "wage_watch", name: "WageCoach Wage Watch", priceUsd: 9 },
 };
 
 /** GA4 ecommerce items for one checkout product. */
@@ -69,7 +69,7 @@ export function analyticsFailureReason(input: string | number | null | undefined
 }
 
 /**
- * How long a browser request to `/api/checkout` or `/api/lead` may hang. Without a
+ * How long a browser request to `/api/checkout` or `/api/watch/*` may hang. Without a
  * limit a request that never answers leaves the button on "Starting…" or
  * "Sending…" for ever, with no event and no Sentry report, which is the stall
  * this guards against. See https://developer.mozilla.org/docs/Web/API/AbortSignal/timeout_static
@@ -97,7 +97,7 @@ export function checkoutFailureReason(status: number, hasUrl: boolean): string |
 }
 
 /** Calculators that fire `calculator_used`; the back-pay estimator also has its own step event. */
-export type CalculatorTool = "pay" | "salary" | "minwage" | "tipped" | "exempt" | "pto" | "backpay";
+export type CalculatorTool = "pay" | "salary" | "minwage" | "tipped" | "exempt" | "pto" | "backpay" | "timecard";
 
 /** The events one first use of a calculator produces. */
 export function calculatorUseEvents(tool: CalculatorTool): { name: AnalyticsEventName; params: EventParams }[] {
@@ -108,7 +108,8 @@ export function calculatorUseEvents(tool: CalculatorTool): { name: AnalyticsEven
   return events;
 }
 
-/** `generate_lead` params: the claim type key and the state, never the person's details. */
-export function leadParams(claimType: string, stateAbbr: string): EventParams {
-  return { claim_type: analyticsFailureReason(claimType), state: stateAbbr ? stateAbbr.toUpperCase().slice(0, 2) : "none" };
+/** `sign_up` params: how many locations were picked, never the email. */
+export function watchSignupParams(locationCount: number): EventParams {
+  const n = Number.isFinite(locationCount) ? Math.max(0, Math.min(99, Math.trunc(locationCount))) : 0;
+  return { method: "email", locations: n };
 }

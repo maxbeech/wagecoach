@@ -13,7 +13,7 @@ export const SITE = {
   // The year the baked wage data is effective for. Surfaced in copy + methodology.
   dataYear: 2026,
   // Stable last-updated date for sitemap lastmod (avoids churn on every deploy).
-  updated: "2026-10-07",
+  updated: "2026-10-20",
 };
 
 /**

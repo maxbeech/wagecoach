@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PayCalculator from "@/components/PayCalculator";
+import RateChangeAlert from "@/components/RateChangeAlert";
+import { cityKey } from "@/lib/locations";
 import { CITIES, getCity, cityState } from "@/lib/cities";
 import { effectiveMinWage } from "@/lib/states";
 import { FEDERAL, dollars } from "@/lib/federal";
@@ -62,6 +64,8 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         <Stat label={`${st ? st.name : "State"} minimum`} value={`${dollars(stateMin)}/hr`} />
         <Stat label="Federal minimum" value={`${dollars(FEDERAL.minWage)}/hr`} />
       </div>
+
+      <RateChangeAlert locationKey={cityKey(c.slug)} place={c.city} />
 
       <div className="mt-8">
         <h2 className="font-display text-lg font-semibold text-ink">Overtime & pay calculator</h2>

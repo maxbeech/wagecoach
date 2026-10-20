@@ -99,10 +99,11 @@ export default async function ClaimKitPage({ searchParams }: { searchParams: Pro
       </section>
 
       <section className="mt-8 rounded-2xl border border-brand-200 bg-brand-50 p-5">
-        <h2 className="font-display text-base font-semibold text-brand-800">Want a lawyer to handle it?</h2>
+        <h2 className="font-display text-base font-semibold text-brand-800">If the letter is ignored</h2>
         <p className="mt-1 text-sm leading-relaxed text-brand-800">
-          If your employer ignores the letter, an employment attorney can take it from here — most wage cases are on
-          contingency. <Link href={`/free-case-review?${toSearch(sp)}&amt=${Math.round(r.backPay)}`} className="font-medium underline decoration-brand-400 underline-offset-2">Get a free case review →</Link>
+          File with {guide.agency} using the steps above. It costs nothing, and you don&apos;t need a lawyer to do it.
+          If you&apos;d rather have one, most employment attorneys take wage cases on contingency, and this kit is
+          exactly what they will ask to see.
         </p>
       </section>
 

@@ -1,8 +1,12 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
+import { REDIRECTS } from "./lib/redirects";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Permanent (308) redirects, all defined in lib/redirects.ts.
+  async redirects() {
+    return REDIRECTS;
+  },
 };
 
 /**

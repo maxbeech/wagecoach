@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { dollars } from "@/lib/federal";
 import { CLAIM_LABELS, type BackPayInputs, type BackPayResult } from "@/lib/backpay";
 import { scoreCase, type ScoreTone } from "@/lib/case-score";
@@ -33,10 +32,6 @@ export default function BackPayResults({ inp, r }: { inp: BackPayInputs; r: Back
   const score = scoreCase(inp, r);
   const tone = TONE[score.tone];
   const owed = r.weeklyShortfall > 0;
-
-  // Carry the estimate into the free attorney review and the kit, so the next
-  // step starts pre-filled from the figures the person already entered.
-  const reviewHref = `/free-case-review?${encodeBackPay(inp)}&amt=${Math.round(r.backPay)}`;
 
   const share = async () => {
     try {
@@ -97,15 +92,11 @@ export default function BackPayResults({ inp, r }: { inp: BackPayInputs; r: Back
           </div>
 
           <div className="mt-5 flex flex-col gap-2.5 print:hidden">
-            <Link href={reviewHref}
-              className="rounded-full bg-forest px-5 py-3 text-center font-semibold text-white shadow-card transition hover:bg-brand-800">
-              Get a free case review from a wage attorney
-            </Link>
-            <CheckoutButton product="kit" label="Build my Claim Kit — $29"
-              className="rounded-full border border-brand-300 bg-card px-5 py-3 text-center font-semibold text-brand-700 transition hover:bg-brand-50" />
+            <CheckoutButton product="kit" label="Build my Claim Kit, $29"
+              className="w-full rounded-full bg-forest px-5 py-3 text-center font-semibold text-white shadow-card transition hover:bg-brand-800" />
             <p className="text-xs leading-relaxed text-faint">
-              The Claim Kit is a printable demand letter pre-filled with your figures, your state&apos;s filing route,
-              and a step-by-step complaint guide. The case review is free and carries no obligation.
+              A demand letter with these figures already in it, your state&apos;s filing route and a step-by-step
+              complaint guide. Printable, and yours to send or hand to a lawyer.
             </p>
           </div>
         </>

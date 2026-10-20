@@ -7,28 +7,24 @@ import { captureClientError } from "@/lib/observability";
 
 // Starts a Stripe Checkout session via /api/checkout. If Stripe isn't configured
 // the route answers 503 with a plain message naming the product, and that message
-// is shown here instead of a broken redirect. `product` selects which item to buy:
-// the multi-state "report" ($19) or the wage "kit" ($29). The report is built for
-// the buyer's `states` (abbreviations), so it won't start without at least one.
+// is shown here instead of a broken redirect. `product` selects what to buy: the
+// $29 Claim Kit, or the Wage Watch subscription (which needs the subscriber's
+// manage-link `token`, since that is who is upgrading).
 export default function CheckoutButton({
   className,
-  product = "report",
+  product = "kit",
   label,
-  states,
+  token,
 }: {
   className?: string;
-  product?: "report" | "kit";
+  product?: "kit" | "watch";
   label?: string;
-  states?: string[];
+  token?: string;
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function go() {
-    if (product === "report" && (!states || states.length === 0)) {
-      setError("Pick at least one state first.");
-      return;
-    }
     setLoading(true); setError(null);
     trackEvent(analyticsEvents.beginCheckout, beginCheckoutParams(product));
     try {
@@ -38,7 +34,7 @@ export default function CheckoutButton({
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product, caseQuery, states }),
+        body: JSON.stringify({ product, caseQuery, token }),
         signal: AbortSignal.timeout(CLIENT_REQUEST_TIMEOUT_MS),
       });
       const data = await res.json();
@@ -59,7 +55,7 @@ export default function CheckoutButton({
     }
   }
 
-  const fallbackLabel = product === "kit" ? "Build my Claim Kit, $29" : "Get the Pro report, $19";
+  const fallbackLabel = product === "kit" ? "Build my Claim Kit, $29" : "Upgrade to Wage Watch";
   return (
     <div>
       <button onClick={go} disabled={loading}

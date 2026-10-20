@@ -11,9 +11,11 @@ import { alreadyTracked, markTracked } from "./tracked-purchases";
 // `purchase` for a paid Kit (once per transaction), or
 // `purchase_confirmation_failed` with a short reason when the visitor came back
 // from Stripe with a session that could not be confirmed. Renders nothing.
+// `item` names what was bought; it defaults to the Claim Kit and Wage Watch passes its own.
 export default function KitPurchaseTracker(
-  props: { purchase: { transactionId: string; value: number; currency: string } } | { failureReason: string },
+  props: ({ purchase: { transactionId: string; value: number; currency: string } } | { failureReason: string }) & { item?: { id: string; name: string } },
 ) {
+  const item = props.item ?? { id: "claim_kit", name: "WageCoach Claim Kit" };
   const purchase = "purchase" in props ? props.purchase : null;
   const failureReason = "failureReason" in props ? props.failureReason : null;
 
@@ -26,7 +28,7 @@ export default function KitPurchaseTracker(
         transaction_id: purchase.transactionId,
         currency: purchase.currency,
         value: purchase.value,
-        items: [{ item_id: "claim_kit", item_name: "WageCoach Claim Kit", quantity: 1 }],
+        items: [{ item_id: item.id, item_name: item.name, quantity: 1 }],
       });
     } else if (failureReason) {
       trackEvent(analyticsEvents.purchaseConfirmationFailed, { reason: failureReason });

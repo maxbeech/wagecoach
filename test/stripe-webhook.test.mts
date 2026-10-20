@@ -29,6 +29,7 @@ function rig(opts: { stripe?: () => Response | Promise<Response>; mail?: () => u
     env,
     nowSeconds: () => NOW,
     ledger: memoryLedger(),
+    watchStore: null,
     stripeMs: 50,
     mailMs: 50,
     fetchImpl: (async (url: string) => { calls.stripe.push(url); return opts.stripe ? opts.stripe() : new Response(JSON.stringify(session()), { status: 200 }); }) as unknown as typeof fetch,
@@ -44,7 +45,7 @@ const stripeJson = (s: unknown, status = 200) => () => new Response(JSON.stringi
 const shape = (r: { status: number; body: Record<string, unknown> }) => `${r.status} ${JSON.stringify(r.body)}`;
 
 // --- configuration: unconfigured is an explicit 503, nothing is called ---------------
-for (const missing of ["STRIPE_WEBHOOK_SECRET", "STRIPE_SECRET_KEY", "STRIPE_PRICE_ID"]) {
+for (const missing of ["STRIPE_WEBHOOK_SECRET", "STRIPE_SECRET_KEY"]) {
   const t = rig();
   const r = await t.run(event(), sign(event()), { env: { ...env, [missing]: undefined } });
   eq(shape(r), `503 ${JSON.stringify({ ok: false, reason: "not_configured" })}`, `503 when ${missing} is missing`);
