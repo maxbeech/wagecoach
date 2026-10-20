@@ -27,13 +27,20 @@ export interface SubscriptionUpdate {
   subscriptionStatus: string | null;
 }
 
+/**
+ * What a signup did. The signup form is unauthenticated, so it may never change
+ * an active subscriber: for one of those it only issues a pending link, emailed
+ * to them, that becomes their real link when they use it.
+ *   new        first signup; confirm by email
+ *   reconfirm  unconfirmed or unsubscribed row restarted; confirm by email
+ *   link       already active; nothing changed, a new manage link is mailed
+ *   throttled  mailed under a minute ago; nothing changed, nothing to send
+ */
+export type SignupKind = "new" | "reconfirm" | "link" | "throttled";
+export const SIGNUP_THROTTLE_SECONDS = 60;
+
 export interface WatchStore {
-  /**
-   * Create or refresh a subscriber and issue a fresh token (the old link stops
-   * working). A paying subscriber keeps their places. Someone who had
-   * unsubscribed must confirm again, so nobody can re-subscribe another person.
-   */
-  upsert(email: string, locations: string[]): Promise<{ watcher: Watcher; token: string }>;
+  signup(email: string, locations: string[]): Promise<{ watcher: Watcher; token: string | null; kind: SignupKind }>;
   /** Issue a new token for an existing subscriber (used for links in alert emails). */
   rotateToken(id: string): Promise<string>;
   byToken(token: string): Promise<Watcher | null>;
@@ -57,7 +64,7 @@ export const newToken = () => randomBytes(24).toString("base64url");
 export const isTokenShape = (t: unknown): t is string => typeof t === "string" && /^[A-Za-z0-9_-]{32}$/.test(t);
 
 type Row = {
-  id: string; email: string; locations: string[]; plan: "free" | "watch";
+  id: string; email: string; locations: string[]; plan: "free" | "watch"; pending_token_hash?: string | null;
   confirmed_at: Date | null; unsubscribed_at: Date | null;
   stripe_customer: string | null; stripe_subscription: string | null; subscription_status: string | null;
 };
@@ -73,25 +80,44 @@ export function pgStore(): WatchStore | null {
   if (!sql) return null;
   const one = async (rows: Promise<Row[]>) => { const [r] = await rows; return r ? toWatcher(r) : null; };
   return {
-    async upsert(email, locations) {
+    async signup(email, locations) {
       const token = newToken();
-      const [r] = await sql<Row[]>`
-        INSERT INTO watchers (email, token_hash, locations)
-        VALUES (${email}, ${hashToken(token)}, ${locations})
-        ON CONFLICT ((lower(email))) DO UPDATE
-          SET token_hash = EXCLUDED.token_hash,
-              locations = CASE WHEN watchers.plan = 'watch' THEN watchers.locations ELSE EXCLUDED.locations END,
-              confirmed_at = CASE WHEN watchers.unsubscribed_at IS NULL THEN watchers.confirmed_at ELSE NULL END,
-              unsubscribed_at = NULL, updated_at = now()
-        RETURNING *`;
-      return { watcher: toWatcher(r), token };
+      const h = hashToken(token);
+      return sql.begin(async (tx) => {
+        const [cur] = await tx<(Row & { recent: boolean })[]>`
+          SELECT *, last_mailed_at > now() - make_interval(secs => ${SIGNUP_THROTTLE_SECONDS}) AS recent
+          FROM watchers WHERE lower(email) = lower(${email}) FOR UPDATE`;
+        if (!cur) {
+          const [r] = await tx<Row[]>`INSERT INTO watchers (email, token_hash, locations, last_mailed_at)
+            VALUES (${email}, ${h}, ${locations}, now()) RETURNING *`;
+          return { watcher: toWatcher(r), token, kind: "new" as const };
+        }
+        if (cur.recent) return { watcher: toWatcher(cur), token: null, kind: "throttled" as const };
+        if (cur.confirmed_at && !cur.unsubscribed_at) {
+          const [r] = await tx<Row[]>`UPDATE watchers SET pending_token_hash = ${h}, last_mailed_at = now() WHERE id = ${cur.id} RETURNING *`;
+          return { watcher: toWatcher(r), token, kind: "link" as const };
+        }
+        const [r] = await tx<Row[]>`UPDATE watchers SET token_hash = ${h}, pending_token_hash = NULL,
+            locations = CASE WHEN plan = 'watch' THEN locations ELSE ${locations} END,
+            confirmed_at = NULL, unsubscribed_at = NULL, last_mailed_at = now(), updated_at = now()
+          WHERE id = ${cur.id} RETURNING *`;
+        return { watcher: toWatcher(r), token, kind: "reconfirm" as const };
+      });
     },
     async rotateToken(id) {
       const token = newToken();
-      await sql`UPDATE watchers SET token_hash = ${hashToken(token)}, updated_at = now() WHERE id = ${id}`;
+      await sql`UPDATE watchers SET token_hash = ${hashToken(token)}, pending_token_hash = NULL, updated_at = now() WHERE id = ${id}`;
       return token;
     },
-    byToken: (token) => one(sql<Row[]>`SELECT * FROM watchers WHERE token_hash = ${hashToken(token)}`),
+    async byToken(token) {
+      const h = hashToken(token);
+      // A pending link (from a repeat signup) becomes the live link the first time it is used.
+      const [r] = await sql<Row[]>`
+        UPDATE watchers SET token_hash = ${h}, pending_token_hash = NULL, updated_at = now()
+        WHERE pending_token_hash = ${h} RETURNING *`;
+      if (r) return toWatcher(r);
+      return one(sql<Row[]>`SELECT * FROM watchers WHERE token_hash = ${h}`);
+    },
     byId: (id) => one(sql<Row[]>`SELECT * FROM watchers WHERE id = ${id}`),
     bySubscription: (s) => one(sql<Row[]>`SELECT * FROM watchers WHERE stripe_subscription = ${s}`),
     async confirm(id) { await sql`UPDATE watchers SET confirmed_at = coalesce(confirmed_at, now()), updated_at = now() WHERE id = ${id}`; },
@@ -119,33 +145,44 @@ export function pgStore(): WatchStore | null {
 }
 
 /** In-memory store with the same rules, for tests. */
-export function memoryStore(): WatchStore & { rows: Map<string, Watcher & { tokenHash: string }>; sent: Set<string> } {
-  const rows = new Map<string, Watcher & { tokenHash: string }>();
+type MemRow = Watcher & { tokenHash: string; pendingHash: string | null; lastMailed: number };
+export function memoryStore(now: () => number = Date.now): WatchStore & { rows: Map<string, MemRow>; sent: Set<string> } {
+  const rows = new Map<string, MemRow>();
   const sent = new Set<string>();
   let n = 0;
-  const find = (pred: (w: Watcher & { tokenHash: string }) => boolean) => {
+  const find = (pred: (w: MemRow) => boolean) => {
     for (const w of rows.values()) if (pred(w)) return strip(w);
     return null;
   };
-  const strip = (row: Watcher & { tokenHash: string }): Watcher => {
-    const { tokenHash, ...w } = row;
-    void tokenHash;
+  const strip = (row: MemRow): Watcher => {
+    const { tokenHash, pendingHash, lastMailed, ...w } = row;
+    void tokenHash; void pendingHash; void lastMailed;
     return { ...w, locations: [...w.locations] };
   };
   return {
     rows, sent,
-    async upsert(email, locations) {
+    async signup(email, locations) {
       const token = newToken();
-      const existing = [...rows.values()].find((w) => w.email.toLowerCase() === email.toLowerCase());
-      const w = existing ?? { id: `w${++n}`, email, locations: [], plan: "free" as const, confirmedAt: null, unsubscribedAt: null, stripeCustomer: null, stripeSubscription: null, subscriptionStatus: null, tokenHash: "" };
-      if (w.plan !== "watch") w.locations = [...locations];
-      if (w.unsubscribedAt) w.confirmedAt = null;
-      Object.assign(w, { tokenHash: hashToken(token), unsubscribedAt: null });
-      rows.set(w.id, w);
-      return { watcher: strip(w), token };
+      const cur = [...rows.values()].find((w) => w.email.toLowerCase() === email.toLowerCase());
+      if (!cur) {
+        const w: MemRow = { id: `w${++n}`, email, locations: [...locations], plan: "free", confirmedAt: null, unsubscribedAt: null, stripeCustomer: null, stripeSubscription: null, subscriptionStatus: null, tokenHash: hashToken(token), pendingHash: null, lastMailed: now() };
+        rows.set(w.id, w);
+        return { watcher: strip(w), token, kind: "new" };
+      }
+      if (now() - cur.lastMailed < SIGNUP_THROTTLE_SECONDS * 1000) return { watcher: strip(cur), token: null, kind: "throttled" };
+      cur.lastMailed = now();
+      if (cur.confirmedAt && !cur.unsubscribedAt) { cur.pendingHash = hashToken(token); return { watcher: strip(cur), token, kind: "link" }; }
+      if (cur.plan !== "watch") cur.locations = [...locations];
+      Object.assign(cur, { tokenHash: hashToken(token), pendingHash: null, confirmedAt: null, unsubscribedAt: null });
+      return { watcher: strip(cur), token, kind: "reconfirm" };
     },
-    async rotateToken(id) { const t = newToken(); const w = rows.get(id); if (w) w.tokenHash = hashToken(t); return t; },
-    byToken: async (t) => find((w) => w.tokenHash === hashToken(t)),
+    async rotateToken(id) { const t = newToken(); const w = rows.get(id); if (w) { w.tokenHash = hashToken(t); w.pendingHash = null; } return t; },
+    async byToken(t) {
+      const h = hashToken(t);
+      const pending = [...rows.values()].find((w) => w.pendingHash === h);
+      if (pending) { pending.tokenHash = h; pending.pendingHash = null; }
+      return find((w) => w.tokenHash === h);
+    },
     byId: async (id) => find((w) => w.id === id),
     bySubscription: async (s) => find((w) => w.stripeSubscription === s),
     async confirm(id) { const w = rows.get(id); if (w && !w.confirmedAt) w.confirmedAt = new Date(); },

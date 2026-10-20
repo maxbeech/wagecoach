@@ -3,7 +3,7 @@ import { parseLocations, resolveLocation, type WatchLocation } from "./locations
 import { sendEmail } from "./openhelm-mail";
 import { publicBaseUrl } from "./site";
 import { changeKey, dueAlerts, type DueAlert } from "./wage-schedule";
-import { buildAlertEmail, buildConfirmEmail } from "./watch-email";
+import { buildAlertEmail, buildConfirmEmail, buildLinkEmail } from "./watch-email";
 import { effectivePlan, WATCH_PLANS } from "./watch-plan";
 import { isTokenShape, pgStore, type Watcher, type WatchStore } from "./watch-store";
 
@@ -41,8 +41,12 @@ export async function subscribe(input: { email: unknown; locations: unknown }, d
     return { ok: false, reason: "not_configured" };
   }
   try {
-    const { watcher, token } = await d.store.upsert(input.email.trim(), locations.map((l) => l.key));
-    const mail = buildConfirmEmail(confirmLink(d.baseUrl, token), locations.map((l) => l.label));
+    // The answer is the same whatever happened, so the form never reveals whether an email is subscribed.
+    const { watcher, token, kind } = await d.store.signup(input.email.trim(), locations.map((l) => l.key));
+    if (!token || kind === "throttled") return { ok: true };
+    const mail = kind === "link"
+      ? buildLinkEmail(manageLink(d.baseUrl, token))
+      : buildConfirmEmail(confirmLink(d.baseUrl, token), locations.map((l) => l.label));
     const sent = await d.sendMail({ to: watcher.email, ...mail });
     if (!sent.sent) {
       captureServerMessage("Wage Watch confirmation email was not sent", { scope: "watch_subscribe", reason: sent.reason });

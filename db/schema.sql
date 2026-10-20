@@ -17,6 +17,11 @@ CREATE TABLE IF NOT EXISTS watchers (
   updated_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE UNIQUE INDEX IF NOT EXISTS watchers_email_lower ON watchers (lower(email));
+-- v2: a repeat signup for an active subscriber only mails them a new link; that link's
+-- hash waits here and becomes token_hash when used, so a stranger who knows the email
+-- can't change anything. last_mailed_at throttles signup mail to one a minute.
+ALTER TABLE watchers ADD COLUMN IF NOT EXISTS pending_token_hash text UNIQUE;
+ALTER TABLE watchers ADD COLUMN IF NOT EXISTS last_mailed_at timestamptz;
 
 -- One row per alert actually sent, so the daily job never mails the same notice twice.
 CREATE TABLE IF NOT EXISTS watch_alerts_sent (

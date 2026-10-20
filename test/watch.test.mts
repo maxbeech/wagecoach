@@ -90,7 +90,9 @@ ok(ae.text.includes("Source: https://seattle.gov/x"), "alert cites its source");
 eq(buildAlertEmail(dueAlerts([seattle], LEADS, "2027-01-01", FAKE), "https://x").subject, "A minimum wage change takes effect today", "day-of subject");
 
 // --- service: subscribe -> confirm -> manage -> alerts ---------------------------------
-const store = memoryStore();
+let clock = 1_000_000;
+const later = () => { clock += 120_000; };
+const store = memoryStore(() => clock);
 const mails: Array<Record<string, unknown>> = [];
 let mailOk = true;
 const deps: WatchDeps = {
@@ -117,6 +119,15 @@ mailOk = false;
 eq((await subscribe({ email: "x@y.co", locations: ["state:TX"] }, deps)).ok, false, "mail failure is reported, not hidden");
 mailOk = true;
 
+// The signup form is unauthenticated: it must never change an active subscriber.
+const mailsBefore = mails.length;
+eq((await subscribe({ email: "OWNER@diner.com", locations: ["state:FL"] }, deps)).ok, true, "same answer for an existing email (no enumeration)");
+eq(mails.length, mailsBefore, "a repeat within a minute is throttled: no mail");
+later();
+await subscribe({ email: "owner@diner.com", locations: ["state:FL"] }, deps);
+ok(String(mails.at(-1)?.subject).includes("alerts link"), "an active subscriber gets their link, not a confirmation");
+eq((await lookup(token, deps)).ok && (await lookup(token, deps) as { ok: true; view: { places: { key: string }[] } }).view.places[0].key, "city:seattle-wa", "a stranger's signup changed nothing");
+
 const tooMany = await manage({ token, action: "locations", locations: ["state:CA", "state:NY"] }, deps);
 eq(tooMany.ok ? "ok" : tooMany.reason, "too_many", "free plan can't add a second place");
 eq((await manage({ token, action: "locations", locations: [] }, deps)).ok, false, "can't save zero places");
@@ -142,6 +153,7 @@ if (sum.sent) {
 }
 // Re-subscribe after unsubscribing must be confirmed again (nobody can re-subscribe someone else).
 eq((await manage({ token: live, action: "unsubscribe" }, deps)).ok, true, "unsubscribe ok");
+later();
 await subscribe({ email: "owner@diner.com", locations: ["state:TX"] }, deps);
 const owners = [...store.rows.values()].filter((r) => r.email.toLowerCase() === "owner@diner.com");
 eq(owners.length, 1, "same email (any case) is the same subscriber");
@@ -161,13 +173,20 @@ eq(form.get("customer_email"), w.email, "prefills email for a new customer");
 eq(form.get("success_url"), "https://x.test/wage-watch/manage?t=TOK&session_id={CHECKOUT_SESSION_ID}", "returns to manage with the session");
 
 const session = (over: Record<string, unknown> = {}) => ({ id: "cs_test_watch12345", mode: "subscription", status: "complete", payment_status: "paid", client_reference_id: w.id, customer: "cus_1", subscription: "sub_1", metadata: { wagecoach_product: "wage_watch" }, ...over });
-const stripeWith = (s: unknown) => (async () => new Response(JSON.stringify(s), { status: 200 })) as unknown as typeof fetch;
+let subStatus = "active";
+const stripeWith = (s: unknown) => (async (url: string) => new Response(JSON.stringify(
+  String(url).includes("/subscriptions/") ? { id: "sub_1", status: subStatus, metadata: { wagecoach_product: "wage_watch" } } : s,
+), { status: 200 })) as unknown as typeof fetch;
 const env = { STRIPE_SECRET_KEY: "sk_test_x" };
 eq(JSON.stringify(await activateFromSession("cs_test_watch12345", store, env, stripeWith(session({ metadata: {} })))), JSON.stringify({ ok: false, reason: "not_watch" }), "someone else's session is not ours");
 eq((await activateFromSession("cs_test_watch12345", store, env, stripeWith(session({ payment_status: "unpaid" })))).ok, false, "unpaid does not activate");
 eq((await activateFromSession("cs_test_watch12345", store, env, stripeWith(session()), "other-id")).ok, false, "a session for another subscriber is refused");
 eq((await activateFromSession("bad", store, env, stripeWith(session()))).ok, false, "malformed session id refused");
-eq((await activateFromSession("cs_test_watch12345", store, env, stripeWith(session()), w.id)).ok, true, "paid session activates");
+subStatus = "canceled";
+eq(JSON.stringify(await activateFromSession("cs_test_watch12345", store, env, stripeWith(session()), w.id)), JSON.stringify({ ok: false, reason: "subscription_inactive" }), "an old session for a cancelled subscription does not re-activate");
+eq(effectivePlan((await store.byId(w.id))!.plan, (await store.byId(w.id))!.subscriptionStatus).id, "free", "replay leaves the plan free");
+subStatus = "active";
+eq((await activateFromSession("cs_test_watch12345", store, env, stripeWith(session()), w.id)).ok, true, "paid session with a live subscription activates");
 const paid = (await store.byId(w.id))!;
 eq(effectivePlan(paid.plan, paid.subscriptionStatus).id, "watch", "now on Wage Watch");
 eq(paid.stripeSubscription, "sub_1", "subscription id stored");

@@ -85,10 +85,29 @@ interface SubscriptionSession {
 
 export type ActivateResult = { ok: true; watcherId: string } | { ok: false; reason: string };
 
+/** Ask Stripe for a subscription's live status. Never throws. */
+async function subscriptionStatus(id: string, secret: string, fetchImpl: Fetch): Promise<string | null> {
+  try {
+    const res = await fetchImpl(`${STRIPE}/subscriptions/${encodeURIComponent(id)}`, {
+      headers: { Authorization: `Bearer ${secret}` }, cache: "no-store", signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) return null;
+    const sub = (await res.json()) as { status?: string; metadata?: Record<string, string> | null };
+    return isWatchObject(sub) && typeof sub.status === "string" ? sub.status : null;
+  } catch (err) {
+    captureServerError(err, { scope: "watch_activate" });
+    return null;
+  }
+}
+
 /**
  * Apply a completed subscription Checkout session to its subscriber. Used both
  * when the buyer lands back on the manage page and by the webhook, so whichever
  * arrives first upgrades them and the second is a no-op.
+ *
+ * A session stays "complete and paid" for ever, even after the subscription it
+ * started is cancelled, so the session alone never grants the plan: the plan
+ * follows the subscription's live status, read from Stripe each time.
  */
 export async function activateFromSession(sessionId: string | undefined, store: WatchStore, env: Env = process.env, fetchImpl: Fetch = fetch, expectWatcherId?: string): Promise<ActivateResult> {
   const secret = env.STRIPE_SECRET_KEY;
@@ -103,8 +122,12 @@ export async function activateFromSession(sessionId: string | undefined, store: 
   const watcherId = s.client_reference_id ?? "";
   if (!watcherId || (expectWatcherId && watcherId !== expectWatcherId)) return { ok: false, reason: "wrong_watcher" };
   if (!(await store.byId(watcherId))) return { ok: false, reason: "no_watcher" };
-  await store.setSubscription(watcherId, { plan: "watch", stripeCustomer: s.customer ?? null, stripeSubscription: s.subscription ?? null, subscriptionStatus: "active" });
-  return { ok: true, watcherId };
+  if (!s.subscription) return { ok: false, reason: "no_subscription" };
+  const status = await subscriptionStatus(s.subscription, secret, fetchImpl);
+  if (!status) return { ok: false, reason: "subscription_unreadable" };
+  const live = status === "active" || status === "trialing";
+  await store.setSubscription(watcherId, { plan: live ? "watch" : "free", stripeCustomer: s.customer ?? null, stripeSubscription: s.subscription, subscriptionStatus: status });
+  return live ? { ok: true, watcherId } : { ok: false, reason: "subscription_inactive" };
 }
 
 /** Mirror a customer.subscription.* event onto the subscriber. Returns false when it isn't ours. */

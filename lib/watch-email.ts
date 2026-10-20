@@ -34,6 +34,15 @@ export function buildConfirmEmail(confirmLink: string, places: string[]): Email 
   return { subject: "Confirm your WageCoach wage alerts", text, html };
 }
 
+/** For someone already subscribed who signed up again: their link, and nothing changed. */
+export function buildLinkEmail(manageLink: string): Email {
+  const what = "You're already getting WageCoach wage alerts. Here's a fresh link to your settings, where you can change places or upgrade.";
+  const note = "Nothing has changed. If you didn't ask for this, ignore it.";
+  const text = [what, "", manageLink, "", note, "", LEGAL].join("\n");
+  const html = wrap("Your wage alerts", [what], { href: manageLink, label: "Open settings" }, [note]);
+  return { subject: "Your WageCoach alerts link", text, html };
+}
+
 function alertLine(a: DueAlert): string {
   const what = a.change.field === "tippedCashWage" ? "tipped cash wage" : "minimum wage";
   // Name the place the change belongs to: a city watcher can be told about its state's change.

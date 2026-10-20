@@ -7,12 +7,12 @@ tests, PTO payout and final-paycheck deadlines — with a **back-pay estimator**
 step-by-step **wage-claim** help for every state, all built on the federal **FLSA**
 and **2026** state rules for all 50 states and DC.
 
-**Positioning (set in this product cycle):** the free calculators attract a large
-employee audience (overtime/paycheck searches); WageCoach monetizes *that* audience at
-the highest-intent moment — "am I owed back pay?" — rather than chasing the low-volume
-employer buyer. The funnel is: free calculator → back-pay verdict → **$29 Claim Kit**
-(a pre-filled demand letter + filing guide) and a **free attorney case review**
-(lead-gen). The legacy **$19 employer report** remains as a secondary product.
+**Positioning (reset 2026-10-20, see `docs/monetization_reset_plan.md`):** the free
+calculators bring workers in; the paid step for them is the **$29 Claim Kit** (a pre-filled
+demand letter + filing guide) at the "am I owed back pay?" moment. For employers there is
+**Wage Watch**: email alerts before the minimum wage changes in their states and cities,
+free for one place and **$9 a month** for up to 10 with a printable compliance sheet. The
+$19 Pro report and the free attorney case review (lead-gen) were retired.
 
 Live: https://www.wagecoach.com
 
@@ -98,12 +98,12 @@ npm run lint
 GA4 through `lib/openhelm-analytics.tsx` (the shared `openhelm-analytics` service). An unset
 `NEXT_PUBLIC_GA_MEASUREMENT_ID` means no script and no events. There are no accounts, so no
 `oh_user_ref`: a visitor is the anonymous GA client. Event names and failure reasons live in
-`lib/analytics-events.ts`. Browser requests to `/api/checkout` and `/api/lead` give up after
+`lib/analytics-events.ts`. Browser requests to `/api/checkout` and `/api/watch/*` give up after
 `CLIENT_REQUEST_TIMEOUT_MS` (20 s) and report `reason: timeout`, so a hung request never leaves the
 button stuck. To check a change, open GA DebugView on a build with the id set and walk
-a calculator edit, the back-pay estimate, Claim Kit checkout and the free case review; each step
-should show its event and no `*_failed` sibling. `purchase` is sent from `/claim-kit` after Stripe
-confirms the session. `session_id` appears in that page's URL, so add it under GA Admin, Data
+a calculator edit, the back-pay estimate, Claim Kit checkout and a Wage Watch signup (`sign_up`); each step
+should show its event and no `*_failed` sibling. `purchase` is sent from `/claim-kit`, and from
+`/wage-watch/manage` after an upgrade, once Stripe confirms the session. `session_id` appears in that page's URL, so add it under GA Admin, Data
 collection, Data redaction, URL query parameter keys.
 
 ## Monitoring
@@ -123,92 +123,96 @@ The Sentry scrubber (`lib/scrub.ts`) redacts secrets of any length, backs up to 
 
 ## Paid offering
 
-Two one-time products, both through the same graceful Stripe route
-(`app/api/checkout/route.ts`, `POST { product }`):
+Two things are sold, both through `app/api/checkout/route.ts` (`POST { product }`):
 
-- **Claim Kit — $29** (`product: "kit"`, `STRIPE_KIT_PRICE_ID`). For workers. The funnel is
-  the free **back-pay estimator** (`/wage-claim`, `/calculators/back-pay-calculator`): the
-  verdict surfaces the estimate, a case-strength signal, and two CTAs — the Claim Kit and a
-  **free attorney case review**. After payment, Stripe returns to **`/claim-kit`**, a
-  `force-dynamic`, noindex page that **verifies the Checkout session server-side** (no DB —
-  the session id is the proof) and renders the deliverable from `lib/demand-letter.ts`: a
-  demand letter pre-filled with the buyer's figures plus a state filing guide.
-- **Pro report — $19** (`product: "report"`, `STRIPE_PRICE_ID`). For employers: a multi-state
-  wage & hour compliance report. The buyer picks their states on `/pricing`; they ride through
-  Stripe in the session's `metadata[states]`. After payment Stripe returns to **`/pro-report`**,
-  a `force-dynamic`, noindex page (kept out of the sitemap, like `/claim-kit`) that verifies the
-  session server-side and renders `lib/pro-report.ts`: per state the minimum wage, overtime
-  (weekly and daily), tipped rules, final-pay deadlines and meal/rest breaks, with numbered
-  sources, built from the same data as the free state pages. Print / Save as PDF is the download.
-  A visitor with no paid session sees a locked page that says why (`lockedCopy`).
+- **Claim Kit, $29 one-time** (`product: "kit"`, `STRIPE_KIT_PRICE_ID`). For workers. The
+  funnel is the free back-pay estimator (`/wage-claim`, `/calculators/back-pay-calculator`,
+  each state page's `#wage-claim` section): the verdict shows the estimate, a case-strength
+  signal and one CTA, the Kit. After payment Stripe returns to **`/claim-kit`**, a
+  `force-dynamic`, noindex page that verifies the session server-side (paid, `mode: payment`,
+  the Kit's price; `lib/stripe-purchase.ts`) and renders `lib/demand-letter.ts`.
+- **Wage Watch, $9 a month** (`product: "watch"` + the subscriber's manage-link `token`). For
+  employers. Plans, limits and price live in `lib/watch-plan.ts` and are sent to Stripe as
+  `price_data`, so no dashboard price has to match. See "Wage Watch" below.
 
-Both products are verified by one module, `lib/stripe-purchase.ts`: the session must be
-`payment_status: "paid"`, `mode: "payment"` and hold that product's price, otherwise a
-cheaper or unrelated paid session in a shared Stripe account would unlock it. Anything
-unverifiable stays locked. The report link is the session id; it is not time-limited or
-revocable (there is no database), and a refund does not close it.
+The **Pro report** ($19) is no longer sold. `/pro-report` and the webhook's report branch stay
+so past buyers' links keep working; `lib/pro-report.ts` now also renders the Wage Watch
+compliance sheet. The free attorney case review is gone (`/free-case-review` 308s to `/wage-claim`).
 
-When `STRIPE_SECRET_KEY` or the product's price id is absent, `/api/checkout` answers **503**
-with `reason: "not_configured"` and a message naming the product. The server log says which
-variable is missing. The free attorney review (`/free-case-review`) posts to `app/api/lead/route.ts`,
-which forwards leads to `LEAD_WEBHOOK_URL` (an attorney-network/CRM intake) when set and
-otherwise confirms without storing anything — the site stays database-free.
+When Stripe or a price is missing, `/api/checkout` answers **503** with `reason: "not_configured"`
+and a message naming the product; the server log says which variable is missing.
+
+### Wage Watch
+
+- **Data.** `lib/wage-schedule-data.ts` holds every announced, cited minimum-wage and tipped-wage
+  change (states and the 20 cities) from 2026-07-01 to 2027-12-31. Only official figures; an
+  inflation-indexed rate that hasn't been published is left out. `lib/wage-schedule.ts` answers
+  "what's next here", "what is due today" and which reminder bucket applies.
+- **Signup.** `/wage-watch` (and a compact form on every state and city page) posts to
+  `/api/watch/subscribe`. Double opt-in: the email links to `/wage-watch/confirm`, which needs a
+  button press (mail scanners pre-open links). A signup for an already-active email changes
+  nothing; it mails that person a fresh link instead, and signups are throttled to one mail a minute.
+- **Account.** No passwords. Each email carries a manage link with a random token; only its sha256
+  is stored (`lib/watch-store.ts`). `/wage-watch/manage` edits places (capped by plan), upgrades,
+  opens the Stripe billing portal and unsubscribes.
+- **Billing.** Subscription Checkout tagged `wagecoach_product=wage_watch`. On return the manage
+  page activates the plan; the webhook does the same and mirrors `customer.subscription.updated/deleted`.
+  The plan always follows the subscription's live status read from Stripe, so an old session
+  can't re-activate a cancelled plan.
+- **Alerts.** `GET /api/cron/watch-alerts` (Bearer `CRON_SECRET`), called daily by a Helm7 cron
+  service. Reminder buckets per plan (free: 30 days and day-of; paid: 60/30/7 and day-of); a
+  late subscriber gets one timely notice, not a burst. `watch_alerts_sent` makes each alert go
+  out once; a failed send is given back for the next run. `?date=YYYY-MM-DD` re-runs a day.
+- **Storage.** Helm7 Postgres (`db_krt6c38e741vwez01m4k`, `DATABASE_URL`). Schema: `db/schema.sql`,
+  applied through the Helm7 MCP `database_execute`.
 
 ### Environment
 
 | Var | Purpose |
 | --- | --- |
-| `STRIPE_SECRET_KEY` | Stripe API key (test `sk_test_…` for dev, live `sk_live_…` in prod). Also used to verify the kit Checkout session. |
+| `STRIPE_SECRET_KEY` | Stripe API key (test `sk_test_…` for dev, live in prod). |
 | `STRIPE_KIT_PRICE_ID` | Price id for the $29 Claim Kit. |
-| `STRIPE_PRICE_ID` | Price id for the $19 Pro report. Also how the webhook decides a sale is ours. |
+| `STRIPE_PRICE_ID` | Retired Pro report price; only for past buyers' delivery. Unset = report events ignored. |
 | `STRIPE_WEBHOOK_SECRET` | Signing secret (`whsec_…`) of the webhook endpoint below. Without it the webhook answers 503. |
-| `NEXT_PUBLIC_SITE_URL` | Canonical base for Stripe success/cancel URLs (e.g. `https://www.wagecoach.com`). |
-| `LEAD_WEBHOOK_URL` | Optional. Where free-case-review leads are POSTed (CRM/Zapier/attorney intake). |
+| `NEXT_PUBLIC_SITE_URL` | Base for Stripe return URLs and links in email. |
+| `DATABASE_URL` | Postgres for Wage Watch (Helm7 sets it). Unset = signups answer "not configured". |
+| `CRON_SECRET` | Bearer secret for `/api/cron/watch-alerts` (created by Helm7 with the cron service). |
+| `OPENHELM_API_KEY`, `OPENHELM_MAIL_INBOX_ID` | OpenHelm Mail, for confirmation and alert emails. |
 
-Local dev: copy the keys into `.env.local` (gitignored). Use Stripe **test** keys + test
-price ids there; set the **live** values only in the Helm7 product's variables.
+Local dev: keys in `.env.local` (gitignored), Stripe **test** keys there; live values only in the
+Helm7 product's variables.
 
-### Stripe webhook (Pro report safety net)
+### Local database
 
-`POST /api/stripe/webhook` (`lib/stripe-webhook.ts`) covers a buyer who pays and closes the tab
-before the redirect, or pays by a bank method that settles days later. Register it in Stripe
-(Workbench, Webhooks) at `https://www.wagecoach.com/api/stripe/webhook` for
-`checkout.session.completed` and `checkout.session.async_payment_succeeded`, then set that
-endpoint's signing secret as `STRIPE_WEBHOOK_SECRET`. Test and live endpoints have different secrets.
-
-Per event: verify the signature on the raw body (5 minute window), re-read the session from
-Stripe, act only if it is paid, a one-time payment and holds `STRIPE_PRICE_ID` (the endpoint also
-receives other products' events on a shared account), then email the buyer their `/pro-report`
-link through OpenHelm Mail. Any failure answers 500 so Stripe retries for up to three days.
-Needs `OPENHELM_API_KEY` and `OPENHELM_MAIL_INBOX_ID`; without them it answers 500
-`mail_not_configured` rather than pretending. Checkout waits up to 10 seconds for this reply
-before redirecting, so both outbound calls are time-bounded.
-
-**Dedupe is partly built.** Event ids are remembered in process memory (`lib/event-ledger.ts`),
-which stops a repeat on the same instance but not across restarts. The email is also sent with an
-idempotency key derived from the session id, so a repeat that slips past still cannot mail twice.
-A durable ledger needs a table and this product has none, so none was created. Proposed, not built:
-
-```sql
-create table stripe_events (
-  id         text primary key,            -- Stripe event id, evt_...
-  type       text not null,
-  created_at timestamptz not null default now()
-);
+```bash
+docker run -d --name wagecoach-dev-pg -e POSTGRES_PASSWORD=devpass -e POSTGRES_DB=wagecoach -p 127.0.0.1:55491:5432 postgres:18-alpine
 ```
 
-Claim = insert (a primary-key conflict means already handled), release = delete; the same
-shape TableHelm uses. It would live in a Helm7 Postgres database for this product, and
-`processLedger` in `lib/event-ledger.ts` is the one line to swap.
+Apply `db/schema.sql`, set `DATABASE_URL=postgres://postgres:devpass@127.0.0.1:55491/wagecoach`
+in `.env.local`, and run `TEST_DATABASE_URL=… npm test` to include the Postgres store tests.
+
+### Stripe webhook
+
+`POST /api/stripe/webhook` (`lib/stripe-webhook.ts`). Register it in Stripe at
+`https://www.wagecoach.com/api/stripe/webhook` for `checkout.session.completed`,
+`checkout.session.async_payment_succeeded`, `customer.subscription.updated` and
+`customer.subscription.deleted`, then set that endpoint's signing secret as `STRIPE_WEBHOOK_SECRET`.
+
+Per event: verify the signature on the raw body (5 minute window); route Wage Watch objects (by
+metadata tag) to `lib/watch-billing.ts`; otherwise, if `STRIPE_PRICE_ID` is set, run the Pro report
+safety net (re-read the session, check paid + one-time + that price, email the report link). Any
+failure answers 500 so Stripe retries. Event ids are claimed in the `stripe_events` table
+(`pgLedger` in `lib/event-ledger.ts`) when `DATABASE_URL` is set, so repeats are skipped across
+restarts; without a database it falls back to process memory.
 
 ### SEO/GEO
 
-The wage-claim work is built to grow on the highest-intent terms the keyword research
-surfaced ("wage theft", "back pay calculator", "how to file a wage claim [state]",
-"department of labor complaint"). `/wage-claim/[state]` renders 51 programmatic guides with
-an extractable one-paragraph answer, the filing agency, the federal window, `HowTo` +
-`FAQPage` + `BreadcrumbList` JSON-LD, and the embedded estimator — the shape answer engines
-quote. New env vars: `STRIPE_KIT_PRICE_ID`, `LEAD_WEBHOOK_URL`.
+After the August 2026 spam update (impressions fell from about 500 to about 5 a day on 2026-08-18),
+the site was consolidated: the 51 `/wage-claim/[state]` pages merged into `/states/[state]#wage-claim`
+(one page per state, with `HowTo` + `FAQPage` JSON-LD), the blog went from 57 posts to 29
+(`docs/blog_audit.md`), and every removed URL 308s through `lib/redirects.ts`
+(`test/redirects.test.mts` checks each target is live). State and city pages now carry dated,
+sourced "next change" notices from the schedule.
 
 > Self-help information, not legal advice, and not a law firm.
 

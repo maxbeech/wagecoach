@@ -135,3 +135,31 @@ Keyword Planner via the Google Ads API works through the MCP. All numbers below 
   - GSC Manual actions and Pages report
   - any real past Pro buyer link still opening
   - live-mode Stripe checkout once
+
+---
+
+## Execution status (2026-10-20)
+
+All phases were built in one pass at the user's request ("carry out all phases now"), so the
+Phase 2 → 3 signup gate was **not** applied: the paid tier shipped alongside the free one. The
+gate numbers (50 confirmed signups, 15 multi-location in 8 weeks) remain the bar for judging it.
+
+| Item | Status |
+| --- | --- |
+| Pro report retired, Claim Kit sole worker CTA | Done. Past buyers' `/pro-report` links still work |
+| Attorney lead-gen removed | Done. `/free-case-review` → `/wage-claim` (308) |
+| `/wage-claim/[state]` merged into `/states/[state]#wage-claim` | Done, 51 redirects |
+| City pages | **Kept all 20 indexed** (each has its own ordinance). Enriched with a dated, sourced next-change notice and alerts signup instead of noindexing |
+| Blog pruning | Done. 57 → 29 posts, 28 redirects (`docs/blog_audit.md`) |
+| Time card calculator | Done |
+| Cited 2026–27 schedule | Done. 50 entries; stale AK/DC/FL/OR/Portland rates fixed |
+| Wage Watch free + paid | Done. Helm7 Postgres, Stripe subscription, cron route |
+| GA4 bot filter (Singapore "Direct") | **Manual**: GA4 Admin → Data filters (no API for it here) |
+| GSC manual-actions and Pages checks | **Manual**: Search Console UI |
+| Stripe webhook registration + billing portal | **Manual**: see the README "Stripe webhook" section |
+
+### Checkpoints to record here
+
+- Week 6 and week 10 after deploy: GSC impressions per day (baseline about 5/day on 2026-10-18).
+- Kill criterion: under 100 impressions a day at week 10 means stop product investment.
+- Wage Watch: confirmed signups, multi-location share, paid conversions (GA4 `sign_up`, `purchase` with `item_id: wage_watch`).

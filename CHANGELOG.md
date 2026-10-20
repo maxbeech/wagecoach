@@ -1,5 +1,37 @@
 # Changelog
 
+## 2026-10-20: Monetization reset (Pro report and lead-gen out, Wage Watch in)
+
+Why: nobody converted to Pro, but the data said the offer wasn't the main problem. GA4 showed about
+100 real US organic sessions in 90 days and one checkout attempt (it failed). Google impressions
+fell from about 500 a day to about 5 on 2026-08-18, the start of the August spam update. Keyword
+Planner put the Pro report's buyer at 20 to 50 searches a month. Full analysis:
+`docs/monetization_reset_plan.md`.
+
+- **Retired:** the $19 Pro report (no longer sold; past buyers' `/pro-report` links still work) and
+  the free attorney case review (`/free-case-review`, `/api/lead`, `CaseReviewForm`, `lead-email`).
+  The back-pay verdict now has one CTA, the $29 Claim Kit. Header CTA is "Check my pay".
+- **Wage Watch (new):** minimum-wage change alerts for employers. Free for one place, $9 a month for
+  up to 10 with 60/30/7-day reminders and a printable compliance sheet (reuses `lib/pro-report.ts`).
+  Double opt-in, token manage links (only hashes stored), Stripe subscription with live-status
+  checks, billing portal, daily cron with an idempotent sent-log. Helm7 Postgres added; schema in
+  `db/schema.sql`. Signup on `/wage-watch` and on every state and city page.
+- **Cited schedule:** `lib/wage-schedule-data.ts` lists 50 announced changes (37 state, 13 city)
+  from July 2026 to December 2027, each with an official source. It also caught stale current
+  rates, now fixed: AK $14.00, DC $18.40 (tipped $10.30), FL $15.00 (tipped $11.98), OR $15.55,
+  Portland Metro $16.80, and Nevada's note (fixed in statute, not indexed).
+- **Time card calculator (new):** `/calculators/time-card-calculator`, built on the overtime engine,
+  weekly or biweekly, lunch breaks, overnight shifts, state daily OT and CA double time.
+- **Spam-update recovery:** `/wage-claim/[state]` merged into `/states/[state]#wage-claim` (one page
+  per state), the blog cut from 57 posts to 29 with merges and rewrites (`docs/blog_audit.md`), and
+  every removed URL 308s through `lib/redirects.ts`.
+- **Webhook:** routes Wage Watch events by metadata tag and mirrors subscription changes. Event ids
+  now go to a durable `stripe_events` table when `DATABASE_URL` is set. `STRIPE_PRICE_ID` is no longer
+  required.
+- **Analytics:** `generate_lead*` and `case_review_viewed` replaced by `sign_up` / `sign_up_failed`.
+- **Tests:** new `watch`, `watch-pg` (Postgres, opt-in via `TEST_DATABASE_URL`), `redirects`,
+  `timecard` and `posts` suites. Checkout, webhook, analytics and data tests follow the changes.
+
 ## 2026-10-19: Journey instrumentation, stall and lead-delivery fixes
 
 Audit of the User journeys table against the code. All nine work-list events were already sent from the right components; this release closes the gaps found while checking them.
