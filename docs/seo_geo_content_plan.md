@@ -1,60 +1,186 @@
-# WageCoach — Content Production Prioritisation Matrix (SEO × GEO)
+# WageCoach SEO and GEO Content Plan
 
-Single reference for writers. Every brief maps to a row below. The job is two things at once: rank in Google and get quoted by AI answer engines. Volumes are US, average monthly (Google Keyword Planner), rounded; treat them as direction, not gospel.
+Refreshed 2026-10-20. US average monthly searches from Google Keyword Planner, rounded. Each line reads `keyword | volume / competition`. Competition is LOW unless marked. Seeds came from the site's own topics and URLs, its blog post titles (lib/posts.ts), Search Console Keyword Opportunities, and two named competitor pages (paycheckcity.com and nolo.com unpaid-wages guide).
 
-**Two rules for every page.** (1) Open with a 40–60 word direct answer to the page's core question — that block is what AI models lift, so make it self-contained and correct. (2) Back it with the proof Google rewards: a live calculator, a sourced state table, or a cited rule. No answer without a tool or a citation underneath it.
+Every page opens with a 40 to 60 word direct answer, then the proof underneath it: a live calculator, a sourced state table or a cited rule. One canonical page per entity. Mark up calculators as `SoftwareApplication`, guides as `FAQPage` and `HowTo`, state pages with `BreadcrumbList`.
 
-**Reading the matrix.** P1 = build or upgrade now. P2 = next. P3 = fill-in once the spine exists. Intent: **T** tool/transactional, **C** commercial (ready to act), **I** informational.
+## 1. Authority Pillars
 
-## Priority matrix
+Seven highest-volume defining terms. Each claims one entity category, and every cluster in section 5 hangs off one of them.
 
-| P | Target page / cluster | Primary keyword (US/mo) | Intent | Supporting keywords | GEO answer to own |
-|---|---|---|---|---|---|
-| 1 | `/wage-claim/[state]` (51) + hub | wage claim california (1,300) · how to file a wage claim (210) | C | unpaid wages (590), department of labor complaint (2,400), file a complaint with department of labor (590), wage and hour complaint (210), how to report wage theft (170), report employer to labor board (30) | "How do I file a wage claim in [state]?" — name the agency, the route, the 2/3-year window |
-| 1 | Back-pay tool `/calculators/back-pay-calculator` | back pay calculator (390) | T | what is back pay (1,600), how to calculate back pay (260), unpaid overtime (260), overtime back pay (40), statute of limitations unpaid wages (110) | "Am I owed back pay, and how much can I recover?" |
-| 1 | Wage-theft pillar | wage theft (5,400) | I/C | unpaid wages claim (320), attorney for unpaid wages (2,400), demand letter for unpaid wages (320) | "What counts as wage theft and what can I claim back?" |
-| 1 | Exempt check `/calculators/exempt-salary-calculator` + guide | exempt vs non exempt (33,100) | I/T | exempt employee (9,900), non exempt employee (12,100), flsa exemptions (6,600), is salary exempt from overtime (20) | "Am I exempt from overtime?" — salary threshold AND duties test |
-| 1 | Overtime `/calculators/overtime-calculator` | overtime calculator (22,200) | T | how to calculate overtime (5,400), how much is overtime (5,400), overtime rate (1,000), how many hours is overtime (1,600), flsa overtime (9,900), is overtime mandatory (320), overtime rules by state (2,400) | "How is overtime pay calculated under the FLSA?" |
-| 2 | Time-and-a-half `/calculators/time-and-a-half-calculator` | time and a half calculator (14,800) | T | what is time and a half (9,900) | "What is time and a half and how do I work it out?" |
-| 2 | Misclassification guide → back-pay CTA | 1099 vs w2 (12,100) | I/C | employee vs independent contractor (4,400), misclassified employee (880) | "Am I misclassified as a contractor, and does that mean I'm owed overtime?" |
-| 2 | Pay-stub / gross-net pillar | what is gross pay (22,200) | I | what is a pay stub (14,800), gross vs net pay (3,600), how to read a pay stub (1,300) | "What's the difference between gross pay and net pay?" |
-| 2 | Minimum wage `/calculators/minimum-wage-calculator` + `/states` | minimum wage by state (18,100) | I | minimum wage 2026 (3,600), california minimum wage 2026 (22,200) | "What is the 2026 minimum wage in [state]?" |
-| 2 | Salary↔hourly `/calculators/salary-to-hourly-calculator` | salary to hourly calculator (49,500) | T | hourly to salary calculator (49,500) | "What is [annual salary] per hour?" |
-| 2 | Tipped `/calculators/tipped-wage-calculator` | tipped minimum wage (1,600) | I/T | tip credit (880), do tipped employees get overtime (30) | "Do my tips count toward minimum wage and overtime?" |
-| 2 | Breaks cluster (state pages + guide) | lunch break laws (1,600) | I | break laws by state (390), are lunch breaks required by law (590) | "Are meal and rest breaks required by law in [state]?" |
-| 2 | Final pay `/calculators/final-paycheck-calculator` | final paycheck laws by state (720) | I | final paycheck laws (170), when do i get my final paycheck (40) | "When is my final paycheck due in [state]?" |
-| 3 | Double time `/calculators/double-time-calculator` | double time pay (880) | I/T | double time calculator (480), holiday pay (5,400), comp time (3,600) | "When does double time (2×) apply?" |
-| 3 | PTO `/calculators/pto-payout-calculator` | pto payout calculator (720) | T | use it or lose it pto (90) | "Does my state require unused PTO to be paid out?" |
-| 3 | Garnishment guide | wage garnishment (18,100) | I | how much can be garnished from paycheck (260) | "How much of my paycheck can legally be garnished?" |
-| 3 | Severance guide | severance pay (18,100) | I | — | "Am I entitled to severance pay?" |
-| 3 | Travel-time guide | travel time pay (70) | I | — | "Is travel time paid under the FLSA?" |
+- federal minimum wage | 60,500 / LOW. Entity category: federal wage floor (FLSA)
+- exempt vs non exempt | 33,100 / LOW. Entity category: employment classification
+- severance pay | 27,100 / LOW. Entity category: separation pay
+- overtime calculator | 22,200 / LOW. Entity category: FLSA overtime pay rule
+- what is gross pay | 22,200 / LOW. Entity category: pay component
+- wage garnishment | 14,800 / LOW. Entity category: payroll deduction
+- wage theft | 5,400 / LOW. Entity category: wage violation and recovery
 
-**Deliberately not chasing:** paycheck calculator (673,000) and payroll calculator (673,000). These need a tax-withholding engine we don't run, and the SERP is ADP/SmartAsset/Gusto/PaycheckCity. Don't build a net-pay calculator for them. Capture the demand sideways through gross-pay and salary-to-hourly instead.
+## 2. Zero-Click & GEO Champions
 
-## Entity clusters (build topical authority around the parent, not stray keywords)
+How, why and vs questions. Each gets a self-contained answer block because answer engines lift these directly. Connected entities follow.
 
-**1. Overtime (FLSA).** Parent entity. The others are components, rates and edge cases of it. Keywords: overtime calculator, how to calculate overtime, overtime rate, time and a half calculator, what is time and a half, double time pay, double time calculator, how many hours is overtime, is overtime mandatory, flsa overtime, overtime rules by state, holiday pay, comp time.
+How, what and vs questions:
+- what is time and a half | 9,900 / LOW
+- what is a pay stub | 14,800 / LOW
+- what is back pay | 1,600 / LOW
+- how much is overtime | 5,400 / LOW
+- how to calculate overtime | 4,400 / LOW
+- how many hours is overtime | 1,600 / LOW
+- is overtime mandatory | 320 / LOW
+- how to read a pay stub | 1,000 / LOW
+- gross vs net pay | 3,600 / LOW
+- 1099 vs w2 | 12,100 / LOW
+- employee vs independent contractor | 3,600 / LOW
+- how to calculate back pay | 260 / LOW
+- how to report wage theft | 170 / LOW
+- how to file a wage claim | 210 / LOW
+- how much can be garnished from paycheck | 210 / LOW
+- do tipped employees get overtime | 20 / LOW
 
-**2. Unpaid wages & recovery.** Parent entity, and the money path. These are the sequential stages of getting owed wages back. Keywords: wage theft, unpaid wages, unpaid wages claim, unpaid overtime, what is back pay, how to calculate back pay, back pay calculator, overtime back pay, demand letter for unpaid wages, how to file a wage claim, wage claim california (+ per state), department of labor complaint, file a complaint with department of labor, wage and hour complaint, how to report wage theft, report employer to labor board, statute of limitations unpaid wages, attorney for unpaid wages.
+Connected entities:
+- flsa overtime | 9,900 / LOW. Links to the overtime calculator and the FLSA guide
+- flsa exemptions | 5,400 / LOW. Links to the exempt-test pillar
+- department of labor complaint | 1,900 / LOW. Entity: US DOL Wage and Hour Division
+- file a complaint with department of labor | 480 / LOW
+- dept of labor unpaid wages | 390 / LOW
+- labor commissioner wage claim | 260 / MEDIUM. Entity: state labor agency
+- unpaid wages law | 720 / MEDIUM
+- tip credit | 720 / LOW. Links to tipped minimum wage
 
-**3. Employee classification.** Parent entity. These are the tests that decide whether overtime is even owed — the bridge from "exempt" searches into the recovery cluster. Keywords: exempt vs non exempt, exempt employee, non exempt employee, flsa exemptions, is salary exempt from overtime, 1099 vs w2, employee vs independent contractor, misclassified employee.
+## 3. High-Intent Closers
 
-**4. Minimum wage.** Parent entity. These are the wage floor sliced by jurisdiction and worker type. Keywords: minimum wage by state, minimum wage 2026, california minimum wage 2026, tipped minimum wage, tip credit.
+Best and pricing terms, where the searcher is ready to calculate, file or hire. Attribute entities qualify them by state, year or pay basis.
 
-**5. The payslip (pay & deductions).** Parent entity "a paycheck". These are its parts and what's taken off it. Keywords: what is gross pay, gross vs net pay, what is a pay stub, how to read a pay stub, wage garnishment, how much can be garnished from paycheck, severance pay.
+Best and pricing terms:
+- salary to hourly calculator | 49,500 / LOW
+- time and a half calculator | 14,800 / LOW
+- overtime pay calculator | 4,400 / LOW
+- pto payout calculator | 880 / LOW
+- back pay calculator | 390 / LOW
+- hourly to salary calculator with overtime | 90 / LOW
+- file a wage claim | 480 / LOW
+- attorney for unpaid wages | 1,300 / LOW
+- demand letter for unpaid wages | 260 / LOW
 
-**6. Time off & final pay.** Parent entity "pay owed around leave and leaving". Keywords: pto payout calculator, use it or lose it pto, final paycheck laws by state, final paycheck laws, when do i get my final paycheck.
+Attribute entities:
+- wage claim california | 1,300 / MEDIUM. Attribute: state (California)
+- california minimum wage 2026 | 33,100 / LOW. Attribute: state and year
+- florida minimum wage 2026 | 18,100 / LOW. Attribute: state and year
+- minimum wage 2026 | 4,400 / LOW. Attribute: year
 
-**7. Hours & breaks.** Parent entity "time on the clock". Keywords: lunch break laws, break laws by state, are lunch breaks required by law, travel time pay.
+## 4. Hidden Gems
 
-**8. Salary ↔ hourly.** Parent entity "the same wage, expressed differently". Keywords: salary to hourly calculator, hourly to salary calculator.
+Low competition, specific phrasing. Why it matters: each one has a clear rule, state or filing step that a single page can answer with a citation, where the big SERPs give generic advice.
 
-## Competitive read
+- wage theft claim | 90 / LOW. Why: the closest term to the claim-kit route
+- file unpaid wages claim | 90 / LOW. Why: a filing-step query with a direct answer
+- file a wage complaint | 90 / LOW. Why: routes to the complaint guide
+- statute of limitations unpaid wages | 90 / LOW. Why: the 2 and 3 year window decides whether back pay is recoverable
+- wage claim status | 110 / LOW. Why: a follow-up query from people who have already filed
+- use it or lose it pto | 90 / LOW. Why: a yes or no answer that depends on the state
+- pto payout by state | 70 / LOW. Why: state table, cited
+- is salary exempt from overtime | 20 / LOW. Why: a direct answer, backed by the salary threshold and duties test
+- overtime back pay | 20 / LOW. Why: the back-pay calculator's natural entry point
+- tip pooling rules | 20 / LOW. Why: a live tipped-worker post with a rule to cite
+- back pay laws | 140 / LOW. Why: state-by-state answer, with the 2 and 3 year window
+- double time calculator | 390 / LOW. Why: the double-time tool already exists
+- regular rate of pay | 260 / LOW. Why: the number overtime is actually based on
+- on call pay | 480 / LOW. Why: a live post with a cited rule
+- travel time pay | 70 / LOW. Why: a live guide with a cited rule
+- biweekly vs semimonthly pay | 10 / LOW. Why: pay schedule changes overtime, a niche we already cover
+- west hollywood minimum wage 2026 | 210 / LOW. Why: city page in Keyword Opportunities, with 1 click at 8.8 average position
+- boulder minimum wage 2026 | 170 / LOW. Why: city page in Keyword Opportunities, with 0 clicks at 10.6 average position
 
-- **Calculator head terms** (overtime, salary-to-hourly, paycheck) sit with ADP, SmartAsset, Gusto, OnPay and PaycheckCity. We win on the long-tail and the "show your working" angle, not on the bare term. Pair every calculator with the cited rule beneath it; that's the GEO differentiator they lack.
-- **Unpaid-wages and wage-claim** SERPs are law-firm landing pages, Nolo, and thin .gov pages. This is the soft underbelly: a working estimator plus per-state filing data plus HowTo/FAQ schema outranks a static advert and gets cited by AI. Concentrate here.
-- **Classification terms** (exempt vs non exempt 33,100; 1099 vs w2 12,100) are HR-blog turf (SHRM, Indeed, Justworks). Beat them with a decision tool and a clean schema-marked answer, then route the "I think I'm misclassified" reader straight into back-pay.
+## 5. Semantic Clusters
 
-## GEO production notes
+Every other researched keyword, grouped under its parent pillar. Within each cluster, terms are ordered by volume, then low difficulty, then brand fit.
 
-One canonical answer per entity — never two pages competing to define the same term. Front-load the direct answer, then the table or tool. Mark up: calculators as `SoftwareApplication`, guides as `FAQPage` + `HowTo`, state pages as `BreadcrumbList`. Cite the US DOL and the named state agency with an effective date on every legal claim; models prefer sources that show their provenance, and so does Google.
+Cluster A, parent: federal minimum wage
+- minimum wage by state | 18,100 / LOW
+- minimum wage per state | 18,100 / LOW
+- states and minimum wage | 18,100 / LOW
+- federal minimum wage increases | 6,600 / LOW
+- legal minimum wage | 1,300 / LOW
+- tipped minimum wage | 1,300 / LOW
+- minimum wage in each state | 1,000 / LOW
+- minimum wage in different states | 390 / LOW
+- minimum wage in every state | 480 / LOW
+- minimum wage of every state | 590 / LOW
+- list of states minimum wages | 480 / LOW
+- states with federal minimum wage | 880 / LOW
+- federal minimum wage states | 880 / LOW
+- minimum wage 2026 by state | 210 / LOW
+- state minimum wage laws | 90 / LOW
+- minimum wage increase july 2026 | 30 / LOW
+- states that pay federal minimum wage | 20 / LOW
+- hourly minimum wage by state | 40 / LOW
+
+Cluster B, parent: exempt vs non exempt
+- non exempt employee | 12,100 / LOW
+- exempt vs non exempt employee | 14,800 / LOW
+- exempt employee | 8,100 / LOW
+- misclassified employee | 880 / LOW
+
+Cluster C, parent: wage theft (wage claims and back pay)
+- back pay | 3,600 / LOW
+- back pay meaning | 1,000 / LOW
+- define back pay | 880 / LOW
+- what does back pay mean | 170 / LOW
+- wage claim | 1,300 / LOW
+- unpaid wages | 880 / LOW
+- unpaid wages claim | 320 / LOW
+- unpaid overtime | 260 / LOW
+- workers owed wages | 590 / LOW
+- wage complaint | 210 / LOW
+- wage and hour complaint | 170 / LOW
+- wage and hour claim | 170 / LOW
+- lost wages claim | 320 / LOW
+- labor claim | 140 / LOW
+- dol wage claim | 110 / LOW
+- labor commission complaint | 70 / LOW
+
+Cluster D, parent: overtime calculator
+- ot calculator | 22,200 / LOW
+- calculate time and a half | 14,800 / LOW
+- holiday pay | 5,400 / LOW
+- comp time | 3,600 / LOW
+- overtime rate | 1,000 / LOW
+- figuring out overtime pay | 720 / LOW
+- overtime payment calculator | 4,400 / LOW
+- overtime rules by state | 210 / LOW
+- overtime pay rate calculator | 320 / LOW
+- double time pay | 880 / LOW
+- holiday pay rules | 480 / LOW
+- hours and overtime calculator | 390 / LOW
+- calculating ot pay | 390 / LOW
+- overtime calculator paycheck | 880 / LOW
+- paycheck calculator with overtime | 880 / LOW
+- hourly pay calculator with overtime | 110 / LOW
+- daily overtime calculator | 70 / LOW
+- overtime salary threshold 2026 | 30 / LOW
+- overtime for remote workers | unverified (live post: overtime-for-remote-hybrid-workers)
+
+Cluster E, parent: severance pay (final pay and separation)
+- final paycheck laws by state | 590 / LOW
+- final paycheck for terminated employee | 720 / LOW
+- final paycheck laws | 210 / LOW
+- when do i get my final paycheck | 40 / LOW
+- severance pay rules | 70 / LOW
+
+Cluster F, parent: wage garnishment
+- garnishment | 33,100 / LOW
+- levy garnishment | 480 / LOW
+- tax garnishment | 320 / LOW
+
+Cluster G, parent: what is gross pay
+- payroll calculator with overtime | 210 / LOW
+
+Cluster H, parent: overtime calculator (hours, breaks and salary basis)
+- lunch break laws | 1,900 / LOW
+- are lunch breaks required by law | 590 / LOW
+- break laws by state | 320 / LOW
+- salary calculator with overtime | 390 / LOW
+- salary and overtime calculator | 390 / LOW
+
+Not targeted: paycheck calculator and payroll calculator (550,000 each). Both need a tax withholding engine we do not run, and the SERP belongs to ADP, SmartAsset and Gusto. Capture that demand through gross pay and salary to hourly instead.
