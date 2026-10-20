@@ -17,7 +17,7 @@ ship extractable answers + `HowTo`/`FAQPage` JSON-LD.
 **The funnel:** free calculator → back-pay verdict (estimate + case-strength signal) → two
 CTAs: **$29 Claim Kit** (pre-filled demand letter + filing guide, delivered on a
 Stripe-verified `/claim-kit` page) and a **free attorney case review** (`/free-case-review`
-→ `LEAD_WEBHOOK_URL` lead-gen). Legacy **$19 employer report** is a secondary product.
+→ `LEAD_WEBHOOK_URL` lead-gen). The **$19 Pro report** (employer, multi-state, `lib/pro-report.ts`) is a secondary product.
 
 A suggested future second act (not built) is a recurring employer **labor-law-poster**
 compliance product reusing the 50-state dataset.
@@ -28,15 +28,19 @@ compliance product reusing the 50-state dataset.
   `federal.ts` (FLSA constants), `overtime.ts` (weekly + state daily OT, CA double time),
   `wage.ts` (tip credit, exempt test, PTO), `salary.ts`, `states-data.ts` / `state-extras.ts`
   / `states.ts` (50 states + DC), `cities.ts`.
+- **Paid verification (`lib/`)**: `stripe-purchase.ts` is the one place a Checkout session is judged
+  (paid + `payment` mode + that product's price); `kit-purchase.ts` and `report-purchase.ts` wrap it.
+  The webhook is `stripe-webhook.ts` + `stripe-signature.ts` + `event-ledger.ts`.
 - **Back-pay offering (`lib/`)** — `backpay.ts` (inverse of the OT engine; FLSA 2/3-yr
   window + liquidated damages), `case-score.ts` (triage signal), `wage-claim-data.ts`
   (per-state filing agency/route/penalties), `backpay-url.ts` (case = shareable URL, no DB),
   `demand-letter.ts` (Claim Kit deliverable).
 - **Routes (`app/`)** — `/` (recovery-led home), `/calculators/[slug]` (9 tools incl.
   `back-pay-calculator`), `/wage-claim` + `/wage-claim/[state]` (51 programmatic guides),
-  `/free-case-review`, `/claim-kit` (force-dynamic, noindex, server-verified), `/pricing`,
+  `/free-case-review`, `/claim-kit` and `/pro-report` (force-dynamic, noindex, server-verified,
+  not in the sitemap), `/pricing`,
   `/states/[slug]`, `/cities/[slug]`, `/blog/[slug]`, `/methodology`,
-  `api/checkout` (Stripe), `api/lead` (lead forward).
+  `api/checkout` (Stripe), `api/stripe/webhook` (Pro report safety net), `api/lead` (lead forward).
 
 ## Conventions
 

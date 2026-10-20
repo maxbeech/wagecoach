@@ -7,14 +7,24 @@ import { ok, report } from "./_assert.mts";
 const read = (p: string) => readFileSync(p, "utf8");
 
 const lead = read("app/api/lead/route.ts");
-ok(/captureServerError\(err, \{ scope: "lead_delivery" \}\)/.test(lead), "lead route reports delivery exceptions");
+// Each channel reports its own thrown error through `settle` (scope is lead_email or lead_webhook), so one failing channel cannot hide another's success.
+ok(/channel\.catch\(\(err\) => \{\s*captureServerError\(err, \{ scope \}\)/.test(lead), "lead route reports delivery exceptions per channel");
 ok(/captureServerMessage\("Lead email send failed"/.test(lead), "lead route reports a failed email send");
 ok(/captureServerMessage\("Lead webhook rejected"/.test(lead), "lead route reports a rejected webhook");
 const checkout = read("app/api/checkout/route.ts");
 ok(/captureServerError\(err, \{ scope: "checkout"/.test(checkout), "checkout reports exceptions");
 ok(/captureServerMessage\("Stripe checkout session creation failed"/.test(checkout), "checkout reports Stripe failures");
-ok(/captureServerError\(err, \{ scope: "kit_purchase" \}\)/.test(read("lib/kit-purchase.ts")), "kit verification reports unreachable Stripe");
-ok(/captureClientError\(err, \{ scope: "case_review_submit" \}\)/.test(read("components/CaseReviewForm.tsx")), "case review form reports");
+// Kit and Pro report verification share one lookup (lib/stripe-purchase.ts); each reports under its own scope.
+const purchase = read("lib/stripe-purchase.ts");
+ok(/captureServerError\(err, \{ scope \}\)/.test(purchase), "purchase verification reports unreachable Stripe");
+ok(/kit: \{ priceEnv: "STRIPE_KIT_PRICE_ID", scope: "kit_purchase" \}/.test(purchase), "kit lookups report under kit_purchase");
+ok(/report: \{ priceEnv: "STRIPE_PRICE_ID", scope: "report_purchase" \}/.test(purchase), "report lookups report under report_purchase");
+const webhook = read("lib/stripe-webhook.ts");
+ok(/captureServerError\(err, \{ scope: "stripe_webhook"/.test(webhook), "webhook reports handler exceptions");
+ok(/captureServerMessage\("Pro report email was not sent"/.test(webhook), "webhook reports a failed email");
+ok(/captureServerMessage\("Stripe webhook is not configured"/.test(webhook), "webhook reports being unconfigured");
+ok(/captureServerMessage\("Checkout is not configured"/.test(checkout), "checkout reports being unconfigured");
+ok(/captureClientError\(err, \{ scope: "case_review_submit"/.test(read("components/CaseReviewForm.tsx")), "case review form reports");
 ok(/captureClientError\(err, \{ scope: "checkout_start"/.test(read("components/CheckoutButton.tsx")), "checkout button reports");
 
 ok(/Sentry\.captureException\(error\)/.test(read("app/global-error.tsx")), "global-error captures");

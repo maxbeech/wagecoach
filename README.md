@@ -98,7 +98,9 @@ npm run lint
 GA4 through `lib/openhelm-analytics.tsx` (the shared `openhelm-analytics` service). An unset
 `NEXT_PUBLIC_GA_MEASUREMENT_ID` means no script and no events. There are no accounts, so no
 `oh_user_ref`: a visitor is the anonymous GA client. Event names and failure reasons live in
-`lib/analytics-events.ts`. To check a change, open GA DebugView on a build with the id set and walk
+`lib/analytics-events.ts`. Browser requests to `/api/checkout` and `/api/lead` give up after
+`CLIENT_REQUEST_TIMEOUT_MS` (20 s) and report `reason: timeout`, so a hung request never leaves the
+button stuck. To check a change, open GA DebugView on a build with the id set and walk
 a calculator edit, the back-pay estimate, Claim Kit checkout and the free case review; each step
 should show its event and no `*_failed` sibling. `purchase` is sent from `/claim-kit` after Stripe
 confirms the session. `session_id` appears in that page's URL, so add it under GA Admin, Data
@@ -131,11 +133,24 @@ Two one-time products, both through the same graceful Stripe route
   `force-dynamic`, noindex page that **verifies the Checkout session server-side** (no DB —
   the session id is the proof) and renders the deliverable from `lib/demand-letter.ts`: a
   demand letter pre-filled with the buyer's figures plus a state filing guide.
-- **Pro report — $19** (`product: "report"`, `STRIPE_PRICE_ID`). For employers: the
-  multi-state wage & hour compliance report.
+- **Pro report — $19** (`product: "report"`, `STRIPE_PRICE_ID`). For employers: a multi-state
+  wage & hour compliance report. The buyer picks their states on `/pricing`; they ride through
+  Stripe in the session's `metadata[states]`. After payment Stripe returns to **`/pro-report`**,
+  a `force-dynamic`, noindex page (kept out of the sitemap, like `/claim-kit`) that verifies the
+  session server-side and renders `lib/pro-report.ts`: per state the minimum wage, overtime
+  (weekly and daily), tipped rules, final-pay deadlines and meal/rest breaks, with numbered
+  sources, built from the same data as the free state pages. Print / Save as PDF is the download.
+  A visitor with no paid session sees a locked page that says why (`lockedCopy`).
 
-The checkout route degrades gracefully when `STRIPE_SECRET_KEY` or the relevant price id is
-absent. The free attorney review (`/free-case-review`) posts to `app/api/lead/route.ts`,
+Both products are verified by one module, `lib/stripe-purchase.ts`: the session must be
+`payment_status: "paid"`, `mode: "payment"` and hold that product's price, otherwise a
+cheaper or unrelated paid session in a shared Stripe account would unlock it. Anything
+unverifiable stays locked. The report link is the session id; it is not time-limited or
+revocable (there is no database), and a refund does not close it.
+
+When `STRIPE_SECRET_KEY` or the product's price id is absent, `/api/checkout` answers **503**
+with `reason: "not_configured"` and a message naming the product. The server log says which
+variable is missing. The free attorney review (`/free-case-review`) posts to `app/api/lead/route.ts`,
 which forwards leads to `LEAD_WEBHOOK_URL` (an attorney-network/CRM intake) when set and
 otherwise confirms without storing anything — the site stays database-free.
 
@@ -145,12 +160,46 @@ otherwise confirms without storing anything — the site stays database-free.
 | --- | --- |
 | `STRIPE_SECRET_KEY` | Stripe API key (test `sk_test_…` for dev, live `sk_live_…` in prod). Also used to verify the kit Checkout session. |
 | `STRIPE_KIT_PRICE_ID` | Price id for the $29 Claim Kit. |
-| `STRIPE_PRICE_ID` | Price id for the $19 Pro report. |
+| `STRIPE_PRICE_ID` | Price id for the $19 Pro report. Also how the webhook decides a sale is ours. |
+| `STRIPE_WEBHOOK_SECRET` | Signing secret (`whsec_…`) of the webhook endpoint below. Without it the webhook answers 503. |
 | `NEXT_PUBLIC_SITE_URL` | Canonical base for Stripe success/cancel URLs (e.g. `https://www.wagecoach.com`). |
 | `LEAD_WEBHOOK_URL` | Optional. Where free-case-review leads are POSTed (CRM/Zapier/attorney intake). |
 
 Local dev: copy the keys into `.env.local` (gitignored). Use Stripe **test** keys + test
 price ids there; set the **live** values only in the Helm7 product's variables.
+
+### Stripe webhook (Pro report safety net)
+
+`POST /api/stripe/webhook` (`lib/stripe-webhook.ts`) covers a buyer who pays and closes the tab
+before the redirect, or pays by a bank method that settles days later. Register it in Stripe
+(Workbench, Webhooks) at `https://www.wagecoach.com/api/stripe/webhook` for
+`checkout.session.completed` and `checkout.session.async_payment_succeeded`, then set that
+endpoint's signing secret as `STRIPE_WEBHOOK_SECRET`. Test and live endpoints have different secrets.
+
+Per event: verify the signature on the raw body (5 minute window), re-read the session from
+Stripe, act only if it is paid, a one-time payment and holds `STRIPE_PRICE_ID` (the endpoint also
+receives other products' events on a shared account), then email the buyer their `/pro-report`
+link through OpenHelm Mail. Any failure answers 500 so Stripe retries for up to three days.
+Needs `OPENHELM_API_KEY` and `OPENHELM_MAIL_INBOX_ID`; without them it answers 500
+`mail_not_configured` rather than pretending. Checkout waits up to 10 seconds for this reply
+before redirecting, so both outbound calls are time-bounded.
+
+**Dedupe is partly built.** Event ids are remembered in process memory (`lib/event-ledger.ts`),
+which stops a repeat on the same instance but not across restarts. The email is also sent with an
+idempotency key derived from the session id, so a repeat that slips past still cannot mail twice.
+A durable ledger needs a table and this product has none, so none was created. Proposed, not built:
+
+```sql
+create table stripe_events (
+  id         text primary key,            -- Stripe event id, evt_...
+  type       text not null,
+  created_at timestamptz not null default now()
+);
+```
+
+Claim = insert (a primary-key conflict means already handled), release = delete; the same
+shape TableHelm uses. It would live in a Helm7 Postgres database for this product, and
+`processLedger` in `lib/event-ledger.ts` is the one line to swap.
 
 ### SEO/GEO
 

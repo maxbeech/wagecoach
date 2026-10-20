@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import CheckoutButton from "@/components/CheckoutButton";
+import ProReportBuy from "@/components/ProReportBuy";
 import { Eyebrow, SectionHeading } from "@/components/primitives";
 import { SITE } from "@/lib/site";
 import { safeJsonLd } from "@/lib/json-ld";
@@ -82,7 +83,7 @@ export default function Pricing() {
           <ul className="mt-5 space-y-2.5 text-sm text-muted">
             {PRO.map((f) => <li key={f} className="flex gap-2.5"><Check />{f}</li>)}
           </ul>
-          <div className="mt-6"><CheckoutButton /></div>
+          <div className="mt-6"><ProReportBuy /></div>
         </div>
       </div>
 

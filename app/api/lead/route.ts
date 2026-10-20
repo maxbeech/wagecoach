@@ -39,6 +39,10 @@ async function sendEmail(lead: Lead): Promise<boolean | null> {
   return result.sent;
 }
 
+// A partner webhook that never answers must not hold the user's request open. Past this
+// limit the fetch rejects and the channel counts as failed (see `settle` below).
+const LEAD_WEBHOOK_TIMEOUT_MS = 15_000;
+
 async function sendWebhook(lead: Lead): Promise<boolean | null> {
   const hook = process.env.LEAD_WEBHOOK_URL;
   if (!hook) return null; // not configured
@@ -46,6 +50,7 @@ async function sendWebhook(lead: Lead): Promise<boolean | null> {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...lead, source: "wagecoach/free-case-review", at: new Date().toISOString() }),
+    signal: AbortSignal.timeout(LEAD_WEBHOOK_TIMEOUT_MS),
   });
   if (!res.ok) captureServerMessage("Lead webhook rejected", { scope: "lead_webhook", status: res.status });
   return res.ok;
@@ -64,14 +69,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Please enter a valid email address." }, { status: 400 });
   }
 
-  // Attempt every configured channel. `null` = channel not configured.
-  let results: Array<boolean | null>;
-  try {
-    results = await Promise.all([sendEmail(lead), sendWebhook(lead)]);
-  } catch (err) {
-    captureServerError(err, { scope: "lead_delivery" });
-    results = [false];
-  }
+  // Attempt every configured channel. `null` = channel not configured. A channel
+  // that throws counts as failed on its own: it must not discard the result of a
+  // channel that succeeded (an email already sent is a lead delivered).
+  const settle = (channel: Promise<boolean | null>, scope: string): Promise<boolean | null> =>
+    channel.catch((err) => {
+      captureServerError(err, { scope });
+      return false;
+    });
+  const results = await Promise.all([settle(sendEmail(lead), "lead_email"), settle(sendWebhook(lead), "lead_webhook")]);
   const configured = results.filter((r) => r !== null);
   // If at least one channel is configured and none of them succeeded, surface
   // a clear fallback so the lead is never silently lost.

@@ -69,9 +69,27 @@ export function analyticsFailureReason(input: string | number | null | undefined
 }
 
 /**
- * Why `/api/checkout` gave the browser nothing to redirect to. The route answers
- * 200 with a message (and no url) when Stripe is not configured, so a 200 without
- * a url is "unavailable" rather than a success.
+ * How long a browser request to `/api/checkout` or `/api/lead` may hang. Without a
+ * limit a request that never answers leaves the button on "Starting…" or
+ * "Sending…" for ever, with no event and no Sentry report, which is the stall
+ * this guards against. See https://developer.mozilla.org/docs/Web/API/AbortSignal/timeout_static
+ */
+export const CLIENT_REQUEST_TIMEOUT_MS = 20_000;
+
+/**
+ * The `reason` for a browser request that threw: `timeout` when it hit
+ * `CLIENT_REQUEST_TIMEOUT_MS` (AbortSignal.timeout rejects with a `TimeoutError`),
+ * otherwise `request_failed` (a network error or a body that was not JSON).
+ */
+export function requestFailureReason(err: unknown): "timeout" | "request_failed" {
+  const name = typeof err === "object" && err !== null && "name" in err ? String(err.name) : "";
+  return name === "TimeoutError" ? "timeout" : "request_failed";
+}
+
+/**
+ * Why `/api/checkout` gave the browser nothing to redirect to. When Stripe is not
+ * configured the route answers 503 (`http_503`). A 2xx without a url is still
+ * "unavailable" rather than a success.
  */
 export function checkoutFailureReason(status: number, hasUrl: boolean): string | null {
   if (status >= 200 && status < 300) return hasUrl ? null : "unavailable";

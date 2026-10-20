@@ -1,27 +1,34 @@
 "use client";
 
 import { useState } from "react";
-import { analyticsEvents, beginCheckoutParams, checkoutFailureReason } from "@/lib/analytics-events";
+import { CLIENT_REQUEST_TIMEOUT_MS, analyticsEvents, beginCheckoutParams, checkoutFailureReason, requestFailureReason } from "@/lib/analytics-events";
 import { trackEvent } from "@/lib/analytics-track";
 import { captureClientError } from "@/lib/observability";
 
-// Starts a Stripe Checkout session via /api/checkout. The route degrades
-// gracefully: if Stripe isn't configured (no env keys) it returns a clear
-// "not yet available" message instead of a broken redirect. `product` selects
-// which item to buy — the multi-state "report" ($19) or the wage "kit" ($29).
+// Starts a Stripe Checkout session via /api/checkout. If Stripe isn't configured
+// the route answers 503 with a plain message naming the product, and that message
+// is shown here instead of a broken redirect. `product` selects which item to buy:
+// the multi-state "report" ($19) or the wage "kit" ($29). The report is built for
+// the buyer's `states` (abbreviations), so it won't start without at least one.
 export default function CheckoutButton({
   className,
   product = "report",
   label,
+  states,
 }: {
   className?: string;
   product?: "report" | "kit";
   label?: string;
+  states?: string[];
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function go() {
+    if (product === "report" && (!states || states.length === 0)) {
+      setError("Pick at least one state first.");
+      return;
+    }
     setLoading(true); setError(null);
     trackEvent(analyticsEvents.beginCheckout, beginCheckoutParams(product));
     try {
@@ -31,7 +38,8 @@ export default function CheckoutButton({
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product, caseQuery }),
+        body: JSON.stringify({ product, caseQuery, states }),
+        signal: AbortSignal.timeout(CLIENT_REQUEST_TIMEOUT_MS),
       });
       const data = await res.json();
       if (data.url) { window.location.href = data.url; return; }
@@ -39,9 +47,13 @@ export default function CheckoutButton({
       trackEvent(analyticsEvents.beginCheckoutFailed, { product, reason: reason ?? "unavailable" });
       setError(data.message ?? "Checkout is not available yet. Please check back soon.");
     } catch (err) {
-      captureClientError(err, { scope: "checkout_start", product });
-      trackEvent(analyticsEvents.beginCheckoutFailed, { product, reason: "request_failed" });
-      setError("Something went wrong starting checkout. Please try again.");
+      // A hung request is reported as `timeout`, so it reads differently from a network error.
+      const reason = requestFailureReason(err);
+      captureClientError(err, { scope: "checkout_start", product, reason });
+      trackEvent(analyticsEvents.beginCheckoutFailed, { product, reason });
+      setError(reason === "timeout"
+        ? "Checkout is taking too long to start. Please try again."
+        : "Something went wrong starting checkout. Please try again.");
     } finally {
       setLoading(false);
     }

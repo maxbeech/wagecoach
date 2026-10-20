@@ -15,3 +15,15 @@ export const SITE = {
   // Stable last-updated date for sitemap lastmod (avoids churn on every deploy).
   updated: "2026-10-07",
 };
+
+/**
+ * The public origin for links we hand to Stripe or put in email. NEXT_PUBLIC_SITE_URL
+ * wins (test mode, previews), otherwise the canonical host. An env var that is empty
+ * or missing its scheme would make a relative URL that Stripe rejects ("Not a valid
+ * URL"), and `??` does not catch an empty string, so it is repaired here.
+ */
+export function publicBaseUrl(env: Record<string, string | undefined> = process.env): string {
+  let base = env.NEXT_PUBLIC_SITE_URL?.trim() || SITE.url;
+  if (!/^https?:\/\//i.test(base)) base = `https://${base}`;
+  return base.replace(/\/+$/, "");
+}

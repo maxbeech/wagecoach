@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-10-19: Journey instrumentation, stall and lead-delivery fixes
+
+Audit of the User journeys table against the code. All nine work-list events were already sent from the right components; this release closes the gaps found while checking them.
+
+- **Stalls.** The Claim Kit button and the case-review submit had no request limit, so a hung `/api/checkout` or `/api/lead` left the button on "Starting…" or "Sending…" for ever with no event. Both now abort after 20 s and report `reason: timeout` on `begin_checkout_failed` / `generate_lead_failed` and to Sentry.
+- **Lead delivery.** `/api/lead` ran the email and the partner webhook in one `Promise.all`. A webhook that threw discarded an email that had already been sent, so the user was told to email support. Each channel now settles on its own and the partner webhook has a 15 s limit.
+- **Not sent, and why.** WageCoach has no accounts and no internal user id, so `oh_user_ref`, `oh_plan` and `oh_is_test` are not set. There is also no consent mechanism in the product, so nothing can be gated on consent. Both are product decisions, not instrumentation.
+- **Tests.** `test/journey-instrumentation.test.mts` pins the event list to the User journeys table, checks the timeout reason against a real `AbortSignal.timeout`, and drives the real `/api/lead` handler through each channel outcome. `observability` assertions follow the new scope names.
+
+## 2026-10-10: Pro report delivery
+
+The $19 Pro report charged buyers and delivered nothing: checkout returned to `/pricing?status=success`, which nothing handled, and there was no webhook.
+
+- **Verified delivery.** Checkout now returns to `/pro-report?session_id=...`, a `force-dynamic`, noindex page. It asks Stripe for the session and unlocks only when it is `paid`, `mode: payment` and holds `STRIPE_PRICE_ID`. Anything else, or an unconfigured Stripe, stays locked with a plain reason (`lockedCopy`). Not added to the sitemap, the same as `/claim-kit`.
+- **The report is real output.** `lib/pro-report.ts` builds it from the same state data as the free pages: per state, minimum wage, weekly and daily overtime, tipped rules, final pay and meal/rest breaks, with numbered sources. The buyer picks states on `/pricing`; they travel in the Stripe session's `metadata[states]`, so the link is the session id alone. Print / Save as PDF is the download. Sessions paid before this change have no states, so the page asks for them once.
+- **One verification module.** `lib/stripe-purchase.ts` now holds the rules the Claim Kit used (paid, price) and adds `mode === "payment"`. `lib/kit-purchase.ts` is a thin wrapper, so the kit also refuses non-payment sessions. A malformed session id is refused before it reaches Stripe.
+- **Webhook.** `POST /api/stripe/webhook` handles `checkout.session.completed` and `checkout.session.async_payment_succeeded`: signature on the raw body (hand-rolled, checked against a vector from the official Stripe library), session re-read from Stripe, ownership by price id, then the buyer is emailed their report link. Failures answer 500 so Stripe retries. Event-id dedupe is in-process only; the durable table is proposed in the README, not created. The email carries an idempotency key from the session id.
+- **Checkout, not configured.** `/api/checkout` now answers 503 with `reason: "not_configured"` and a message naming the product, instead of a 200 that read as success. The server log names the missing variable. The report needs at least one state (400 otherwise).
+- **New env var:** `STRIPE_WEBHOOK_SECRET`. Stripe vars are now listed in `.env.example`.
+- **Tests.** Added `stripe-purchase`, `pro-report`, `pro-report-page`, `stripe-signature`, `stripe-webhook`, `stripe-webhook-route` and `checkout-route`; the kit and observability tests follow the moved code.
+- Not done: a GA `purchase` event for the report (it can now be added, since the session is verified), and revoking a link after a refund.
+
 ## 2026-10-07: Blog authorship signals
 - Blog posts now show a visible byline and publish date, carry author meta, and emit
   og:url, og:site_name, article:published_time and article:author. Article JSON-LD still

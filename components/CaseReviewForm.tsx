@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { CLAIM_LABELS, type ClaimType } from "@/lib/backpay";
 import { decodeBackPay } from "@/lib/backpay-url";
 import { dollars } from "@/lib/federal";
-import { analyticsEvents, analyticsFailureReason, leadParams } from "@/lib/analytics-events";
+import { CLIENT_REQUEST_TIMEOUT_MS, analyticsEvents, analyticsFailureReason, leadParams, requestFailureReason } from "@/lib/analytics-events";
 import { trackEvent } from "@/lib/analytics-track";
 import { captureClientError } from "@/lib/observability";
 import { Field, StateSelect, inputCls } from "./ui";
@@ -46,6 +46,7 @@ export default function CaseReviewForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phone, state, claimType: CLAIM_LABELS[claim], amount, summary }),
+        signal: AbortSignal.timeout(CLIENT_REQUEST_TIMEOUT_MS),
       });
       const data = await res.json();
       if (data.ok) {
@@ -55,9 +56,14 @@ export default function CaseReviewForm() {
       trackEvent(analyticsEvents.generateLeadFailed, { reason: analyticsFailureReason(res.status) });
       setStatus("error"); setMessage(data.message ?? "Something went wrong. Please try again.");
     } catch (err) {
-      captureClientError(err, { scope: "case_review_submit" });
-      trackEvent(analyticsEvents.generateLeadFailed, { reason: "request_failed" });
-      setStatus("error"); setMessage("Something went wrong. Please try again.");
+      // A hung request is `timeout`. The lead may still have reached us, so the copy says to check before resubmitting.
+      const reason = requestFailureReason(err);
+      captureClientError(err, { scope: "case_review_submit", reason });
+      trackEvent(analyticsEvents.generateLeadFailed, { reason });
+      setStatus("error");
+      setMessage(reason === "timeout"
+        ? "That took too long. Please try once more; if it fails again, email hello@mail.wagecoach.com."
+        : "Something went wrong. Please try again.");
     }
   }
 
