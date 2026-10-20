@@ -35,6 +35,8 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   const st = cityState(c);
   const stateMin = st ? effectiveMinWage(st) : FEDERAL.minWage;
   const overState = (c.minWage - stateMin).toFixed(2);
+  // Only localities in the same state: a link to every city is a doorway grid.
+  const sameState = CITIES.filter((x) => x.slug !== c.slug && x.state === c.state);
 
   return (
     <div>
@@ -79,12 +81,16 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
       </p>
 
       <section className="mt-8">
-        <h2 className="font-display text-sm font-semibold text-ink">Other cities</h2>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {CITIES.filter((x) => x.slug !== c.slug).map((x) => (
-            <Chip key={x.slug} href={`/cities/${x.slug}`}>{x.city}</Chip>
-          ))}
-        </div>
+        {sameState.length > 0 && (
+          <>
+            <h2 className="font-display text-sm font-semibold text-ink">Other {st ? st.name : "local"} minimum wages</h2>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {sameState.map((x) => (
+                <Chip key={x.slug} href={`/cities/${x.slug}`}>{x.city}</Chip>
+              ))}
+            </div>
+          </>
+        )}
         {st && <div className="mt-4"><MoreLink href={`/states/${st.slug}`}>{st.name} state labor laws</MoreLink></div>}
       </section>
 

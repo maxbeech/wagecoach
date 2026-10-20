@@ -24,9 +24,6 @@ const COLS: { heading: string; links: { href: string; label: string }[] }[] = [
       { href: "/calculators/final-paycheck-calculator", label: "Final paycheck deadlines" },
       { href: "/states", label: "All states" },
       { href: "/cities", label: "City minimum wages" },
-      { href: "/cities/new-york-city-ny", label: "New York City" },
-      { href: "/cities/chicago-il", label: "Chicago" },
-      { href: "/cities/denver-co", label: "Denver" },
     ],
   },
   {

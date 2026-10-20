@@ -68,6 +68,7 @@ The engines are real and cited, not rules of thumb:
   verdict where the answer is location-dependent (e.g. NY between the
   rest-of-state and downstate figures) rather than a false "exempt".
 - **`lib/salary.ts`** — salary↔hourly converter (annual / monthly / biweekly / hourly).
+- **`docs/seo_recovery_2026_10.md`** — the spam-update diagnosis, family verdicts and change log.
 - **`lib/cities.ts`** — 2026 minimum wage for 20 major cities (Seattle, NYC, LA, SF, Chicago…), each cited.
 - **`lib/backpay.ts`** — back-pay estimator. The inverse of the overtime engine: given
   what you should have earned and what you were paid, it estimates the unpaid wages and
@@ -75,7 +76,7 @@ The engines are real and cited, not rules of thumb:
 - **`lib/case-score.ts`** — a transparent "case-strength" triage signal from the size,
   duration and recoverability of the shortfall (not a legal opinion).
 - **`lib/wage-claim-data.ts`** — per-state wage-claim agency, official filing route and
-  notable state penalties, used by the `/wage-claim/[state]` guides.
+  notable state penalties, used by the `#wage-claim` section of each state page.
 
 The engines are covered by hand-written unit tests **plus a fuzz suite** that sweeps every
 state × rate × hours combination (33k+ cases / 150k+ assertions) to guarantee no NaN, no

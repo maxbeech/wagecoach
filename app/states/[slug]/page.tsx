@@ -139,7 +139,7 @@ export default async function StatePage({ params }: { params: Promise<{ slug: st
       <section className="mt-8">
         <h2 className="font-display text-sm font-semibold text-ink">Other states</h2>
         <div className="mt-2 flex flex-wrap gap-2">
-          {STATES.filter((x) => x.slug !== s.slug).map((x) => (
+          {STATES.filter((x) => x.slug !== s.slug).slice(0, 12).map((x) => (
             <Chip key={x.slug} href={`/states/${x.slug}`}>{x.name}</Chip>
           ))}
         </div>

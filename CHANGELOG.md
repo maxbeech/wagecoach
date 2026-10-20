@@ -6,6 +6,13 @@
   (Rippling, Patriot Software, TimeClick, Winthrop and minimum-wage.org removed; Vermont cites 21
   V.S.A. § 304). `test/state-extras-sources.test.mts` fails if a non-official source returns.
 - `STRIPE_WEBHOOK_SECRET` set on Helm7 production (live-mode endpoint).
+## 2026-10-20: Spam-update recovery, second pass
+
+- Removed the 2026-10-14 all-X internal links: state pages link to 12 other states, city pages only to
+  same-state localities, the footer no longer links individual cities, and blog "related guides" are
+  limited to guides sharing a calculator (max 4).
+- Added `test/seo-structure.test.mts` (redirects, single canonical host, sitemap contents, no link grids).
+- Diagnosis, family verdicts and the duplicate-sitemap note: `docs/seo_recovery_2026_10.md`.
 
 ## 2026-10-20: Monetization reset (Pro report and lead-gen out, Wage Watch in)
 
