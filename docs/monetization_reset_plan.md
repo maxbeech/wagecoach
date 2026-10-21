@@ -157,10 +157,13 @@ gate numbers (50 confirmed signups, 15 multi-location in 8 weeks) remain the bar
 | GA4 bot filter (Singapore "Direct") | **Manual**: GA4 Admin → Data filters (no API for it here) |
 | GSC manual-actions and Pages checks | **Manual**: Search Console UI |
 | Stripe webhook registration | Done 2026-10-20: live endpoint created, secret set on Helm7 production |
-| Billing portal (live mode) | **Manual**: Stripe Dashboard → Settings → Billing → Customer portal → activate (needs the live key, which isn't held locally) |
+| Billing portal (live mode) | Done 2026-10-21: default configuration exists and the next-generation portal is enabled |
 | Compliance-sheet citations | Done 2026-10-20: DOL and state .gov only, guarded by a test |
 
 ### Checkpoints to record here
+
+- **Baseline 2026-10-21 (GSC API):** 34 impressions and 0 clicks over 2026-10-07 to 10-21 (about 2.3 a day).
+  Sitemap `sitemap.xml` re-fetched 2026-10-21: 119 URLs submitted, 0 indexed, 0 errors.
 
 - Week 6 and week 10 after deploy: GSC impressions per day (baseline about 5/day on 2026-10-18).
 - Kill criterion: under 100 impressions a day at week 10 means stop product investment.
