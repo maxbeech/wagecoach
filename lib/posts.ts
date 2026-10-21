@@ -17,7 +17,7 @@ export const POSTS: Post[] = [
     slug: "how-to-calculate-overtime-pay",
     title: "How to Calculate Overtime Pay (2026 Guide)",
     description: "Step-by-step overtime math under the FLSA: the regular rate, which hours count toward 40, time and a half with real paychecks, salaried non-exempt pay, holidays, and daily-overtime states.",
-    date: "2026-06-15", readMins: 8, keyword: "how to calculate overtime pay", related: ["overtime-calculator","time-and-a-half-calculator"],
+    date: "2026-06-15", readMins: 8, keyword: "how to calculate overtime pay", related: ["overtime-calculator"],
     body: [
       { p: [
           "Most overtime mistakes on a paycheck come from one of three places: the wrong regular rate, the wrong count of hours, or a premium that was never added at all. The rule itself fits in a sentence. Under the federal Fair Labor Standards Act (FLSA), a non-exempt employee must be paid at least 1.5 times their regular rate for every hour worked over 40 in a workweek.",
@@ -34,7 +34,7 @@ export const POSTS: Post[] = [
       { h: "Step 3: Multiply the overtime hours by 1.5", p: [
           "A worker at $20 an hour who works 46 hours earns 40 x $20 = $800 plus 6 x $30 = $180, for $980. If the employer paid all 46 hours at straight time, the check was $920 and the shortfall is $60 for that single week.",
           "At $28 an hour for 52 hours the numbers are 40 x $28 = $1,120 plus 12 x $42 = $504, for $1,624. Straight time on all 52 hours would be $1,456, so the missing premium is $168. A worker who has weeks like that twice a month is short about $4,000 a year.",
-          "To check a week without doing it by hand, use the [overtime calculator](/calculators/overtime-calculator), which applies your state's rules. For the premium rate on its own, the [time and a half calculator](/calculators/time-and-a-half-calculator) gives the per-hour figure."
+          "To check a week without doing it by hand, use the [overtime calculator](/calculators/overtime-calculator), which applies your state's rules. The same page shows the premium rate per hour."
         ] },
       { h: "What time and a half does not mean", p: [
           "Federal law requires it for one reason: hours over 40 in a workweek. Not weekends, not holidays, not nights, not hours over 8 in a day. A worker who does four 10-hour days (40 hours) has no federal overtime, while a worker on six 7-hour days (42 hours) has two overtime hours because the weekly line was crossed. Weekend or holiday premiums exist only where an employer, union contract or state law adds them. A shift differential is not overtime either, but it does feed into the regular rate described above.",
@@ -705,7 +705,7 @@ export const POSTS: Post[] = [
     slug: "regular-rate-of-pay",
     title: "Regular Rate of Pay: The Number Your Overtime Is Really Based On",
     description: "Your overtime isn't always 1.5x your base wage. Learn what the regular rate of pay includes in 2026, bonuses, shift differentials, commissions, and what it excludes.",
-    date: "2026-06-20", readMins: 7, keyword: "regular rate of pay overtime", related: ["overtime-calculator","time-and-a-half-calculator"],
+    date: "2026-06-20", readMins: 7, keyword: "regular rate of pay overtime", related: ["overtime-calculator"],
     body: [
       { p: [
           "Most people think overtime is just 1.5 times their hourly wage. For a worker who earns nothing but a flat hourly rate, that's true. But the moment you add a bonus, a shift differential, a commission, or a few other forms of pay, the math changes, and a lot of employers get it wrong, usually in their favor.",
@@ -725,7 +725,7 @@ export const POSTS: Post[] = [
         ] },
       { h: "How to actually calculate it: a worked example", p: [
           "Say you earn $18/hour and work 45 hours in a week. You also earn a $90 production bonus that week. Step one: straight-time pay is 45 hours × $18 = $810, plus the $90 bonus = $900 total. Step two: divide by total hours, $900 ÷ 45 = $20 regular rate. Your overtime is based on $20, not $18.",
-          "Step three: you've already been paid straight time for all 45 hours, so the overtime you're owed is the extra half-time premium on the 5 overtime hours: 5 × ($20 × 0.5) = $50. If your employer instead paid overtime as 5 × ($18 × 0.5) = $45, you were underpaid $5 that week. Small per week, but multiply it across every week you earned a bonus and worked overtime, and it's real money. For a plain hourly week with no extras, the [time and a half calculator](/calculators/time-and-a-half-calculator) gives the simple answer."
+          "Step three: you've already been paid straight time for all 45 hours, so the overtime you're owed is the extra half-time premium on the 5 overtime hours: 5 × ($20 × 0.5) = $50. If your employer instead paid overtime as 5 × ($18 × 0.5) = $45, you were underpaid $5 that week. Small per week, but multiply it across every week you earned a bonus and worked overtime, and it's real money. For a plain hourly week with no extras, the [overtime calculator](/calculators/overtime-calculator) gives the simple answer."
         ] },
       { h: "The salaried non-exempt twist", p: [
           "If you're salaried but non-exempt (you get overtime despite being on salary), the regular rate is found by dividing your weekly salary by the number of hours it's intended to cover, then layering overtime on top. A salary doesn't make overtime disappear, it just changes how the regular rate is computed.",
@@ -1297,7 +1297,7 @@ export const POSTS: Post[] = [
     slug: "overtime-for-remote-hybrid-workers",
     title: "Overtime for Remote and Hybrid Workers: What Changes at Home",
     description: "Working from home doesn't change your overtime rights, but it does change how hours get tracked and missed. Here's what remote and hybrid non-exempt workers need to watch for.",
-    date: "2026-07-14", readMins: 8, keyword: "overtime for remote employees", related: ["overtime-calculator","time-and-a-half-calculator"],
+    date: "2026-07-14", readMins: 8, keyword: "overtime for remote employees", related: ["overtime-calculator"],
     body: [
       { p: [
           "Nothing about the Fair Labor Standards Act changes because you're logging in from a kitchen table instead of an office. Overtime for remote employees works exactly the same as overtime for anyone else: 1.5x your regular rate for every hour over 40 in a week, whether you worked those hours in a cubicle or on your sofa. What does change, and change a lot, is how those hours get recorded, and how easily extra time slips through unpaid when there's no manager physically watching the clock.",
@@ -1346,7 +1346,7 @@ export const POSTS: Post[] = [
     slug: "is-overtime-mandatory",
     title: "Is Overtime Mandatory? What Your Employer Can (and Can't) Force You to Work",
     description: "Yes, in most jobs employers can require overtime and fire you for refusing. See the real exceptions, then check your pay with our free calculator.",
-    date: "2026-09-10", readMins: 10, keyword: "is overtime mandatory", related: ["overtime-calculator","time-and-a-half-calculator"],
+    date: "2026-09-10", readMins: 10, keyword: "is overtime mandatory", related: ["overtime-calculator"],
     body: [
       { p: [
           "Short answer: yes, in most jobs, your employer can legally require you to work overtime, and can fire you for refusing, as long as they pay you correctly for the extra hours. The Fair Labor Standards Act (FLSA) sets no cap on how many hours an adult can be scheduled in a week. A handful of carve-outs exist, union contracts, disability accommodations, certain family emergencies, and state-level shift-length caps for nurses, but they're narrower than most workers assume."
@@ -1380,7 +1380,7 @@ export const POSTS: Post[] = [
         ] },
       { h: "Being paid correctly for the mandatory hours matters more", p: [
           "Here's the part that actually costs most workers money: it isn't usually whether the overtime was mandatory, it's whether it was calculated correctly once you worked it. Overtime in the US averaged 3.8 weekly hours in manufacturing in 2025 and ran close to 4 hours a week for much of 2026, according to [Bureau of Labor Statistics](https://www.bls.gov/opub/ted/2026/overtime-hours-in-manufacturing-industries.htm) data, and those hours, multiplied by a wrong regular rate or a missed nondiscretionary bonus, add up fast over a year.",
-          "The regular rate has to include most bonuses and shift differentials, not just your base hourly wage, and the 1.5x multiplier applies to that full regular rate. If your pay stub shows overtime calculated only on your base wage, or shows straight time for hours past 40, that's a wage-and-hour problem regardless of whether the shift itself was mandatory. Run your numbers through the [overtime calculator](/calculators/overtime-calculator) or, if you want the plain premium rate on its own, the [time and a half calculator](/calculators/time-and-a-half-calculator)."
+          "The regular rate has to include most bonuses and shift differentials, not just your base hourly wage, and the 1.5x multiplier applies to that full regular rate. If your pay stub shows overtime calculated only on your base wage, or shows straight time for hours past 40, that's a wage-and-hour problem regardless of whether the shift itself was mandatory. Run your numbers through the [overtime calculator](/calculators/overtime-calculator), which also shows the plain premium rate on its own."
         ] },
       { h: "What to actually do about it", p: [
           "If the schedule is lawful but you simply don't want to work it, your options are limited to negotiation, your union contract if you have one, or looking for another job, the law generally won't force your employer to excuse you. If you suspect the overtime pay itself is wrong, that's a different and much more actionable problem: pull your last several pay stubs, log the hours you actually worked, and compare them against what you were paid.",

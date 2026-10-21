@@ -14,7 +14,6 @@
 - [Overtime calculator](https://www.wagecoach.com/calculators/overtime-calculator): FLSA weekly overtime (1.5x over 40 hrs/week) plus state daily-overtime and California double-time rules.
 - [Time card calculator](https://www.wagecoach.com/calculators/time-card-calculator): hours from clock-in, clock-out and unpaid breaks, weekly or biweekly, with state overtime applied.
 - [Back-pay calculator](https://www.wagecoach.com/calculators/back-pay-calculator): estimates unpaid wages you may be owed and the 2-to-3-year FLSA recovery window, plus liquidated damages.
-- [Time and a half calculator](https://www.wagecoach.com/calculators/time-and-a-half-calculator): the 1.5x overtime premium, per hour and per week.
 - [Double time calculator](https://www.wagecoach.com/calculators/double-time-calculator): pay at 2x the regular rate, including California's daily double-time rule.
 - [Salary to hourly calculator](https://www.wagecoach.com/calculators/salary-to-hourly-calculator): converts annual salary to hourly (and back), across every pay period.
 - [Minimum wage by state](https://www.wagecoach.com/calculators/minimum-wage-calculator): 2026 minimum and tipped wage for all 50 states plus DC.

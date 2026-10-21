@@ -49,5 +49,6 @@ export const BLOG_REDIRECTS: [string, string][] = [
 export const REDIRECTS: Redirect[] = [
   ...BLOG_REDIRECTS.map(([source, destination]) => ({ source, destination, permanent: true as const })),
   ...STATE_CORE.map((s) => ({ source: `/wage-claim/${s.slug}`, destination: `/states/${s.slug}#wage-claim`, permanent: true as const })),
+  { source: "/calculators/time-and-a-half-calculator", destination: "/calculators/overtime-calculator", permanent: true },
   { source: "/free-case-review", destination: "/wage-claim", permanent: true },
 ];

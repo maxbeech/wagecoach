@@ -37,3 +37,7 @@ Search Console held two sitemaps: `https://www.wagecoach.com/sitemap.xml` (curre
 
 - Cities: all 20 qualify (own rate and source). The pages are thin: a rate, one note, a source and a calculator. If the site still does not recover, the weakest are the state-set tiers (Portland Metro, New York City) and small localities (Tucson, Flagstaff); folding those into their state pages is the next step. Portland Metro is also a Wage Watch location key, so removing it needs a migration of stored subscriptions.
 - Blog: no further consolidation. Overlaps (`overtime-rules-by-state`, `how-to-file-a-wage-claim`, `file-department-of-labor-complaint`) each target a different query and carry different specifics.
+
+## 2026-10-21: calculators merge
+
+The page family audit (20 Oct) marked `/calculators/time-and-a-half-calculator` as merge: it repeated the overtime calculator's engine and notes, and had 262 impressions at about position 72. It now 301s to `/calculators/overtime-calculator`, is out of the sitemap, and the footer, `llms.txt` and blog links point at the overtime calculator.

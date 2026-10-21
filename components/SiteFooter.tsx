@@ -8,7 +8,6 @@ const COLS: { heading: string; links: { href: string; label: string }[] }[] = [
     heading: "Calculators",
     links: [
       { href: "/calculators/overtime-calculator", label: "Overtime pay" },
-      { href: "/calculators/time-and-a-half-calculator", label: "Time and a half" },
       { href: "/calculators/salary-to-hourly-calculator", label: "Salary to hourly" },
       { href: "/calculators/tipped-wage-calculator", label: "Tipped wage" },
       { href: "/calculators/pto-payout-calculator", label: "PTO payout" },

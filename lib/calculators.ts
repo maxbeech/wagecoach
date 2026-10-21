@@ -43,25 +43,6 @@ export const CALCULATORS: CalcDef[] = [
     ],
   },
   {
-    slug: "time-and-a-half-calculator",
-    name: "Time and a half",
-    keyword: "time and a half calculator",
-    h1: "Time and a Half Calculator",
-    meta: "Time and a half calculator: multiply your hourly rate by 1.5 and see your overtime and total pay for the hours you worked. Free, with state rules.",
-    intro: "Time and a half is 1.5× your hourly rate. Enter your wage and hours to see your overtime rate and what you should be paid for the week.",
-    focus: "The 1.5× overtime premium, shown per hour and per week",
-    tool: "pay",
-    seed: { hourlyRate: 18, hoursThisWeek: 46, otMultiplier: 1.5 },
-    notes: [
-      "Time and a half = hourly rate × 1.5. At $18/hr that is $27 per overtime hour.",
-      "It applies to hours over 40 in a workweek under the FLSA (and over 8/day in daily-overtime states).",
-    ],
-    faqs: [
-      f("What is time and a half for $15 an hour?", "$15 × 1.5 = $22.50 per overtime hour."),
-      f("Is time and a half required for weekends or holidays?", "Not under federal law. There is no federal requirement for extra pay on weekends or holidays unless those hours push you over 40 for the week. Holiday premium pay is set by your employer's policy or contract."),
-    ],
-  },
-  {
     slug: "double-time-calculator",
     name: "Double time",
     keyword: "double time calculator",
