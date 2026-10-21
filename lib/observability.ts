@@ -25,6 +25,12 @@ export function safeContext(context: Record<string, unknown>): Record<string, st
   return out;
 }
 
+/** Driver error code (Postgres SQLSTATE, Node ECONNREFUSED...), when it looks like one. */
+function errCode(err: unknown): string {
+  const c = (err as { code?: unknown } | null)?.code;
+  return typeof c === "string" && SAFE_STRING.test(c) ? c : "";
+}
+
 function hasDsn(): boolean {
   return Boolean(process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN);
 }
@@ -32,6 +38,9 @@ function hasDsn(): boolean {
 export function captureServerError(err: unknown, context: Record<string, unknown> = {}): void {
   const safe = safeContext(context);
   const scope = typeof safe.scope === "string" ? safe.scope : "server";
+  // Always leave a platform-log line too (name and driver code only, never the message),
+  // so a failure is visible in the service logs even before anyone opens Sentry.
+  console.error(`[${scope}]`, err instanceof Error ? err.name : "error", errCode(err), safe);
   try {
     if (hasDsn()) {
       Sentry.withScope((s) => {
@@ -44,7 +53,6 @@ export function captureServerError(err: unknown, context: Record<string, unknown
   } catch {
     // Never let reporting an error become an error.
   }
-  console.error(`[${scope}]`, err instanceof Error ? err.name : "error", safe);
 }
 
 /** A handled failure that is not an exception, such as a rejected upstream response. */
