@@ -37,7 +37,7 @@
  */
 
 /** Default deployment. Override with OPENHELM_API_URL for a self-hosted worker. */
-const DEFAULT_API_URL = "https://openhelm-worker.fly.dev/v1";
+const DEFAULT_API_URL = "https://api.openhelm.ai/v1";
 
 function assertServer(): void {
   if (typeof window !== "undefined") {
