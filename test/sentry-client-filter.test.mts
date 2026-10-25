@@ -65,12 +65,17 @@ eq(isSyntheticScriptParseError({
   },
 }), false, "keeps a real SyntaxError elsewhere in a bundle chunk (lineno !== 1)");
 
-// WAGECOACH_WEB-9: scanner probe with a made-up action and the exploit header.
-eq(isScannerProbe({ request: { headers: [["Next-Action", "cachefn"], ["Accept", "text/x-component"]] } }), true, "drops a made-up Next-Action (pair list)");
-eq(isScannerProbe({ request: { headers: { "next-action": "cachefn" } } }), true, "drops a made-up Next-Action (object, lower case)");
-eq(isScannerProbe({ request: { headers: { "x-middleware-subrequest": "middleware:middleware" } } }), true, "drops the x-middleware-subrequest exploit header");
-eq(isScannerProbe({ request: { headers: { "next-action": "40" + "a".repeat(40) } } }), false, "keeps a genuine hex Server Action id");
-eq(isScannerProbe({ request: { headers: { accept: "text/html" } } }), false, "keeps an ordinary request");
+// WAGECOACH_WEB-9: scanner probe = POST + probe header + the known refusal message.
+const rsc = { exception: { values: [{ type: "InvariantError", value: "Invariant: Expected RSC response, got text/plain. This is a bug in Next.js." }] } };
+const probe = (headers: unknown, method = "POST", exc: unknown = rsc) => ({ request: { method, headers }, ...(exc as object) }) as Parameters<typeof isScannerProbe>[0];
+eq(isScannerProbe(probe([["Next-Action", "cachefn"]])), true, "drops a made-up Next-Action (pair list)");
+eq(isScannerProbe(probe({ "next-action": "cachefn" })), true, "drops a made-up Next-Action (object, lower case)");
+eq(isScannerProbe(probe({ "x-middleware-subrequest": "middleware:middleware" })), true, "drops the exploit header");
+eq(isScannerProbe(probe({ "next-action": "cachefn" }, "POST", { exception: { values: [{ type: "Error", value: "Failed to find Server Action \"cachefn\"." }] } })), true, "drops the Server Action refusal");
+eq(isScannerProbe(probe({ "next-action": "cachefn" }, "POST", { exception: { values: [{ type: "TypeError", value: "Cannot read properties of undefined" }] } })), false, "keeps a different exception on a probe request");
+eq(isScannerProbe(probe({ "next-action": "cachefn" }, "GET")), false, "keeps a non-POST request");
+eq(isScannerProbe(probe({ "next-action": "40" + "a".repeat(40) })), false, "keeps a genuine hex Server Action id");
+eq(isScannerProbe(probe({ accept: "text/html" })), false, "keeps an ordinary request");
 eq(isScannerProbe({}), false, "keeps an event with no request");
 
 report("sentry-client-filter");

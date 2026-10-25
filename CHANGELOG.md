@@ -5,7 +5,8 @@
 - Security-scanner POSTs (made-up `Next-Action` such as `cachefn`, plus the `X-Middleware-Subrequest`
   exploit header) made Next throw "Expected RSC response" and Sentry reported it as an app bug
   (WAGECOACH_WEB-9). `isScannerProbe` in `lib/sentry-client-filter.ts` now drops those events in the
-  shared `beforeSend`. Next already refuses the request; the app has no middleware to bypass.
+  shared `beforeSend`, only when the request is a POST with a probe header AND the exception is
+  "Expected RSC response" or "Failed to find Server Action"; any other exception is still reported. Next already refuses the request; the app has no middleware to bypass.
 - WAGECOACH_WEB-A and -C ("self-signed certificate") were fixed by the 2026-10-21 Postgres TLS change.
 
 ## 2026-10-21: On-call pay refresh (content lifecycle pass)

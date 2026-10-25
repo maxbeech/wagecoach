@@ -1,5 +1,5 @@
 type SentryEvent = {
-  request?: { headers?: Record<string, unknown> | Array<[string, unknown]> };
+  request?: { method?: string; headers?: Record<string, unknown> | Array<[string, unknown]> };
   exception?: {
     values?: Array<{
       type?: string;
@@ -54,11 +54,20 @@ function requestHeader(event: SentryEvent, name: string): string | undefined {
 // page with `Accept: text/x-component`, a made-up `Next-Action` such as
 // "cachefn" and the CVE-2025-29927 `X-Middleware-Subrequest` header. Next
 // already refuses them, but it throws "Expected RSC response" on the way, which
-// would be reported as an app bug (WAGECOACH_WEB-9). A genuine browser never
-// sends either signal: action ids are build-generated hex, and the subrequest
-// header is internal to Next. Kept narrow on purpose: only those two signals.
+// would be reported as an app bug (WAGECOACH_WEB-9).
+//
+// Deliberately narrow so it cannot hide a genuine exception: the event is
+// dropped only when ALL hold: it is a POST, the request carries a probe header
+// (build-generated action ids are hex; the subrequest header is internal to
+// Next), and the exception is one of the two known refusal messages. Any other
+// exception on a probe request is still reported.
+const PROBE_NOISE = /^(Invariant: Expected RSC response|Failed to find Server Action)/;
+
 export function isScannerProbe(event: SentryEvent): boolean {
-  if (requestHeader(event, "x-middleware-subrequest") !== undefined) return true;
+  if (event.request?.method?.toUpperCase() !== "POST") return false;
   const action = requestHeader(event, "next-action");
-  return action !== undefined && !REAL_ACTION_ID.test(action);
+  const probeHeader = requestHeader(event, "x-middleware-subrequest") !== undefined
+    || (action !== undefined && !REAL_ACTION_ID.test(action));
+  if (!probeHeader) return false;
+  return event.exception?.values?.some((e) => PROBE_NOISE.test(e.value ?? "")) ?? false;
 }
