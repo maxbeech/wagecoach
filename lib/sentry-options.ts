@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
-import { isSyntheticScriptParseError } from "@/lib/sentry-client-filter";
+import { isScannerProbe, isSyntheticScriptParseError } from "@/lib/sentry-client-filter";
 import { failClosed, scrubBreadcrumb, scrubEvent, scrubLog, scrubTransaction } from "@/lib/scrub";
 
 /**
@@ -10,7 +10,7 @@ import { failClosed, scrubBreadcrumb, scrubEvent, scrubLog, scrubTransaction } f
 
 // Drop crawler noise first, then scrub. Both steps fail closed.
 const beforeSend = failClosed("event", (event: Sentry.ErrorEvent) =>
-  isSyntheticScriptParseError(event) ? null : scrubEvent(event),
+  isSyntheticScriptParseError(event) || isScannerProbe(event) ? null : scrubEvent(event),
 );
 
 export function sharedSentryOptions() {

@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-25: Stop reporting scanner probes as errors
+
+- Security-scanner POSTs (made-up `Next-Action` such as `cachefn`, plus the `X-Middleware-Subrequest`
+  exploit header) made Next throw "Expected RSC response" and Sentry reported it as an app bug
+  (WAGECOACH_WEB-9). `isScannerProbe` in `lib/sentry-client-filter.ts` now drops those events in the
+  shared `beforeSend`. Next already refuses the request; the app has no middleware to bypass.
+- WAGECOACH_WEB-A and -C ("self-signed certificate") were fixed by the 2026-10-21 Postgres TLS change.
+
 ## 2026-10-21: On-call pay refresh (content lifecycle pass)
 
 - `/blog/on-call-pay-rules` (114 impressions, position 11, zero clicks): sharper short answer at the

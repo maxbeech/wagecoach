@@ -1,4 +1,5 @@
 type SentryEvent = {
+  request?: { headers?: Record<string, unknown> | Array<[string, unknown]> };
   exception?: {
     values?: Array<{
       type?: string;
@@ -36,4 +37,28 @@ export function isSyntheticScriptParseError(event: SentryEvent): boolean {
       && frame.lineno === 1,
     ),
   ) ?? false;
+}
+
+// Real Server Action ids are long hex strings Next generates at build time.
+const REAL_ACTION_ID = /^[0-9a-f]{40,64}$/i;
+
+function requestHeader(event: SentryEvent, name: string): string | undefined {
+  const headers = event.request?.headers;
+  if (!headers) return undefined;
+  const entries: Array<[string, unknown]> = Array.isArray(headers) ? headers : Object.entries(headers);
+  const hit = entries.find(([key]) => key.toLowerCase() === name);
+  return hit === undefined ? undefined : String(hit[1]);
+}
+
+// Security-scanner probes (ClaudeBot, Googlebot look-alikes) POST to a real
+// page with `Accept: text/x-component`, a made-up `Next-Action` such as
+// "cachefn" and the CVE-2025-29927 `X-Middleware-Subrequest` header. Next
+// already refuses them, but it throws "Expected RSC response" on the way, which
+// would be reported as an app bug (WAGECOACH_WEB-9). A genuine browser never
+// sends either signal: action ids are build-generated hex, and the subrequest
+// header is internal to Next. Kept narrow on purpose: only those two signals.
+export function isScannerProbe(event: SentryEvent): boolean {
+  if (requestHeader(event, "x-middleware-subrequest") !== undefined) return true;
+  const action = requestHeader(event, "next-action");
+  return action !== undefined && !REAL_ACTION_ID.test(action);
 }
