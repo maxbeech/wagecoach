@@ -78,7 +78,7 @@ export const POSTS: Post[] = [
         ] },
       { h: "The highest minimum wages in 2026", p: [
           "Washington, D.C. leads the country at $17.95 an hour. Right behind it: Washington State at $17.13, Connecticut at $16.94, California at $16.90 (with many cities far higher), and New York at $17.00 in the NYC, Long Island, and Westchester area and $16.00 upstate.",
-          "These aren't outliers anymore. New Jersey, Massachusetts, Arizona, Colorado, and Maryland all sit comfortably above $15. The $15 minimum, once a rallying cry, is now the baseline across a large chunk of the country.",
+          "These aren't outliers anymore. New Jersey, Massachusetts, [Arizona](/states/arizona), Colorado, and Maryland all sit comfortably above $15. The $15 minimum, once a rallying cry, is now the baseline across a large chunk of the country. Some cities go higher still, such as [Oakland at $17.34 an hour in 2026](/cities/oakland-ca).",
           "And remember, these are state floors. Cities like Seattle, Denver, and the California Bay Area set their own higher rates, which are covered in the city and county section below."
         ] },
       { h: "States still at the $7.25 federal floor", p: [
@@ -606,7 +606,7 @@ export const POSTS: Post[] = [
           "What if my employer never paid me for between-site driving? You may be owed back pay. Federal claims reach back two years, or three if the violation was willful, plus potential liquidated (double) damages. Document the dates and the driving you can remember, it builds the case."
         ] },
       { h: "Add up your real hours and check for back pay", p: [
-          "The pattern with travel time is that it's small per day but relentless. Twenty unpaid minutes here, a special trip there, and after a year it's a serious chunk of money. The first step is just counting honestly: log every minute of compensable travel for a few representative weeks.",
+          "The pattern with travel time is that it's small per day but relentless. Twenty unpaid minutes here, a special trip there, and after a year it's a serious chunk of money. The first step is just counting honestly: log every minute of compensable travel for a few representative weeks. The [time card calculator](/calculators/time-card-calculator) turns clock-in, clock-out and unpaid lunch times into daily and weekly hours.",
           "Then run those weeks through the [overtime calculator](/calculators/overtime-calculator) with travel time included to see if you crossed 40 hours. If unpaid travel has been a regular thing, use the [back-pay calculator](/calculators/back-pay-calculator) to estimate what you might be owed across the two- to three-year window. The numbers surprise people, in a good way."
         ] }
     ]
