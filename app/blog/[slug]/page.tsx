@@ -49,6 +49,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: "article", title: p.title, description: p.description,
       url: `/blog/${p.slug}`, siteName: SITE.name,
       publishedTime: p.date, authors: [AUTHOR.name],
+      // Same featured image the Article JSON-LD already points at.
+      images: [`${SITE.url}/blog/posts/${p.slug}.jpg`],
     },
   };
 }

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import PayCalculator from "@/components/PayCalculator";
 import HeroPaystub from "@/components/HeroPaystub";
@@ -17,6 +18,14 @@ import { SITE } from "@/lib/site";
 import { safeJsonLd } from "@/lib/json-ld";
 
 export const revalidate = 604800; // weekly ISR
+
+// Home-page metadata. The root layout supplies the template ("%s · WageCoach"),
+// so the title stays short; the description says what a visitor can do here.
+export const metadata: Metadata = {
+  title: "Check your pay and recover unpaid wages",
+  description:
+    "Free overtime, minimum-wage and paycheck calculators, plus a back-pay estimate and state-by-state help to file a wage claim.",
+};
 
 const highest = [...STATES].sort((a, b) => effectiveMinWage(b) - effectiveMinWage(a))[0];
 const aboveFederal = STATES.filter((s) => s.abbr !== "DC" && effectiveMinWage(s) > FEDERAL.minWage).length;
