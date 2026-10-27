@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-27: Travel time refresh (content lifecycle pass)
+
+- `/blog/travel-time-pay-rules` (16 impressions, position 11.25, zero clicks): added a short answer at
+  the top, quoted the job-to-job rule from 29 CFR 785.38, and replaced the unsourced "special errand"
+  passage with the regulation's own going-home example. Removed an unsourced state minimum-wage
+  claim. Date set to 2026-10-27 after the substantive edit.
+
 ## 2026-10-25: Stop reporting scanner probes as errors
 
 - Security-scanner POSTs (made-up `Next-Action` such as `cachefn`, plus the `X-Middleware-Subrequest`

@@ -567,9 +567,10 @@ export const POSTS: Post[] = [
     slug: "travel-time-pay-rules",
     title: "Travel Time Pay: When Your Employer Has to Pay You to Travel",
     description: "The FLSA rules on travel time pay in 2026: why your commute isn't paid, when day trips and overnight travel are, and how unpaid travel can hide thousands in back pay.",
-    date: "2026-06-20", readMins: 8, keyword: "travel time pay", related: ["overtime-calculator"],
+    date: "2026-10-27", readMins: 8, keyword: "travel time pay", related: ["overtime-calculator"],
     body: [
       { p: [
+          "Short answer: travel is paid when it is part of your job, such as driving between job sites during the workday or a trip back to your employer's premises. Your ordinary commute from home to a regular workplace is not paid. The core federal rule for travel between work locations is in 29 CFR 785.38, and some states are more protective. [Read the regulation](https://www.law.cornell.edu/cfr/text/29/785.38).",
           "Here's a question that costs American workers real money every single week: when does your employer have to pay you for time spent traveling? Not the day you spend on a plane for a conference, not the drive between two job sites, not the late-night call-out to fix a broken machine. The Fair Labor Standards Act has clear answers, and a lot of employers either don't know them or quietly hope you don't.",
           "If you're non-exempt (hourly, or salaried under the exempt threshold), unpaid travel time is one of the most common ways wages get shaved off your check. And because it repeats week after week, the unpaid amount adds up fast. Let's walk through exactly when travel time is on the clock."
         ] },
@@ -579,7 +580,7 @@ export const POSTS: Post[] = [
           "But, and this is where money starts changing hands, the commute rule has hard edges. The moment travel stops looking like a normal commute and starts looking like part of the workday, the FLSA flips it to paid time."
         ] },
       { h: "Travel between job sites during the day is paid", p: [
-          "If you report to one location and then travel to another during the workday, that travel is paid. A home-health aide driving from one client's house to the next, an electrician moving from a morning job to an afternoon job, a service tech bouncing between three stores, all of that drive time is hours worked.",
+          "If you report to one location and then travel to another during the workday, that travel is paid. The regulation says it directly: travel \"from job site to job site during the workday, must be counted as hours worked\" (29 CFR 785.38). A home-health aide driving from one client's house to the next, an electrician moving from a morning job to an afternoon job, a service tech bouncing between three stores, all of that drive time is hours worked.",
           "This is enormous for trades and field workers. Say you visit four sites a day and spend 90 minutes total driving between them. That's 7.5 unpaid hours a week if your employer only pays \"door to door\" at each stop. Over a year that's roughly 390 hours, and if any of it pushed you over 40 in a week, it should have been paid at time and a half.",
           "Those between-site miles also count toward your 40-hour overtime threshold. Run your real weekly hours, travel included, through the [overtime calculator](/calculators/overtime-calculator) to see whether you crossed into overtime once the driving is added back in."
         ] },
@@ -592,12 +593,12 @@ export const POSTS: Post[] = [
           "Travel completely outside your normal hours as a passenger generally isn't paid. So a red-eye that boards at 11 p.m. when you'd normally be asleep usually isn't compensable. But if you're actually working during that travel, answering emails, doing required tasks, that work time is always paid, day or night.",
           "The DOL spells this out in its [travel time guidance](https://www.dol.gov/agencies/whd). When in doubt, write down the clock times of every leg of the trip and compare them to your normal schedule."
         ] },
-      { h: "Emergency call-outs and the 'special errand' rule", p: [
-          "Get called back to work after hours for an emergency? That return trip is usually paid. Under the \"special errand\" rule, when you've gone home and your employer calls you back for something outside your regular schedule, the travel to handle it is compensable, it's substantially different from your ordinary commute.",
+      { h: "Going home versus returning to work", p: [
+          "The regulation's own example shows where the line falls. An employee who normally finishes at 5 p.m., is sent to another job finishing at 8 p.m., and must return to the employer's premises arriving at 9 p.m. is working the whole time. But if the employee goes home instead, the travel after 8 p.m. is home-to-work travel and is not hours worked (29 CFR 785.38).",
           "This matters a lot for on-call technicians, maintenance staff, and IT workers. If you're roused at 2 a.m. to drive 40 minutes to a facility, those 40 minutes each way are hours worked, and if you're already near 40 hours that week they may be overtime hours. Pair this with our guide on [on-call pay rules](/blog/on-call-pay-rules) if waiting by the phone is part of your job."
         ] },
       { h: "State rules can be more generous than federal", p: [
-          "The FLSA is the floor, not the ceiling. California, for instance, treats travel time more broadly: any time you're under your employer's control, including required travel to a job site on company transportation, or travel where you can't use the time for your own purposes, is generally paid. Several states also require that travel time be paid at no less than the regular minimum wage.",
+          "The FLSA is the floor, not the ceiling. California, for instance, treats travel time more broadly: any time you're under your employer's control, including required travel to a job site on company transportation, or travel where you can't use the time for your own purposes, is generally paid.",
           "If you work in a strong wage-law state, check your state's labor department rules before assuming the federal answer applies. The federal rule might say a trip isn't paid while your state says it is. You always get the more protective rule."
         ] },
       { h: "Frequently asked questions", p: [
