@@ -1049,7 +1049,7 @@ export const POSTS: Post[] = [
           "Workers are protected from retaliation for asserting wage-and-hour rights. If your hours, schedule or pay change after you raise the issue, write down what happened and when and [review the WHD retaliation guidance](https://www.dol.gov/agencies/whd/retaliation)."
         ] },
       { h: "Frequently asked questions", p: [
-          "Do I need a lawyer to send a demand letter? No. A clear letter with a solid calculation is often enough. For a large claim, a letter on an attorney's letterhead carries more weight, but it is not required.",
+          "Do I [need a lawyer](/blog/attorney-for-unpaid-wages) to send a demand letter? No. A clear letter with a solid calculation is often enough. For a large claim, a letter on an attorney's letterhead carries more weight, but it is not required.",
           "Will sending one hurt my chances with the DOL? No. If the letter fails, a complaint is your next step and the letter shows the employer knew about the dispute.",
           "What if my numbers are wrong? Send your best good-faith calculation and say so. Employers often reply with their own records, which can sharpen the figure. Being precise and reasonable protects your credibility either way."
         ] },
