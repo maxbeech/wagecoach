@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-03: City source links point to official rate pages (content lifecycle pass)
+
+- `/cities/mountain-view-ca` and `/cities/portland-metro-or`: the "official rate page" link pointed at a
+  trade summary (employers.org, barran.com). It now points at the city's economic development page
+  (Mountain View) and BOLI's minimum wage page (Portland Metro). Rates unchanged: $19.70 and $16.80,
+  both re-checked against those sources. Mountain View note now states the CPI index.
+
 ## 2026-10-27: Travel time refresh (content lifecycle pass)
 
 - `/blog/travel-time-pay-rules` (16 impressions, position 11.25, zero clicks): added a short answer at
