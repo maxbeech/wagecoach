@@ -247,3 +247,5 @@ Runs on Helm7 (`wagecoach` product, Falkenstein), built from `master` on every p
 GA4 is configured with `NEXT_PUBLIC_GA_MEASUREMENT_ID`. The reviewed value action is `calculator_used` (Used a calculator). Portfolio returns use `active-return-v1`: a visible visit followed by a trusted interaction in a new session, at least three hours later and within seven days. Thirty idle minutes separate sessions; timers and passive tabs do not count. These are consented browser cohorts, not cross-device or native-app retention. Only complete seven-day cohorts can be compared.
 
 The generated return modules come from OpenHelm/shared/src through Products/_services/openhelm-analytics. Keep existing consent gates, exclude explicit test identities (`oh_is_test`), and run the return contract tests alongside the full test suite before release. Register the `oh_cohort_date` and `oh_return_contract` event dimensions in the selected GA property.
+
+Generated Node analytics tests assert the empty error count without narrowing the mutable collection to `never[]`; storage-error checks remain unchanged.

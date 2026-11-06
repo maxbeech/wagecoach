@@ -264,3 +264,5 @@ buyer. Grounded in keyword research (wage theft 5.4k/mo, back pay calculator
 
 - All figures are estimates / general information, not legal advice. Attorney
   lead-gen is bar-regulated; confirm the model with counsel before going live.
+
+Generated Node analytics tests assert the empty error count without narrowing the mutable collection to `never[]`; storage-error checks remain unchanged.
