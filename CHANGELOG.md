@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-06: active return measurement
+
+- Record first measured visits and intentional returns using the shared three-hour, seven-day browser contract.
+- Preserve the product analytics boundary and add regression tests for passive tabs, continuous sessions, consent and storage errors.
+
 ## 2026-11-03: City source links point to official rate pages (content lifecycle pass)
 
 - `/cities/mountain-view-ca` and `/cities/portland-metro-or`: the "official rate page" link pointed at a
