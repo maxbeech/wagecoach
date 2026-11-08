@@ -253,3 +253,6 @@ Generated Node analytics tests assert the empty error count without narrowing th
 2026-11-06: The shared GA bootstrap disables implicit page views before startup, so the explicit route tracker owns the initial and subsequent SPA page views. Product value and active-return events remain enabled.
 
 Page-view deduplication uses the actual browser URL at emission, preventing a stale React snapshot from double-counting URL hydration. The four-case Node check runs as `pageview-startup.check.mjs`, independently of Vitest discovery.
+
+
+Funnel review (8 November 2026): [city rate corrections and validation](docs/funnel-audit-2026-11-08.md).

@@ -1,3 +1,8 @@
+## 2026-11-08 — Correct city wage rates already in force
+
+- Apply the July 2026 city rates in the shared registry, updating search titles, visible copy, lists and pay-calculator defaults together.
+- Cover the four corrected rates in the normal test command.
+
 # Changelog
 
 ## 2026-11-06: active return measurement
