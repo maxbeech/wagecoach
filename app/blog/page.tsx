@@ -10,6 +10,11 @@ export const metadata: Metadata = {
   title: "Wage & Hour Guides",
   description: "Plain-English guides to U.S. wage and hour law: overtime, time and a half, minimum wage, exempt vs non-exempt, tipped pay, PTO payout and final paychecks.",
   alternates: { canonical: "/blog" },
+  openGraph: {
+    title: "Wage & Hour Guides",
+    description: "Plain-English guides to U.S. wage and hour law: overtime, time and a half, minimum wage, exempt vs non-exempt, tipped pay, PTO payout and final paychecks.",
+    url: "/blog",
+  },
 };
 
 export default function BlogIndex() {

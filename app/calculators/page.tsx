@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   title: "Wage & Hour Calculators",
   description: "Free U.S. wage and hour calculators: overtime, time and a half, double time, minimum wage by state, tipped wage, exempt-salary, PTO payout and final-paycheck deadlines.",
   alternates: { canonical: "/calculators" },
+  openGraph: {
+    title: "Wage & Hour Calculators",
+    description: "Free U.S. wage and hour calculators: overtime, time and a half, double time, minimum wage by state, tipped wage, exempt-salary, PTO payout and final-paycheck deadlines.",
+    url: "/calculators",
+  },
 };
 
 export default function CalculatorsIndex() {

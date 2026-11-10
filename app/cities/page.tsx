@@ -11,6 +11,11 @@ export const metadata: Metadata = {
   title: "City Minimum Wages 2026 (Seattle, NYC, LA, Chicago & more)",
   description: "2026 local minimum wages for major U.S. cities including Seattle, New York City, Los Angeles, San Francisco, Chicago and Denver. Many are higher than their state's rate.",
   alternates: { canonical: "/cities" },
+  openGraph: {
+    title: "City Minimum Wages 2026 (Seattle, NYC, LA, Chicago & more)",
+    description: "2026 local minimum wages for major U.S. cities including Seattle, New York City, Los Angeles, San Francisco, Chicago and Denver. Many are higher than their state's rate.",
+    url: "/cities",
+  },
 };
 
 export default function CitiesIndex() {
