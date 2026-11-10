@@ -14,6 +14,54 @@ export interface Post {
 
 export const POSTS: Post[] = [
   {
+    slug: "what-is-gross-pay",
+    title: "What Is Gross Pay? What Counts, What Comes Out, and How to Check It",
+    description: "Gross pay is your earnings before any deduction. What belongs in it, what does not, how garnishments and overtime use it, and a worked example from WageCoach's own overtime engine.",
+    date: "2026-11-10", readMins: 7, keyword: "what is gross pay", related: ["overtime-calculator"],
+    body: [
+      { p: [
+          "Gross pay is everything you earned in a pay period before any tax, insurance premium, retirement contribution or court order is taken out. It is the total of your hourly wages, overtime premiums, bonuses and commissions. Net pay, also called take-home pay, is what remains after the deductions come off.",
+          "Gross pay is the number every wage calculation starts from. Minimum wage compliance, overtime and back-pay claims are all measured on gross earnings. That is why a stub can show a take-home figure that looks plausible while the gross line is short. This guide sets out what belongs in gross pay, what comes out of it, and how to check it against your own hours."
+        ] },
+      { h: "What belongs in gross pay", p: [
+          "Gross pay adds up every type of earning in the period. For most hourly workers that means three things: straight-time hours at the agreed rate, the overtime premium on hours over the threshold, and any extra pay such as shift differentials, bonuses or commission. Paid holidays, sick leave and paid time off that you actually took usually appear as separate earning lines, and they belong in the gross total as well.",
+          "Bonuses are the item most often left out. Under federal rules, non-discretionary bonuses such as production or attendance bonuses have to be built into the regular rate of pay, and that changes the overtime premium as well as the gross. The arithmetic is set out in [regular rate of pay](/blog/regular-rate-of-pay). The federal definition is in [29 CFR 778.109](https://www.law.cornell.edu/cfr/text/29/778.109), and the Department of Labor's overview of overtime is on [dol.gov](https://www.dol.gov/general/topic/wages/overtimepay)."
+        ] },
+      { h: "What comes out, and what does not", p: [
+          "Deductions come after gross. Pre-tax deductions such as 401(k) contributions, most health premiums and HSA contributions reduce the wages that income tax is calculated on, but they still sit inside the gross figure. Post-tax deductions, such as Roth contributions or a wage garnishment, come out after tax. Income tax, Social Security and Medicare are also withheld from gross, so the gross line on a stub is always the higher number.",
+          "Two rules follow from that. Overtime is calculated on gross earnings before deductions, so a deduction never reduces what you are owed for overtime. And a wage garnishment is usually limited by your disposable earnings, which means gross minus the amounts the law requires you to pay, not by gross itself. The limits are explained in [wage garnishment rules](/blog/wage-garnishment-rules)."
+        ] },
+      { h: "A worked example from the WageCoach engine", p: [
+          "The WageCoach overtime engine applies the federal weekly rule and the state daily rule separately, and the gap between them shows up directly in gross pay. Take a worker paid $18 an hour who works 46 hours in one workweek. The table compares the federal result with California, where the same 46 hours are spread across five days.",
+        ], table: { headers: ["Scenario", "Hours in the workweek", "Rule applied", "Regular pay", "Overtime pay", "Gross pay"], rows: [
+          ["Federal, $18 an hour", "46", "Weekly: 1.5 times the rate over 40 hours", "$720.00 (40 hours)", "$162.00 (6 hours at $27)", "$882.00"],
+          ["California, same 46 hours", "46 (10, 10, 10, 10 and 6 a day)", "Daily: 1.5 times the rate over 8 hours a day", "$684.00 (38 hours)", "$216.00 (8 hours at $27)", "$900.00"]
+        ] } },
+      { p: [
+          "The federal rule looks only at the workweek total, so the worker earns 40 straight-time hours and 6 overtime hours. California also counts hours over 8 in each day. The four 10-hour days create 8 daily overtime hours, so the gross is $18 higher even though the total hours are the same. Both figures are before deductions and are estimates from the hours entered, not a payroll record. If your stub matches the federal figure in a daily-overtime state, check your daily hours against your timesheet.",
+          "Many employees never see this difference because their employer uses the weekly rule everywhere. The state rules that count daily hours are compared in [overtime rules by state](/blog/overtime-rules-by-state), and the California detail is in [California overtime rules](/blog/california-overtime-rules)."
+        ] },
+      { h: "How to check the gross on your pay stub", p: [
+          "Work from the hours, not the total. Multiply your straight-time hours by your rate, add the overtime hours at 1.5 times that rate, then add any bonus or shift differential you earned in the period. The result should match the gross line to the cent. If it does not, the gap is the first thing to ask about. A line-by-line walk through a stub is in [how to read a pay stub](/blog/how-to-read-a-pay-stub).",
+          "Three gaps come up again and again. The first is an overtime line that is missing or paid at the straight rate. The second is a bonus paid during the period but left out of the regular rate, so the premium is too small. The third is hours that were worked but never reached the timesheet, which a stub cannot show at all. The usual way to find the third is to compare your own log of start and finish times with the hours that were paid."
+        ] },
+      { h: "Gross pay for salaried workers", p: [
+          "A salary is also a gross figure, usually divided across the pay periods in the year. An annual salary of $52,000 paid biweekly is 26 payments, so each gross payment is $2,000 before deductions. Paid semimonthly, the same salary is 24 payments of $2,166.67. The schedule changes how the number looks on the stub, not what has been earned over the year.",
+          "A salary does not settle overtime. Whether a salaried worker is owed overtime depends on the exemption tests, not the size of the paycheck. The line between exempt and non-exempt work is covered in [exempt vs non-exempt employees](/blog/exempt-vs-non-exempt-employees). A salaried non-exempt worker's gross should still include overtime premiums for every hour over 40 in the workweek."
+        ] },
+      { h: "Why gross is the figure that matters in a claim", p: [
+          "If you are checking unpaid wages, you rebuild the gross you should have received for each week and compare it with what was paid. That difference is the core of a back-pay estimate. The [back-pay calculator](/calculators/back-pay-calculator) works from the weekly gross, so an error in that figure carries straight into the total. Keep the gross line from each stub, along with your own hours, for every period you think was short.",
+          "Everything on this page is general information and self-help, not legal advice. The amount you can recover depends on your state, the time limits and your employer's records, and the window for claims is explained in [statute of limitations for unpaid wages](/blog/statute-of-limitations-unpaid-wages)."
+        ] },
+      { h: "Frequently asked questions", p: [
+          "Is gross pay the same as gross wages? In practice, yes. Both mean earnings before deductions. Check that the gross line includes every earnings line on the stub, not only the base hourly pay.",
+          "Does gross pay include tips? Tips a worker receives directly from customers are generally counted as wages for minimum wage purposes, but how they appear on a stub depends on the employer's payroll system. The tip credit rules are in [tipped minimum wage and tip credit](/blog/tipped-minimum-wage-and-tip-credit).",
+          "Is overtime calculated on gross or net pay? Gross. Overtime is a premium on the regular rate, which is built from earnings before deductions. Taxes and benefit premiums never reduce the overtime owed.",
+          "What if my gross is lower than my hours multiplied by my rate? Check whether the gap is an unpaid break, a rounding rule or a missing overtime line. Put the question to your employer in writing and keep a copy. The Department of Labor's guidance on unpaid work time is on [dol.gov](https://www.dol.gov/agencies/whd/flsa/off-the-clock)."
+        ] }
+    ]
+  },
+  {
     slug: "how-to-calculate-overtime-pay",
     title: "How to Calculate Overtime Pay (2026 Guide)",
     description: "Step-by-step overtime math under the FLSA: the regular rate, which hours count toward 40, time and a half with real paychecks, salaried non-exempt pay, holidays, and daily-overtime states.",
