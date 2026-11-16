@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   title: "Methodology & Sources: How WageCoach Computes Pay",
   description: "The exact FLSA rules, 2026 state wage data and sources WageCoach uses for its overtime, minimum-wage and paycheck calculators. Transparent and cited.",
   alternates: { canonical: "/methodology" },
+  openGraph: {
+    title: "Methodology & Sources: How WageCoach Computes Pay",
+    description: "The exact FLSA rules, 2026 state wage data and sources WageCoach uses for its overtime, minimum-wage and paycheck calculators. Transparent and cited.",
+  },
 };
 
 const noTipCredit = STATES.filter((s) => !s.tipCreditAllowed).map((s) => s.name).join(", ");

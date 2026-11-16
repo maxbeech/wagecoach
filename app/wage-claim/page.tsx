@@ -12,6 +12,10 @@ export const metadata: Metadata = {
   title: "Unpaid Wages & Back Pay — Am I Owed? How to File a Claim",
   description: "Estimate the unpaid overtime or wages you're owed, see how far back you can recover under the FLSA, and find out how to file a wage claim in your state. Free, no account.",
   alternates: { canonical: "/wage-claim" },
+  openGraph: {
+    title: "Unpaid Wages & Back Pay — Am I Owed? How to File a Claim",
+    description: "Estimate the unpaid overtime or wages you're owed, see how far back you can recover under the FLSA, and find out how to file a wage claim in your state. Free, no account.",
+  },
 };
 
 export default function WageClaimIndex() {

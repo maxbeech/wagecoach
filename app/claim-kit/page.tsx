@@ -17,6 +17,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Your Claim Kit",
   description: "Your pre-filled demand letter and step-by-step filing guide for an unpaid-wage claim. Unlocks after checkout.",
+  alternates: { canonical: "/claim-kit" },
   robots: { index: false, follow: false },
 };
 

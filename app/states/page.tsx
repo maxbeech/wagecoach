@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   title: "Minimum Wage & Labor Law by State (2026)",
   description: "2026 minimum wage, overtime rules and final-paycheck deadlines for all 50 states and DC. Pick your state for tipped wages, breaks and a pre-loaded pay calculator.",
   alternates: { canonical: "/states" },
+  openGraph: {
+    title: "Minimum Wage & Labor Law by State (2026)",
+    description: "2026 minimum wage, overtime rules and final-paycheck deadlines for all 50 states and DC. Pick your state for tipped wages, breaks and a pre-loaded pay calculator.",
+  },
 };
 
 export default function StatesIndex() {

@@ -13,6 +13,10 @@ export const metadata: Metadata = {
   title: "Pricing: Free Calculators, Claim Kit and Wage Watch",
   description: "Every calculator is free. Workers: a $29 Claim Kit to recover unpaid wages. Employers: minimum wage change alerts, free for one place or $9 a month for up to 10.",
   alternates: { canonical: "/pricing" },
+  openGraph: {
+    title: "Pricing: Free Calculators, Claim Kit and Wage Watch",
+    description: "Every calculator is free. Workers: a $29 Claim Kit to recover unpaid wages. Employers: minimum wage change alerts, free for one place or $9 a month for up to 10.",
+  },
 };
 
 const FREE = [
