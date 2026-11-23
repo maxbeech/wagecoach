@@ -5,6 +5,11 @@
 
 # Changelog
 
+## 2026-11-23: Overtime-for-remote-hybrid-workers uses overtime artwork (on-page SEO fix)
+
+- `lib/blog-images.ts`: map `overtime-for-remote-hybrid-workers` to the `overtime` image category. It had no entry and fell back to paycheck artwork.
+- `test/posts.test.mts`: regression assertion for that mapping.
+
 ## 2026-11-06: active return measurement
 
 - Record first measured visits and intentional returns using the shared three-hour, seven-day browser contract.

@@ -36,5 +36,7 @@ for (const p of POSTS) {
 // blog-images.ts must not list slugs that no longer exist.
 const img = readFileSync(new URL("../lib/blog-images.ts", import.meta.url), "utf8");
 for (const [, s] of img.matchAll(/^\s*"([a-z0-9-]+)":/gm)) ok(slugs.has(s), `blog-images.ts lists removed slug ${s}`);
+// Regression: overtime-for-remote-hybrid-workers fell back to the paycheck artwork.
+ok(/"overtime-for-remote-hybrid-workers":\s*"overtime"/.test(img), "overtime-for-remote-hybrid-workers must map to the overtime image category");
 
 report("posts");

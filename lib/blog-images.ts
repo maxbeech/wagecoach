@@ -8,6 +8,7 @@ const SLUG_CATEGORY: Record<string, BlogCategory> = {
   "comp-time-vs-overtime":              "overtime",
   "unpaid-overtime-recovery":           "overtime",
   "is-overtime-mandatory":              "overtime",
+  "overtime-for-remote-hybrid-workers": "overtime",
 
   // Minimum wage
   "minimum-wage-2026-by-state":         "minimum-wage",
